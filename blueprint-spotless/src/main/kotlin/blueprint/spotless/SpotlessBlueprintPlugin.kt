@@ -19,7 +19,7 @@ public class SpotlessBlueprintPlugin : Plugin<Project> {
         fmt.eclipseWtp(EclipseWtpFormatterStep.XML)
       }
       ext.format("misc") { fmt ->
-        val miscFiles = properties.miscFiles.split(",").toTypedArray()
+        val miscFiles = properties.miscFiles.toTypedArray()
         fmt.target(*miscFiles)
         fmt.indentWithSpaces()
         fmt.trimTrailingWhitespace()

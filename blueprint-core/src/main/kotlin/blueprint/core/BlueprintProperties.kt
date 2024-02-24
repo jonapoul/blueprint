@@ -12,5 +12,21 @@ public abstract class BlueprintProperties {
   protected fun stringProperty(key: String, default: String): String =
     project.stringPropertyOrElse(key.prefixed, default)
 
+  protected fun stringPropertyOrNull(key: String): String? =
+    project.stringPropertyOrNull(key.prefixed)
+
+  protected fun stringListPropertyOrNull(key: String): List<String>? {
+    val string = project.stringPropertyOrNull(key.prefixed)
+    if (string.isNullOrBlank()) return null
+    return string.split(COMMA)
+  }
+
+  protected fun stringListPropertyOrElse(key: String, default: List<String>): List<String> =
+    stringListPropertyOrNull(key) ?: default
+
   private val String.prefixed: String get() = "$keyPrefix.$this"
+
+  private companion object {
+    const val COMMA = ","
+  }
 }
