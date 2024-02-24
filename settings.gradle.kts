@@ -15,6 +15,7 @@ dependencyResolutionManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
+    mavenLocal()
   }
 }
 
@@ -27,4 +28,5 @@ include(":blueprint-core")
 include(":blueprint-detekt")
 include(":blueprint-ktlint")
 include(":blueprint-licensee")
+include(":blueprint-publish")
 include(":blueprint-spotless")

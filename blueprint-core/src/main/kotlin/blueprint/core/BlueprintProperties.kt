@@ -21,7 +21,7 @@ public abstract class BlueprintProperties {
     return string.split(COMMA)
   }
 
-  protected fun stringListPropertyOrElse(key: String, default: List<String>): List<String> =
+  protected fun stringListProperty(key: String, default: List<String>): List<String> =
     stringListPropertyOrNull(key) ?: default
 
   private val String.prefixed: String get() = "$keyPrefix.$this"
