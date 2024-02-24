@@ -1,6 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 plugins {
+  alias(libs.plugins.buildConfig) apply false
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.dependencyGuard)
   alias(libs.plugins.dokka) apply false

@@ -25,3 +25,4 @@ includeBuild("build-logic")
 
 include(":blueprint-core")
 include(":blueprint-detekt")
+include(":blueprint-ktlint")

@@ -14,6 +14,8 @@ com.fasterxml.jackson.module:jackson-module-kotlin:2.12.7
 com.fasterxml.jackson:jackson-bom:2.12.7
 com.fasterxml.woodstox:woodstox-core:6.2.4
 com.github.ben-manes.caffeine:caffeine:3.1.0
+com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:4.0.1
+com.github.gmazzo.buildconfig:plugin:4.0.1
 com.google.code.findbugs:jsr305:3.0.2
 com.google.errorprone:error_prone_annotations:2.13.1
 com.google.guava:failureaccess:1.0.1
@@ -28,6 +30,7 @@ com.squareup.okio:okio-jvm:3.2.0
 com.squareup.okio:okio:3.2.0
 com.squareup.retrofit2:converter-moshi:2.9.0
 com.squareup.retrofit2:retrofit:2.9.0
+com.squareup:javapoet:1.13.0
 com.squareup:kotlinpoet:1.12.0
 com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.25.3
 com.vanniktech:gradle-maven-publish-plugin:0.25.3
@@ -38,6 +41,7 @@ jakarta.activation:jakarta.activation-api:1.2.1
 jakarta.xml.bind:jakarta.xml.bind-api:2.3.2
 javax.inject:javax.inject:1
 net.java.dev.jna:jna:5.6.0
+org.apache.commons:commons-lang3:3.12.0
 org.checkerframework:checker-qual:3.21.4
 org.codehaus.woodstox:stax2-api:4.2.1
 org.jetbrains.dokka:dokka-core:1.8.20
