@@ -23,4 +23,5 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 includeBuild("build-logic")
 
-include(":blueprint-properties")
+include(":blueprint-core")
+include(":blueprint-detekt")
