@@ -11,6 +11,7 @@ kotlin = "1.8.20"
 ktlint-cli = "1.1.1"
 ktlint-gradle = "11.6.1"
 publish = "0.25.3"
+spotless = "6.25.0"
 testParameterInjector = "1.15"
 
 [libraries]
@@ -19,6 +20,7 @@ plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", v
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
+plugin-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 # Test
 test-junit = { module = "junit:junit", version.ref = "junit" }
@@ -32,5 +34,4 @@ dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.re
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
