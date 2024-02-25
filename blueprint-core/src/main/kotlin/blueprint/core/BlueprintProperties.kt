@@ -21,6 +21,9 @@ public abstract class BlueprintProperties {
   protected fun stringPropertyOrNull(key: String): String? =
     project.stringPropertyOrNull(key.prefixed)
 
+  protected fun stringPropertyOrThrow(key: String): String =
+    project.stringPropertyOrNull(key.prefixed) ?: error("Required gradle property ${key.prefixed}")
+
   protected fun stringListPropertyOrNull(key: String): List<String>? {
     val string = project.stringPropertyOrNull(key.prefixed)
     if (string.isNullOrBlank()) return null

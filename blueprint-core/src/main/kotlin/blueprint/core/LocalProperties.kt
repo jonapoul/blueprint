@@ -1,5 +1,6 @@
 package blueprint.core
 
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import java.io.File
 import java.io.FileNotFoundException
@@ -29,5 +30,9 @@ public fun Project.rootLocalProperties(filename: String = DEFAULT_FILENAME): Pro
 
 public fun Project.rootLocalPropertiesOrNull(filename: String = DEFAULT_FILENAME): Properties? =
   rootProject.localPropertiesOrNull(filename)
+
+public fun Properties.getStringOrThrow(key: String): String {
+  return get(key)?.toString() ?: throw GradleException("Required key $key from local.properties, had $this")
+}
 
 private const val DEFAULT_FILENAME = "local.properties"
