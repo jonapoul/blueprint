@@ -1,4 +1,4 @@
-# Gradle Properties
+# Gradle Blueprint
 
 ## Summary
 

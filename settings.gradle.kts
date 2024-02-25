@@ -24,6 +24,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 includeBuild("build-logic")
 
+include(":blueprint-android")
 include(":blueprint-core")
 include(":blueprint-dependencyAnalysis")
 include(":blueprint-dependencyGuard")
