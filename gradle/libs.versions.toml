@@ -8,6 +8,7 @@ atak-base = "4.10.0"
 atak-sdk = "4.10.0.41"
 buildConfig = "4.0.1"
 dependencyAnalysis = "1.20.0"
+dependencyGraph = "0.8.0"
 dependencyGuard = "0.4.3"
 detekt = "1.23.0"
 doctor = "0.9.1"
@@ -31,6 +32,7 @@ plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-androidCacheFix = { module = "org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin", version.ref = "android-cacheFix" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-dependencyAnalysis = { module = "com.autonomousapps:dependency-analysis-gradle-plugin ", version.ref = "dependencyAnalysis" }
+plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
 plugin-doctor = { module = "com.osacky.doctor:doctor-plugin", version.ref = "doctor" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
