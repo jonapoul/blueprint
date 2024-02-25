@@ -1,5 +1,6 @@
 [versions]
 agp = "7.4.2"
+alakazam = "4.4.0"
 android-desugaring = "1.1.5"
 android-cacheFix = "3.0"
 androidx-compose-bom = "2023.01.00"
@@ -14,9 +15,10 @@ detekt = "1.23.0"
 doctor = "0.9.1"
 dokka = "1.8.20"
 java = "11"
-junit = "4.13.2"
 gradle = "7.6.1"
 kotlin = "1.8.20"
+kotlinx-coroutines = "1.6.4"
+kover = "0.7.5"
 ktlint-cli = "1.1.1"
 ktlint-gradle = "11.6.1"
 licensee = "1.7.0"
@@ -25,6 +27,16 @@ spotless = "6.23.0"
 testParameterInjector = "1.15"
 turtle = "0.8.0"
 versions = "0.46.0"
+
+test-androidx-arch = "2.2.0"
+test-androidx-coreKtx = "1.5.0"
+test-androidx-junit = "1.1.5"
+test-androidx-rules = "1.5.0"
+test-androidx-runner = "1.5.2"
+test-junit = "4.13.2"
+test-mockk = "1.13.7"
+test-robolectric = "4.10.3"
+test-turbine = "0.12.3"
 
 [libraries]
 # Runtime
@@ -37,6 +49,7 @@ plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.de
 plugin-doctor = { module = "com.osacky.doctor:doctor-plugin", version.ref = "doctor" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
 plugin-licensee = { module = "app.cash.licensee:licensee-gradle-plugin", version.ref = "licensee" }
 plugin-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
@@ -45,7 +58,7 @@ plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle"
 plugin-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versions" }
 
 # Test
-test-junit = { module = "junit:junit", version.ref = "junit" }
+test-junit = { module = "junit:junit", version.ref = "test-junit" }
 test-kotlin-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
 test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 test-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "testParameterInjector" }
