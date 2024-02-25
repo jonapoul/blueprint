@@ -28,7 +28,7 @@ gradlePlugin {
       id = "dev.jonpoulton.blueprint.android.library"
       displayName = "Android Library Blueprint"
       description = "Gradle plugin to apply and configure Android libraries"
-      implementationClass = "blueprint.android.AndroidLibBlueprintPlugin"
+      implementationClass = "blueprint.android.AndroidLibraryBlueprintPlugin"
     }
     create("blueprint-android-application") {
       id = "dev.jonpoulton.blueprint.android.application"

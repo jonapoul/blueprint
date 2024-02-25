@@ -9,7 +9,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-public class AndroidLibBlueprintPlugin : Plugin<Project> {
+public class AndroidLibraryBlueprintPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.pluginManager.apply("dev.jonpoulton.blueprint.kotlin.android")
     target.pluginManager.apply("com.android.library")

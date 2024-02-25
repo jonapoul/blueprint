@@ -13,7 +13,7 @@ public class AndroidResourcesBlueprintPlugin : Plugin<Project> {
     target.pluginManager.apply("dev.jonpoulton.blueprint.android.base")
 
     val hasOtherPluginsApplied = target.plugins.any { plugin ->
-      plugin is AndroidLibBlueprintPlugin
+      plugin is AndroidLibraryBlueprintPlugin
     }
     if (hasOtherPluginsApplied) {
       val allPlugins = target.plugins.joinToString()

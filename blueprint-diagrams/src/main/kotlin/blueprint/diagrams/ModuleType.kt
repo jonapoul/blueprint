@@ -16,8 +16,8 @@ internal enum class ModuleType(val string: String, val color: String) {
 }
 
 internal fun Project.moduleType(): ModuleType = when {
-  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.app") -> ModuleType.AtakPlugin
-  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.lib") -> ModuleType.AtakLibrary
+  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.plugin") -> ModuleType.AtakPlugin
+  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.library") -> ModuleType.AtakLibrary
   plugins.hasPlugin("dev.jonpoulton.blueprint.android.app") -> ModuleType.AndroidApp
   plugins.hasPlugin("dev.jonpoulton.blueprint.android.compose") -> ModuleType.AndroidCompose
   plugins.hasPlugin("dev.jonpoulton.blueprint.android.resources") -> ModuleType.AndroidResources

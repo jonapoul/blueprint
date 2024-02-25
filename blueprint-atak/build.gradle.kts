@@ -24,17 +24,17 @@ gradlePlugin {
       description = "Gradle plugin to apply and configure ATAK"
       implementationClass = "blueprint.atak.AtakBaseBlueprintPlugin"
     }
-    create("blueprint-atak-app") {
+    create("blueprint-atak-plugin") {
       id = "dev.jonpoulton.blueprint.atak.plugin"
       displayName = "ATAK Plugin Blueprint"
       description = "Gradle plugin to apply and configure ATAK plugins"
       implementationClass = "blueprint.atak.AtakPluginBlueprintPlugin"
     }
-    create("blueprint-atak-lib") {
+    create("blueprint-atak-library") {
       id = "dev.jonpoulton.blueprint.atak.library"
       displayName = "ATAK Library Blueprint"
       description = "Gradle plugin to apply and configure ATAK libraries"
-      implementationClass = "blueprint.atak.AtakLibBlueprintPlugin"
+      implementationClass = "blueprint.atak.AtakLibraryBlueprintPlugin"
     }
   }
 }
