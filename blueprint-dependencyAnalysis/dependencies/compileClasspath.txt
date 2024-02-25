@@ -1,0 +1,11 @@
+com.autonomousapps:dependency-analysis-gradle-plugin:1.20.0
+com.squareup.moshi:moshi-adapters:1.14.0
+com.squareup.moshi:moshi:1.14.0
+com.squareup.okio:okio:2.10.0
+dev.zacsweers.moshix:moshi-sealed-runtime:0.19.0
+javax.inject:javax.inject:1
+org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib:1.8.20
+org.jetbrains:annotations:13.0

@@ -25,6 +25,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 includeBuild("build-logic")
 
 include(":blueprint-core")
+include(":blueprint-dependencyAnalysis")
 include(":blueprint-dependencyGuard")
 include(":blueprint-detekt")
 include(":blueprint-doctor")
