@@ -3,6 +3,7 @@ buildConfig = "4.0.1"
 dependencyAnalysis = "1.20.0"
 dependencyGuard = "0.4.3"
 detekt = "1.23.0"
+doctor = "0.9.1"
 dokka = "1.8.20"
 java = "11"
 junit = "4.13.2"
@@ -20,6 +21,7 @@ versions = "0.49.0"
 # Runtime
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
+plugin-doctor = { module = "com.osacky.doctor:doctor-plugin", version.ref = "doctor" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }

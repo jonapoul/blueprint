@@ -9,6 +9,12 @@ public abstract class BlueprintProperties {
   protected fun boolProperty(key: String, default: Boolean): Boolean =
     project.boolPropertyOrElse(key.prefixed, default)
 
+  protected fun floatProperty(key: String, default: Float): Float =
+    project.floatPropertyOrElse(key.prefixed, default)
+
+  protected fun intProperty(key: String, default: Int): Int =
+    project.intPropertyOrElse(key.prefixed, default)
+
   protected fun stringProperty(key: String, default: String): String =
     project.stringPropertyOrElse(key.prefixed, default)
 

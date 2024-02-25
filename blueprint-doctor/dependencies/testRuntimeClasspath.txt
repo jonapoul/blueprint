@@ -1,0 +1,9 @@
+com.osacky.doctor:doctor-plugin:0.9.1
+com.osacky.tagger:tagger-lib:0.2
+io.reactivex.rxjava3:rxjava:3.1.8
+org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20
+org.jetbrains.kotlin:kotlin-stdlib:1.8.20
+org.jetbrains:annotations:13.0
+org.reactivestreams:reactive-streams:1.0.4
