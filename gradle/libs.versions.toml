@@ -20,6 +20,7 @@ licensee = "1.7.0"
 publish = "0.25.2"
 spotless = "6.25.0"
 testParameterInjector = "1.15"
+turtle = "0.8.0"
 versions = "0.49.0"
 
 [libraries]
@@ -36,6 +37,7 @@ plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref =
 plugin-licensee = { module = "app.cash.licensee:licensee-gradle-plugin", version.ref = "licensee" }
 plugin-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 plugin-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle" }
 plugin-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versions" }
 
 # Test

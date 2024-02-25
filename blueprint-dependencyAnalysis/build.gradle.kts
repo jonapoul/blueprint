@@ -18,7 +18,7 @@ gradlePlugin {
     create("blueprint-analysis") {
       id = "dev.jonpoulton.blueprint.analysis"
       displayName = "Dependency Analysis Blueprint"
-      description = "Gradle plugin to apply and configure Dependency Analysis "
+      description = "Gradle plugin to apply and configure Dependency Analysis"
       implementationClass = "blueprint.analysis.DependencyAnalysisBlueprintPlugin"
     }
   }
