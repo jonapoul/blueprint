@@ -21,6 +21,9 @@ public class AndroidComposeBlueprintPlugin : Plugin<Project> {
     if (properties.applyComposeBom) {
       val bom = target.dependencies.platform("androidx.compose:compose-bom:${properties.composeBom}")
       target.dependencies.add("implementation", bom)
+
+      val preview = "androidx.compose.ui:ui-tooling-preview"
+      target.dependencies.add("compileOnly", preview)
     }
 
     target.configureTask(properties)
