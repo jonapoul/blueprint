@@ -5,6 +5,9 @@ on:
     branches:
       - '*'
 
+env:
+  ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: false
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -23,10 +26,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          dependency-graph: generate-and-submit
+          generate-job-summary: false
           gradle-version: wrapper
 
       - name: Check
         run: ./gradlew check
-
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v3
