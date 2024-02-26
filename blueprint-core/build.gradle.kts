@@ -28,5 +28,5 @@ tasks.withType<Test> {
   systemProperty("blueprintVersion", blueprintVersion)
   systemProperty("kotlinVersion", libs.versions.kotlin.get())
   systemProperty("line.separator", "\n")
-  dependsOn("publishAllPublicationsToMavenLocal")
+  dependsOn("publishToMavenLocal")
 }
