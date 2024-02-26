@@ -100,7 +100,7 @@ public class KoverBlueprintPlugin : Plugin<Project> {
     dependencies.apply {
       fun String.testImplementation() = add("testImplementation", this)
 
-      "dev.jonpoulton.alakazam:testing-core${versions.alakazam}".testImplementation()
+      "dev.jonpoulton.alakazam:testing-core:${versions.alakazam}".testImplementation()
       "junit:junit:${versions.junit}".testImplementation()
       "org.jetbrains.kotlin:kotlin-test-common:${versions.kotlin}".testImplementation()
       "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}".testImplementation()

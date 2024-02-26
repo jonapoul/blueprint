@@ -48,7 +48,9 @@ public class AtakBaseBlueprintPlugin : Plugin<Project> {
     }
 
     configurations.configureEach { config ->
-      config.exclude(exclusions)
+      exclusions.forEach { (group, module) ->
+        config.exclude(mapOf("group" to group, "module" to module))
+      }
     }
   }
 
