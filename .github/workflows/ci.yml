@@ -5,6 +5,9 @@ on:
     branches:
       - '*'
 
+env:
+  ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: false
+
 jobs:
   ci:
     runs-on: ubuntu-latest
