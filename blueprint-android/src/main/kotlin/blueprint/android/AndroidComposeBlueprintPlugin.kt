@@ -48,6 +48,9 @@ public class AndroidComposeBlueprintPlugin : Plugin<Project> {
         if (properties.composeExperimentalUi) {
           freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
         }
+        if (properties.composeExperimentalMaterial) {
+          freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
+        }
       }
     }
   }

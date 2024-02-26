@@ -47,6 +47,7 @@ public class AndroidProperties(override val project: Project) : BlueprintPropert
   public val composeBom: String = stringProperty(key = "compose.bom", default = BuildConfig.COMPOSE_BOM_VERSION)
   public val composeCompiler: String = stringProperty("compose.compiler", BuildConfig.COMPOSE_COMPILER_VERSION)
   public val composeExperimentalFoundation: Boolean = boolProperty(key = "compose.exp.foundation", default = true)
+  public val composeExperimentalMaterial: Boolean = boolProperty(key = "compose.exp.material", default = true)
   public val composeExperimentalUi: Boolean = boolProperty(key = "compose.exp.ui", default = true)
 
   public val includeTimestamp: Boolean = boolProperty(key = "app.includeTimestamp", default = true)
