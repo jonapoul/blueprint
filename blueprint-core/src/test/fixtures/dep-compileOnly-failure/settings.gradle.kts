@@ -2,7 +2,7 @@
 
 pluginManagement {
   repositories {
-    maven(url = "file://${settingsDir.absolutePath}/../../../../../build/mavenTest")
+    mavenLocal()
     mavenCentral()
     google()
     gradlePluginPortal()

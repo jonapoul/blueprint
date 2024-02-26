@@ -19,10 +19,7 @@ dependencies {
 
 publishing {
   repositories {
-    maven {
-      name = "testing"
-      url = file("${rootProject.buildDir}/mavenTest").toURI()
-    }
+    mavenLocal()
   }
 }
 
@@ -31,5 +28,5 @@ tasks.withType<Test> {
   systemProperty("blueprintVersion", blueprintVersion)
   systemProperty("kotlinVersion", libs.versions.kotlin.get())
   systemProperty("line.separator", "\n")
-  dependsOn("publishAllPublicationsToTestingRepository")
+  dependsOn("publishAllPublicationsToMavenLocal")
 }

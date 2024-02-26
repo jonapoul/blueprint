@@ -1,6 +1,6 @@
 buildscript {
   repositories {
-    maven(url = "file://${projectDir.absolutePath}/../../../../../build/mavenTest")
+    mavenLocal()
     mavenCentral()
   }
 
