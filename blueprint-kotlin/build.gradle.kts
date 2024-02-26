@@ -2,6 +2,7 @@
 
 plugins {
   id("convention-kotlin")
+  alias(libs.plugins.buildConfig)
   alias(libs.plugins.dokka)
   alias(libs.plugins.publish)
   `java-gradle-plugin`
@@ -34,4 +35,10 @@ gradlePlugin {
       implementationClass = "blueprint.kotlin.KotlinAndroidBlueprintPlugin"
     }
   }
+}
+
+buildConfig {
+  packageName("blueprint.kotlin")
+  useKotlinOutput { internalVisibility = true }
+  buildConfigField("String", "JAVA_VERSION", "\"${libs.versions.java.get()}\"")
 }
