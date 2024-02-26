@@ -15,6 +15,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.TaskProvider
+import java.io.File
 
 public class DiagramsBlueprintPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -49,6 +50,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     val projectGenerator = ProjectGenerator(
       outputFormats = listOf(),
       projectNode = { node, proj -> node.add(Shape.BOX).add(proj.projColor()) },
+      includeProject = { proj -> proj != proj.rootProject },
       graph = { graph ->
         if (properties.showLegend) graph.add(buildLegend(properties))
         graph.graphAttrs().add(Rank.sep(properties.rankSeparation), Font.size(properties.nodeFontSize))
@@ -64,7 +66,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     val tempDotTask = tasks.register("tempModulesDotfile", ProjectDependencyGraphGeneratorTask::class.java) { task ->
       task.group = JavaBasePlugin.VERIFICATION_GROUP
       task.projectGenerator = projectGenerator
-      task.outputDirectory = projectDir
+      task.outputDirectory = File(project.buildDir, "diagrams-modules-temp")
     }
 
     val checkDotTask = tasks.register("checkModulesDotfile", CheckDotFileTask::class.java) { task ->
@@ -131,7 +133,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     val tempDotTask = tasks.register("tempDependenciesDotfile", DependencyGraphGeneratorTask::class.java) { task ->
       task.group = JavaBasePlugin.VERIFICATION_GROUP
       task.generator = dependencyGenerator
-      task.outputDirectory = projectDir
+      task.outputDirectory = File(project.buildDir, "diagrams-dependencies-temp")
     }
 
     val checkDotTask = tasks.register("checkDependenciesDotfile", CheckDotFileTask::class.java) { task ->

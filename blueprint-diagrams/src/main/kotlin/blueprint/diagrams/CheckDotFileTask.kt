@@ -9,7 +9,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
-public class CheckDotFileTask @Inject constructor(objects: ObjectFactory) : DefaultTask() {
+public open class CheckDotFileTask @Inject constructor(objects: ObjectFactory) : DefaultTask() {
   @get:Input
   public val taskPath: Property<String> = objects.property(String::class.java)
 
@@ -31,7 +31,7 @@ public class CheckDotFileTask @Inject constructor(objects: ObjectFactory) : Defa
 
     require(expectedContents == actualContents) {
       """
-        Dotfile needs updating! Run `gradle ${taskPath.get()}` to regenerate $expectedDotFile.
+        Dotfile needs updating! Run `gradle ${taskPath.get()}` to regenerate ${expectedDotFile.get()}.
 
         Expected:
         ${expectedContents.joinToString("\n")}
