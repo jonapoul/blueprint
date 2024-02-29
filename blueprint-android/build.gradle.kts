@@ -2,7 +2,6 @@
 
 plugins {
   id("convention-kotlin")
-  alias(libs.plugins.buildConfig)
   alias(libs.plugins.dokka)
   alias(libs.plugins.publish)
   `java-gradle-plugin`
@@ -54,13 +53,17 @@ gradlePlugin {
       description = "Gradle plugin to configure Android Jetpack Compose modules"
       implementationClass = "blueprint.android.AndroidComposeBlueprintPlugin"
     }
+    create("blueprint-android-dagger") {
+      id = "dev.jonpoulton.blueprint.android.dagger"
+      displayName = "Android Dagger"
+      description = "Gradle plugin to configure Dagger DI"
+      implementationClass = "blueprint.android.AndroidDaggerBlueprintPlugin"
+    }
+    create("blueprint-android-hilt") {
+      id = "dev.jonpoulton.blueprint.android.hilt"
+      displayName = "Android Hilt"
+      description = "Gradle plugin to configure Hilt DI"
+      implementationClass = "blueprint.android.AndroidHiltBlueprintPlugin"
+    }
   }
-}
-
-buildConfig {
-  packageName("blueprint.android")
-  useKotlinOutput { internalVisibility = true }
-  buildConfigField("String", "DESUGARING_VERSION", "\"${libs.versions.android.desugaring.get()}\"")
-  buildConfigField("String", "COMPOSE_BOM_VERSION", "\"${libs.versions.androidx.compose.bom.get()}\"")
-  buildConfigField("String", "COMPOSE_COMPILER_VERSION", "\"${libs.versions.androidx.compose.compiler.get()}\"")
 }

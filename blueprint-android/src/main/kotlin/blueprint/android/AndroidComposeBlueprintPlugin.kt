@@ -2,6 +2,7 @@
 
 package blueprint.android
 
+import blueprint.core.VersionProperties
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,13 +14,14 @@ public class AndroidComposeBlueprintPlugin : Plugin<Project> {
     target.pluginManager.apply("dev.jonpoulton.blueprint.android.base")
 
     val properties = AndroidProperties(target)
+    val versions = VersionProperties(target)
 
     target.extensions.configure(CommonExtension::class.java) { ext ->
-      ext.configureExtension(properties)
+      ext.configureExtension(versions)
     }
 
     if (properties.applyComposeBom) {
-      val bom = target.dependencies.platform("androidx.compose:compose-bom:${properties.composeBom}")
+      val bom = target.dependencies.platform("androidx.compose:compose-bom:${versions.composeBom}")
       target.dependencies.add("implementation", bom)
 
       val preview = "androidx.compose.ui:ui-tooling-preview"
@@ -29,13 +31,13 @@ public class AndroidComposeBlueprintPlugin : Plugin<Project> {
     target.configureTask(properties)
   }
 
-  private fun CommonExtension<*, *, *, *>.configureExtension(properties: AndroidProperties) {
+  private fun CommonExtension<*, *, *, *>.configureExtension(versions: VersionProperties) {
     buildFeatures {
       compose = true
     }
 
     composeOptions {
-      kotlinCompilerExtensionVersion = properties.composeCompiler
+      kotlinCompilerExtensionVersion = versions.composeCompiler
     }
   }
 

@@ -41,14 +41,13 @@ public class AndroidProperties(override val project: Project) : BlueprintPropert
   public val packagingPickFirsts: List<String> = stringListProperty("packaging.pickFirsts", listOf("MANIFEST.MF"))
   public val useLegacyPackaging: Boolean = boolProperty(key = "packaging.useLegacyPackaging", default = true)
 
-  public val desugaringVersion: String = stringProperty("desugaringVersion", BuildConfig.DESUGARING_VERSION)
-
   public val applyComposeBom: Boolean = boolProperty(key = "compose.applyBom", default = true)
-  public val composeBom: String = stringProperty(key = "compose.bom", default = BuildConfig.COMPOSE_BOM_VERSION)
-  public val composeCompiler: String = stringProperty("compose.compiler", BuildConfig.COMPOSE_COMPILER_VERSION)
   public val composeExperimentalFoundation: Boolean = boolProperty(key = "compose.exp.foundation", default = true)
   public val composeExperimentalMaterial: Boolean = boolProperty(key = "compose.exp.material", default = true)
   public val composeExperimentalUi: Boolean = boolProperty(key = "compose.exp.ui", default = true)
 
   public val includeTimestamp: Boolean = boolProperty(key = "app.includeTimestamp", default = true)
+
+  public val daggerKapt: Boolean = boolProperty(key = "di.dagger.kapt", default = false)
+  public val daggerKsp: Boolean = boolProperty(key = "di.dagger.ksp", default = false)
 }

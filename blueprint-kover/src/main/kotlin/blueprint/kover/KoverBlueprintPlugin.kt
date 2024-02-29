@@ -1,5 +1,6 @@
 package blueprint.kover
 
+import blueprint.core.VersionProperties
 import blueprint.core.isAndroid
 import blueprint.core.isAndroidApp
 import blueprint.core.isAtak
