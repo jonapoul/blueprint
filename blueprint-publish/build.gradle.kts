@@ -35,6 +35,11 @@ val mavenLocalRepo = File(File(home, ".m2"), "repository")
 
 buildConfig {
   packageName("blueprint.publish")
-  buildConfigField("String", "MAVEN_LOCAL_PATH", "\"${mavenLocalRepo.absolutePath}\"")
+  buildConfigField("String", "MAVEN_LOCAL_PATH", "\"${mavenLocalPath()}\"")
   useKotlinOutput { internalVisibility = true }
+}
+
+fun mavenLocalPath(): String {
+  // Handles windows paths, where backslashes would otherwise introduce unintended escape characters
+  return mavenLocalRepo.absolutePath.replace("\\", "\\\\")
 }
