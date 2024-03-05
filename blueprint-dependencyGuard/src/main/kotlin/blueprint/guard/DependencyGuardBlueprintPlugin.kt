@@ -4,13 +4,14 @@ import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.configurationcache.extensions.capitalized
-import org.jetbrains.kotlin.gradle.plugin.DefaultKotlinBasePlugin
 
 public class DependencyGuardBlueprintPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.pluginManager.apply("com.dropbox.dependency-guard")
     val properties = DependencyGuardProperties(target)
-    target.configureExtension(properties)
+    target.afterEvaluate {
+      target.configureExtension(properties)
+    }
   }
 
   private fun Project.configureExtension(properties: DependencyGuardProperties) {
@@ -23,8 +24,8 @@ public class DependencyGuardBlueprintPlugin : Plugin<Project> {
       val isRoot = project == rootProject
       val isAndroid = plugins.hasPlugin("com.android.base")
       val isAndroidApp = plugins.hasPlugin("com.android.application")
-      val isAtak = plugins.hasPlugin("atak-gradle-plugin")
-      val isKotlin = plugins.hasPlugin(DefaultKotlinBasePlugin::class.java)
+      val isAtak = isAtak()
+      val isKotlin = isKotlin()
 
       val configs = when {
         isRoot -> listOf("classpath")
@@ -37,6 +38,30 @@ public class DependencyGuardBlueprintPlugin : Plugin<Project> {
       configs.forEach {
         ext.configuration(it)
       }
+    }
+  }
+
+  private fun Project.isAtak(): Boolean {
+    if (plugins.hasPlugin("atak-takdev-plugin")) {
+      return true
+    }
+
+    configurations.forEach { config ->
+      config.allDependencies.forEach { dep ->
+        if (dep.group == "com.atakmap.civ.common" && dep.name == "api") {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  private fun Project.isKotlin(): Boolean {
+    return listOf(
+      "org.jetbrains.kotlin.jvm",
+      "org.jetbrains.kotlin.android",
+    ).any {
+      plugins.hasPlugin(it)
     }
   }
 
