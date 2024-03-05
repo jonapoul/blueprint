@@ -15,8 +15,6 @@ public class KotlinBaseBlueprintPlugin : Plugin<Project> {
 
   private fun Project.configureExtension(properties: KotlinProperties) {
     extensions.configure(KotlinTopLevelExtension::class.java) { ext ->
-      ext.jvmToolchain(properties.javaVersion)
-
       if (properties.explicitApi) {
         ext.explicitApi()
       }
