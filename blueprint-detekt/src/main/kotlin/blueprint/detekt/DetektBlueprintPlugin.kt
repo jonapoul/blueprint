@@ -12,7 +12,6 @@ public class DetektBlueprintPlugin : Plugin<Project> {
 
     target.configureExtension(properties)
     target.configureTask(properties)
-    target.configureDetektMain(properties)
   }
 
   private fun Project.configureExtension(properties: DetektProperties) {
@@ -31,19 +30,6 @@ public class DetektBlueprintPlugin : Plugin<Project> {
         txt.required.set(properties.txtReports)
         sarif.required.set(properties.sarifReports)
         md.required.set(properties.mdReports)
-      }
-    }
-  }
-
-  private fun Project.configureDetektMain(properties: DetektProperties) {
-    if (properties.autoDetektMain) {
-      val detektMainPattern = "^detekt(\\w+)Main$".toRegex()
-      val detektMainTasks = tasks.filter { it.name.matches(detektMainPattern) }
-      val check = tasks.findByName("check")
-      if (detektMainTasks.isNotEmpty() && check != null) {
-        detektMainTasks.forEach { check.dependsOn(it) }
-      } else {
-        logger.info("Failed to apply detektMain to ${this.path}. Tasks = ${tasks.joinToString()}")
       }
     }
   }

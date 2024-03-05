@@ -15,6 +15,4 @@ internal class DetektProperties(override val project: Project) : BlueprintProper
   val txtReports = boolProperty(key = "txtReports", default = false)
   val sarifReports = boolProperty(key = "sarifReports", default = false)
   val mdReports = boolProperty(key = "mdReports", default = false)
-
-  val autoDetektMain = boolProperty(key = "autoDetektMain", default = true)
 }
