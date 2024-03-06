@@ -20,7 +20,7 @@ internal class KoverProperties(override val project: Project) : BlueprintPropert
     default = AggregationType.COVERED_PERCENTAGE.name,
   ).aggregationType()
 
+  val excludeComposables = boolProperty(key = "exclusions.compose", default = true)
   val excludedClassesFile = stringPropertyOrNull(key = "exclusions.file")
-
   val extraExclusions = stringPropertyOrNull(key = "exclusions.extrasFile")
 }

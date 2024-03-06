@@ -49,6 +49,13 @@ public class KoverBlueprintPlugin : Plugin<Project> {
         val excludedClasses = project.readLinesFromFile(properties.excludedClassesFile) ?: DEFAULT_EXCLUDED_CLASSES
         val extraClasses = project.readLinesFromFile(properties.extraExclusions) ?: emptyList()
         e.classes(excludedClasses + extraClasses)
+
+        if (properties.excludeComposables) {
+          e.annotatedBy(
+            "androidx.compose.runtime.Composable",
+            "androidx.compose.ui.tooling.preview.Preview",
+          )
+        }
       }
     }
 
