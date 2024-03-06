@@ -22,7 +22,7 @@ import java.io.File
 public class AtakPluginBlueprintPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.pluginManager.apply("dev.jonpoulton.blueprint.kotlin.android")
-    target.pluginManager.apply("dev.jonpoulton.blueprint.android.base")
+    target.pluginManager.apply("dev.jonpoulton.blueprint.android.application")
     target.pluginManager.apply("atak-takdev-plugin")
     target.pluginManager.apply("dev.jonpoulton.blueprint.atak.base")
 
