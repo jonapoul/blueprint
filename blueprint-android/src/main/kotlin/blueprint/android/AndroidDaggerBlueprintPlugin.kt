@@ -10,9 +10,19 @@ public class AndroidDaggerBlueprintPlugin : Plugin<Project> {
     val versions = VersionProperties(target)
 
     val config = when {
-      properties.daggerKapt -> "kapt"
-      properties.daggerKsp -> "ksp"
-      else -> error("Need to enable KSP or KAPT for Dagger via Gradle properties!")
+      properties.daggerKapt -> {
+        target.plugins.apply("org.jetbrains.kotlin.kapt")
+        "kapt"
+      }
+
+      properties.daggerKsp -> {
+        target.plugins.apply("com.google.devtools.ksp")
+        "ksp"
+      }
+
+      else -> {
+        error("Need to enable KSP or KAPT for Dagger via Gradle properties!")
+      }
     }
 
     target.dependencies.add(config, "com.google.dagger:dagger-compiler:${versions.dagger}")
