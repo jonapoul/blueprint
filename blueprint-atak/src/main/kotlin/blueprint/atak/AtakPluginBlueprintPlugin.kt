@@ -114,6 +114,7 @@ public class AtakPluginBlueprintPlugin : Plugin<Project> {
     getByName("release").apply {
       matchingFallbacks.add("odk")
       isMinifyEnabled = true
+      isShrinkResources = true
       signingConfig = signingConfigs.getByName("release")
 
       val baseFile = atakProperties.proguardBase?.let { File(project.rootProject.projectDir, it) }
