@@ -68,7 +68,7 @@ public class AtakPluginBlueprintPlugin : Plugin<Project> {
     }
 
     signingConfigs { configureSigning(target) }
-    buildTypes { configureBuildTypes(atakProperties, signingConfigs) }
+    buildTypes { configureBuildTypes(target, atakProperties, signingConfigs) }
     packagingOptions { configurePackaging(androidProperties) }
     buildFeatures { buildConfig = true }
     sourceSets { configureSourceSets() }
@@ -101,6 +101,7 @@ public class AtakPluginBlueprintPlugin : Plugin<Project> {
   }
 
   private fun NamedDomainObjectContainer<ApplicationBuildType>.configureBuildTypes(
+    project: Project,
     atakProperties: AtakProperties,
     signingConfigs: NamedDomainObjectContainer<SigningConfig>,
   ) {
@@ -114,10 +115,20 @@ public class AtakPluginBlueprintPlugin : Plugin<Project> {
       matchingFallbacks.add("odk")
       isMinifyEnabled = true
       signingConfig = signingConfigs.getByName("release")
+
+      val baseFile = atakProperties.proguardBase?.let { File(project.rootProject.projectDir, it) }
       if (isTakDevPipeline) {
-        proguardFiles(atakProperties.proguardRules, atakProperties.proguardMapping)
+        if (baseFile != null) {
+          proguardFiles(baseFile, atakProperties.proguardRules, atakProperties.proguardMapping)
+        } else {
+          proguardFiles(atakProperties.proguardRules, atakProperties.proguardMapping)
+        }
       } else {
-        proguardFile(atakProperties.proguardRules)
+        if (baseFile != null) {
+          proguardFiles(baseFile, atakProperties.proguardRules)
+        } else {
+          proguardFiles(atakProperties.proguardRules)
+        }
       }
     }
   }

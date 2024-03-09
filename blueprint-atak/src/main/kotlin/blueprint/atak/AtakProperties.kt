@@ -14,8 +14,9 @@ internal class AtakProperties(override val project: Project) : BlueprintProperti
   val applyExclusions = boolProperty(key = "exclusions.apply", default = true)
   val exclusionsFile = stringPropertyOrNull(key = "exclusions.file")
 
-  val proguardRules = stringProperty(key = "proguardFile.rules", default = "proguard-rules.pro")
-  val proguardMapping = stringProperty(key = "proguardFile.rules", default = "proguard-mapping.pro")
+  val proguardBase = stringPropertyOrNull(key = "proguard.base")
+  val proguardRules = stringProperty(key = "proguard.rules", default = "proguard-rules.pro")
+  val proguardMapping = stringProperty(key = "proguard.mapping", default = "proguard-mapping.pro")
 
   val apkName by lazy { stringPropertyOrThrow(key = "apkName") }
 }
