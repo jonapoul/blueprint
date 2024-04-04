@@ -26,7 +26,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          dependency-graph: generate-and-submit
           generate-job-summary: false
           gradle-version: wrapper
 

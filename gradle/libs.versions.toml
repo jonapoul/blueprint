@@ -1,62 +1,23 @@
 [versions]
-agp = "7.4.2"
-alakazam = "4.4.0"
-android-desugaring = "1.1.5"
-android-cacheFix = "3.0"
-androidx-compose-bom = "2023.01.00"
-androidx-compose-compiler = "1.4.6"
-atak-base = "4.10.0"
-atak-sdk = "4.10.0.41"
-buildConfig = "4.0.1"
-dagger = "2.47"
 dependencyAnalysis = "1.20.0"
 dependencyGraph = "0.8.0"
 dependencyGuard = "0.4.3"
-detekt = "1.23.0"
-doctor = "0.9.1"
 dokka = "1.8.20"
 java = "11"
 gradle = "7.6.1"
 kotlin = "1.8.20"
-kotlinx-coroutines = "1.6.4"
-kover = "0.7.5"
-ktlint-cli = "1.1.1"
-ktlint-gradle = "11.6.1"
-licensee = "1.7.0"
 publish = "0.25.2"
-spotless = "6.23.0"
 testParameterInjector = "1.15"
 turtle = "0.8.0"
-versions = "0.46.0"
 
-test-androidx-arch = "2.2.0"
-test-androidx-coreKtx = "1.5.0"
-test-androidx-junit = "1.1.5"
-test-androidx-rules = "1.5.0"
-test-androidx-runner = "1.5.2"
 test-junit = "4.13.2"
-test-mockk = "1.13.7"
-test-robolectric = "4.10.3"
-test-turbine = "0.12.3"
 
 [libraries]
 # Runtime
-plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-plugin-androidCacheFix = { module = "org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin", version.ref = "android-cacheFix" }
-plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-plugin-dependencyAnalysis = { module = "com.autonomousapps:dependency-analysis-gradle-plugin ", version.ref = "dependencyAnalysis" }
 plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
-plugin-doctor = { module = "com.osacky.doctor:doctor-plugin", version.ref = "doctor" }
-plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
-plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-gradle" }
-plugin-licensee = { module = "app.cash.licensee:licensee-gradle-plugin", version.ref = "licensee" }
-plugin-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
-plugin-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle" }
-plugin-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versions" }
 
 # Test
 test-junit = { module = "junit:junit", version.ref = "test-junit" }
@@ -65,7 +26,6 @@ test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 test-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "testParameterInjector" }
 
 [plugins]
-buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

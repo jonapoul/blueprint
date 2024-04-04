@@ -1,7 +1,0 @@
-com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin:0.4.3
-com.dropbox.dependency-guard:dependency-guard:0.4.3
-org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20
-org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20
-org.jetbrains.kotlin:kotlin-stdlib:1.8.20
-org.jetbrains:annotations:13.0

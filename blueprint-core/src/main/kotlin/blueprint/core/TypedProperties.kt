@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package blueprint.core
 
 import groovy.lang.MissingPropertyException
@@ -66,4 +68,20 @@ public fun Project.doubleProperty(key: String): Double {
 
 public fun Project.doublePropertyOrElse(key: String, default: Double): Double {
   return doublePropertyOrNull(key) ?: default
+}
+
+public fun Project.stringListPropertyOrNull(key: String): List<String>? {
+  val string = stringPropertyOrNull(key)
+  if (string.isNullOrBlank()) return null
+  return string.split(",")
+}
+
+@Throws(MissingPropertyException::class)
+public fun Project.stringListProperty(key: String): List<String> {
+  return stringListPropertyOrNull(key)
+    ?: throw MissingPropertyException("No string list property", key, List::class.java)
+}
+
+public fun Project.stringListPropertyOrElse(key: String, default: List<String>): List<String> {
+  return stringListPropertyOrNull(key) ?: default
 }
