@@ -9,8 +9,8 @@ java {
   targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-kotlinDslPluginOptions {
-  jvmTarget.set(javaVersion)
+kotlin {
+  jvmToolchain(javaVersion.toInt())
 }
 
 dependencies {

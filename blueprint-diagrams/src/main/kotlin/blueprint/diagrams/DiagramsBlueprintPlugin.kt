@@ -66,7 +66,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     val tempDotTask = tasks.register("tempModulesDotfile", ProjectDependencyGraphGeneratorTask::class.java) { task ->
       task.group = JavaBasePlugin.VERIFICATION_GROUP
       task.projectGenerator = projectGenerator
-      task.outputDirectory = File(project.buildDir, "diagrams-modules-temp")
+      task.outputDirectory = project.layout.buildDirectory.file("diagrams-modules-temp").get().asFile
     }
 
     val checkDotTask = tasks.register("checkModulesDotfile", CheckDotFileTask::class.java) { task ->
@@ -133,7 +133,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     val tempDotTask = tasks.register("tempDependenciesDotfile", DependencyGraphGeneratorTask::class.java) { task ->
       task.group = JavaBasePlugin.VERIFICATION_GROUP
       task.generator = dependencyGenerator
-      task.outputDirectory = File(project.buildDir, "diagrams-dependencies-temp")
+      task.outputDirectory = project.layout.buildDirectory.file("diagrams-dependencies-temp").get().asFile
     }
 
     val checkDotTask = tasks.register("checkDependenciesDotfile", CheckDotFileTask::class.java) { task ->
