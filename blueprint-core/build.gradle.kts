@@ -10,6 +10,8 @@ dependencies {
   compileOnly(gradleApi())
   compileOnly(gradleKotlinDsl())
 
+  api(libs.plugin.turtle)
+
   testImplementation(gradleTestKit())
   testImplementation(libs.test.junit)
   testImplementation(libs.test.kotlin.common)

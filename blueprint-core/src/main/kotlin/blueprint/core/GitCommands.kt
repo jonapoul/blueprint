@@ -1,4 +1,4 @@
-package blueprint.git
+package blueprint.core
 
 import com.lordcodes.turtle.GitCommands
 import com.lordcodes.turtle.ShellFailedException
