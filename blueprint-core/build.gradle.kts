@@ -1,9 +1,6 @@
-@file:Suppress("DSL_SCOPE_VIOLATION")
-
 plugins {
   id("convention-kotlin")
-  alias(libs.plugins.dokka)
-  alias(libs.plugins.publish)
+  id("convention-publish")
 }
 
 dependencies {
@@ -17,12 +14,6 @@ dependencies {
   testImplementation(libs.test.kotlin.common)
   testImplementation(libs.test.kotlin.junit)
   testImplementation(libs.test.testParameterInjector)
-}
-
-publishing {
-  repositories {
-    mavenLocal()
-  }
 }
 
 val blueprintVersion = properties["VERSION_NAME"]?.toString() ?: error("No version")

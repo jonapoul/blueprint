@@ -1,9 +1,6 @@
-@file:Suppress("DSL_SCOPE_VIOLATION")
-
 plugins {
   id("convention-kotlin")
-  alias(libs.plugins.dokka)
-  alias(libs.plugins.publish)
+  id("convention-publish")
   `java-gradle-plugin`
 }
 

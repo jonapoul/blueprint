@@ -17,7 +17,9 @@ test-junit = "4.13.2"
 # Runtime
 plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
+plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle" }
 
 # Test
