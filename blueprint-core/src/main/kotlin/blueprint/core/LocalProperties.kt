@@ -7,7 +7,7 @@ import java.io.FileNotFoundException
 import java.util.Properties
 
 public fun Project.localProperties(filename: String = DEFAULT_FILENAME): Properties {
-  val file = File(rootProject.projectDir, filename)
+  val file = File(projectDir, filename)
   if (!file.exists() || !file.isFile) {
     throw FileNotFoundException("No properties file found at ${file.absolutePath}")
   }

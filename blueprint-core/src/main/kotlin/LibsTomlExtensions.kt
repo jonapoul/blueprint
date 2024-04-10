@@ -1,4 +1,10 @@
-@file:Suppress("DeprecatedCallableAddReplaceWith", "UnusedParameter", "UnusedReceiverParameter", "UNUSED_PARAMETER")
+@file:Suppress(
+  "DeprecatedCallableAddReplaceWith",
+  "UnusedParameter",
+  "UnusedReceiverParameter",
+  "UNUSED_PARAMETER",
+  "TooManyFunctions"
+)
 
 import org.gradle.api.internal.catalog.AbstractExternalDependencyFactory.PluginFactory
 import org.gradle.api.internal.catalog.AbstractExternalDependencyFactory.SubDependencyFactory as SDF
@@ -23,8 +29,7 @@ public fun DependenciesBlock.runtimeOnly(factory: SDF): Unit = error("Not suppor
 public fun DependenciesBlock.testImplementation(factory: SDF): Unit = error("Not supported!")
 
 @Deprecated(message = ERROR_MESSAGE, level = DeprecationLevel.ERROR)
-public fun DependenciesBlock.androidTestImplementation(factory: SDF): Unit =
-  error("Not supported!")
+public fun DependenciesBlock.androidTestImplementation(factory: SDF): Unit = error("Not supported!")
 
 @Deprecated(message = ERROR_MESSAGE, level = DeprecationLevel.ERROR)
 public fun PluginsBlock.alias(factory: PluginFactory): Unit = error("Not supported!")

@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.dokka) apply false
   alias(libs.plugins.kotlin) apply false
   alias(libs.plugins.publish)
+  alias(libs.plugins.versions)
 }
 
 dependencyGuard {
@@ -23,3 +24,9 @@ mavenPublishing {
     signAllPublications()
   }
 }
+
+tasks.dependencyUpdates {
+  rejectVersionIf { !candidate.version.isStable() && currentVersion.isStable() }
+}
+
+fun String.isStable(): Boolean = listOf("alpha", "beta", "rc").none { lowercase().contains(it) }
