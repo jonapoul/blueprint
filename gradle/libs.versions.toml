@@ -9,6 +9,7 @@ kotlin = "1.8.20"
 publish = "0.25.2"
 testParameterInjector = "1.15"
 turtle = "0.8.0"
+versions = "0.51.0"
 
 test-junit = "4.13.2"
 
@@ -31,3 +32,4 @@ dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependen
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
