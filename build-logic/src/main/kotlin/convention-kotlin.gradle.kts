@@ -22,7 +22,7 @@ tasks.withType<KotlinCompile> {
 
 extensions.configure<KotlinTopLevelExtension> {
   explicitApi()
-  jvmToolchain(jdkVersion = javaVersion.toInt())
+  jvmToolchain(javaVersion.toInt())
 }
 
 dependencyGuard {
