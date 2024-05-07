@@ -6,7 +6,7 @@ com.google.guava:guava:32.0.0-jre
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.google.j2objc:j2objc-annotations:2.8
 com.google.testparameterinjector:test-parameter-injector:1.16
-com.lordcodes.turtle:turtle:0.9.0
+com.lordcodes.turtle:turtle:0.10.0
 junit:junit:4.13.2
 org.checkerframework:checker-qual:3.33.0
 org.hamcrest:hamcrest-core:1.3
