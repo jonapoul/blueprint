@@ -6,7 +6,7 @@ dokka = "1.9.20"
 java = "11"
 gradle = "8.7"
 kotlin = "1.9.23"
-publish = "0.28.0"
+publish = "0.29.0-tak"
 testParameterInjector = "1.16"
 turtle = "0.9.0"
 versions = "0.51.0"
@@ -19,7 +19,7 @@ plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-gene
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
+plugin-publish = { module = "dev.jonpoulton.gradle-maven-publish-plugin:plugin", version.ref = "publish" }
 plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle" }
 
 # Test
@@ -33,5 +33,4 @@ dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.re
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
