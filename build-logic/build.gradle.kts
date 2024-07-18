@@ -1,16 +1,18 @@
+import java.util.Properties
+
 plugins {
   `kotlin-dsl`
 }
 
-val javaVersion = libs.versions.java.get()
+val rootProps = Properties()
+val propsFile = File(rootDir.parentFile, "gradle.properties")
+rootProps.load(propsFile.inputStream())
+
+val javaVersion = rootProps["javaVersion"]?.toString()?.toInt() ?: error("Require javaVersion property")
 
 java {
   sourceCompatibility = JavaVersion.toVersion(javaVersion)
   targetCompatibility = JavaVersion.toVersion(javaVersion)
-}
-
-kotlin {
-  jvmToolchain(javaVersion.toInt())
 }
 
 dependencies {

@@ -8,7 +8,7 @@ plugins {
 }
 
 val libs = the<LibrariesForLibs>()
-val javaVersion = libs.versions.java.get()
+val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
 
 tasks.withType<KotlinCompile> {
   kotlinOptions {
@@ -22,7 +22,12 @@ tasks.withType<KotlinCompile> {
 
 extensions.configure<KotlinTopLevelExtension> {
   explicitApi()
-  jvmToolchain(javaVersion.toInt())
+}
+
+java {
+  val javaInt = javaVersion.toInt()
+  sourceCompatibility = JavaVersion.toVersion(javaInt)
+  targetCompatibility = JavaVersion.toVersion(javaInt)
 }
 
 dependencyGuard {
