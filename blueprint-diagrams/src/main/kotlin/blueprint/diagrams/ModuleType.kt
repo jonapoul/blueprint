@@ -1,8 +1,14 @@
 package blueprint.diagrams
 
+import blueprint.core.isAndroidApp
+import blueprint.core.isAndroidCompose
+import blueprint.core.isAndroidLib
+import blueprint.core.isAtak
+import blueprint.core.isJava
+import blueprint.core.isKotlinAndroid
+import blueprint.core.isKotlinJvm
 import guru.nidi.graphviz.attribute.Color
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
 
 internal enum class ModuleType(val string: String, val color: String) {
   AtakPlugin(string = "ATAK Plugin", color = "#0091E6"), // dark blue
@@ -17,20 +23,14 @@ internal enum class ModuleType(val string: String, val color: String) {
 }
 
 internal fun Project.moduleType(): ModuleType = when {
-  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.plugin") -> ModuleType.AtakPlugin
-  plugins.hasPlugin("dev.jonpoulton.blueprint.atak.library") -> ModuleType.AtakLibrary
-  plugins.hasPlugin("dev.jonpoulton.blueprint.android.app") -> ModuleType.AndroidApp
-  plugins.hasPlugin("dev.jonpoulton.blueprint.android.compose") -> ModuleType.AndroidCompose
-  plugins.hasPlugin("dev.jonpoulton.blueprint.android.resources") -> {
-    if (plugins.hasPlugin("dev.jonpoulton.blueprint.kotlin.base")) {
-      ModuleType.AndroidLibrary
-    } else {
-      ModuleType.AndroidResources
-    }
-  }
-  plugins.hasPlugin("dev.jonpoulton.blueprint.android.base") -> ModuleType.AndroidLibrary
-  plugins.hasPlugin("dev.jonpoulton.blueprint.kotlin.base") -> ModuleType.Kotlin
-  plugins.hasPlugin(JavaPlugin::class.java) -> ModuleType.Java
+  isAtak() && isAndroidApp() -> ModuleType.AtakPlugin
+  isAtak() && isAndroidLib() -> ModuleType.AtakLibrary
+  isAndroidApp() -> ModuleType.AndroidApp
+  isAndroidCompose() -> ModuleType.AndroidCompose
+  isAndroidLib() && !isKotlinAndroid() -> ModuleType.AndroidResources
+  isAndroidLib() -> ModuleType.AndroidLibrary
+  isKotlinJvm() -> ModuleType.Kotlin
+  isJava() -> ModuleType.Java
   else -> ModuleType.Empty
 }
 

@@ -1,10 +1,15 @@
 [versions]
+agp = "7.4.2"
 dependencyAnalysis = "1.20.0"
 dependencyGraph = "0.8.0"
 dependencyGuard = "0.5.0"
+detekt = "1.23.0"
 dokka = "1.8.20"
 kotlin = "1.8.22"
+kover = "0.7.6"
+ktlint = "12.1.0"
 publish = "0.29.0-tak"
+spotless = "6.25.0"
 testParameterInjector = "1.16"
 turtle = "0.8.0"
 versions = "0.51.0"
@@ -13,11 +18,16 @@ test-junit = "4.13.2"
 
 [libraries]
 # Runtime
+plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
+plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+plugin-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 plugin-publish = { module = "dev.jonpoulton.gradle-maven-publish-plugin:plugin", version.ref = "publish" }
+plugin-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 plugin-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle" }
 
 # Test

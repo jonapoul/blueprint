@@ -15,7 +15,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
 
 public class DiagramsBlueprintPlugin : Plugin<Project> {
   override fun apply(target: Project) {

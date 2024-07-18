@@ -1,0 +1,6 @@
+com.lordcodes.turtle:turtle:0.8.0
+org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
+org.jetbrains.kotlin:kotlin-stdlib:1.8.22
+org.jetbrains:annotations:13.0

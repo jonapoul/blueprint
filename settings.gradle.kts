@@ -27,3 +27,4 @@ includeBuild("build-logic")
 
 include(":blueprint-core")
 include(":blueprint-diagrams")
+include(":blueprint-recipes")

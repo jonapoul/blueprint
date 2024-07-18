@@ -6,6 +6,7 @@ plugins {
 dependencies {
   compileOnly(gradleApi())
   compileOnly(gradleKotlinDsl())
+  compileOnly(libs.plugin.agp)
 
   api(libs.plugin.turtle)
 
