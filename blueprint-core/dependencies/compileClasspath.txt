@@ -1,6 +1,16 @@
+com.android.tools.build:apksig:7.4.2
+com.android.tools.build:apkzlib:7.4.2
+com.android.tools.build:builder-model:7.4.2
+com.android.tools.build:builder:7.4.2
+com.android.tools.build:gradle-api:7.4.2
+com.android.tools.build:gradle:7.4.2
+com.android.tools.build:manifest-merger:30.4.2
+com.android:zipflinger:7.4.2
 com.lordcodes.turtle:turtle:0.8.0
+com.squareup:javawriter:2.5.0
 org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
 org.jetbrains.kotlin:kotlin-stdlib:1.8.22
 org.jetbrains:annotations:13.0
+org.ow2.asm:asm:9.2
