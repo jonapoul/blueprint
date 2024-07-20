@@ -24,9 +24,6 @@ public fun Project.koverBlueprint(
     apply("org.jetbrains.kotlinx.kover")
   }
 
-//   val shouldRunOnCheck = project == rootProject
-  val shouldRunOnCheck = true
-
   val isAtak = project.plugins.any { it.javaClass.simpleName == "TakDevPlugin" }
   val isAndroid = project.extensions.findByType(LibraryExtension::class) != null ||
     project.extensions.findByType(AppExtension::class) != null
@@ -52,19 +49,19 @@ public fun Project.koverBlueprint(
       }
 
       defaults.html {
-        it.onCheck = shouldRunOnCheck
+        it.onCheck = true
       }
 
       defaults.log {
-        it.onCheck = shouldRunOnCheck
+        it.onCheck = true
         it.coverageUnits = metricType
         it.aggregationForGroup = aggregationType
       }
 
       defaults.verify { verify ->
-        verify.onCheck = shouldRunOnCheck
+        verify.onCheck = project == rootProject
         verify.rule { rule ->
-          rule.isEnabled = shouldRunOnCheck
+          rule.isEnabled = true
           rule.bound {
             it.minValue = minCoverage
             it.metric = metricType

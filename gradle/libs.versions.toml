@@ -1,5 +1,6 @@
 [versions]
 agp = "7.4.2"
+androidCacheFix = "3.0.1"
 dependencyAnalysis = "1.20.0"
 dependencyGraph = "0.8.0"
 dependencyGuard = "0.5.0"
@@ -18,6 +19,7 @@ versions = "0.51.0"
 [libraries]
 # Runtime
 plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+plugin-androidCacheFix = { module = "org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin", version.ref = "androidCacheFix" }
 plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }

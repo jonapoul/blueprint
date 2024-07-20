@@ -13,7 +13,7 @@ import org.gradle.kotlin.dsl.withType
 
 public fun Project.detektBlueprint(
   configFile: ConfigurableFileCollection = rootProject.files("detekt.yml"),
-  composeDetektVersion: Provider<String>?,
+  composeDetektVersion: Provider<String>? = null,
 ) {
   with(plugins) {
     apply("io.gitlab.arturbosch.detekt")

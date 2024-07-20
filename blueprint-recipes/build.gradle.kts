@@ -9,6 +9,7 @@ dependencies {
   compileOnly(libs.plugin.agp)
   compileOnly(libs.plugin.kotlin)
 
+  api(libs.plugin.androidCacheFix)
   api(libs.plugin.detekt)
   api(libs.plugin.kover)
   api(libs.plugin.ktlint)

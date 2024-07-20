@@ -11,7 +11,9 @@ com.diffplug.spotless:spotless-lib:2.43.0
 com.diffplug.spotless:spotless-plugin-gradle:6.23.0
 com.lordcodes.turtle:turtle:0.8.0
 com.squareup:javawriter:2.5.0
+gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:3.0.1
 io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.0
+org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin:3.0.1
 org.jetbrains.kotlin:kotlin-gradle-plugin-annotations:1.8.22
 org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.8.22
 org.jetbrains.kotlin:kotlin-gradle-plugin-model:1.8.22

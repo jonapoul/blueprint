@@ -11,7 +11,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 public fun Project.ktlintBlueprint(
   ktlintCliVersion: Provider<String>,
-  ktlintComposeVersion: Provider<String>?,
+  ktlintComposeVersion: Provider<String>? = null,
 ) {
   with(plugins) {
     apply("org.jlleitschuh.gradle.ktlint")

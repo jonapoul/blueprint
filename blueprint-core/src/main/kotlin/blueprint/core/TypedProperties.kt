@@ -11,7 +11,7 @@ public fun Project.stringPropertyOrNull(key: String): String? {
 
 @Throws(MissingPropertyException::class)
 public fun Project.stringProperty(key: String): String {
-  return stringPropertyOrNull(key) ?: throw MissingPropertyException("No string property", key, String::class.java)
+  return stringPropertyOrNull(key) ?: throw MissingPropertyException(key, String::class.java)
 }
 
 public fun Project.stringPropertyOrElse(key: String, default: String): String {
@@ -24,7 +24,7 @@ public fun Project.intPropertyOrNull(key: String): Int? {
 
 @Throws(MissingPropertyException::class)
 public fun Project.intProperty(key: String): Int {
-  return intPropertyOrNull(key) ?: throw MissingPropertyException("No int property", key, Int::class.java)
+  return intPropertyOrNull(key) ?: throw MissingPropertyException(key, Int::class.java)
 }
 
 public fun Project.intPropertyOrElse(key: String, default: Int): Int {
@@ -37,7 +37,7 @@ public fun Project.floatPropertyOrNull(key: String): Float? {
 
 @Throws(MissingPropertyException::class)
 public fun Project.floatProperty(key: String): Float {
-  return floatPropertyOrNull(key) ?: throw MissingPropertyException("No float property", key, Float::class.java)
+  return floatPropertyOrNull(key) ?: throw MissingPropertyException(key, Float::class.java)
 }
 
 public fun Project.floatPropertyOrElse(key: String, default: Float): Float {
@@ -50,7 +50,7 @@ public fun Project.boolPropertyOrNull(key: String): Boolean? {
 
 @Throws(MissingPropertyException::class)
 public fun Project.boolProperty(key: String): Boolean {
-  return boolPropertyOrNull(key) ?: throw MissingPropertyException("No bool property", key, Boolean::class.java)
+  return boolPropertyOrNull(key) ?: throw MissingPropertyException(key, Boolean::class.java)
 }
 
 public fun Project.boolPropertyOrElse(key: String, default: Boolean): Boolean {
@@ -63,7 +63,7 @@ public fun Project.doublePropertyOrNull(key: String): Double? {
 
 @Throws(MissingPropertyException::class)
 public fun Project.doubleProperty(key: String): Double {
-  return doublePropertyOrNull(key) ?: throw MissingPropertyException("No double property", key, Double::class.java)
+  return doublePropertyOrNull(key) ?: throw MissingPropertyException(key, Double::class.java)
 }
 
 public fun Project.doublePropertyOrElse(key: String, default: Double): Double {
@@ -79,7 +79,7 @@ public fun Project.stringListPropertyOrNull(key: String): List<String>? {
 @Throws(MissingPropertyException::class)
 public fun Project.stringListProperty(key: String): List<String> {
   return stringListPropertyOrNull(key)
-    ?: throw MissingPropertyException("No string list property", key, List::class.java)
+    ?: throw MissingPropertyException(key, List::class.java)
 }
 
 public fun Project.stringListPropertyOrElse(key: String, default: List<String>): List<String> {

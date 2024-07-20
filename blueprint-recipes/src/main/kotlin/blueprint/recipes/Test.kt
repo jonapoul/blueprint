@@ -35,7 +35,7 @@ public fun Project.testBlueprint(
       if (isAndroid) {
         add(testImplementation, "androidx.arch.core:core-testing", versions.androidxArch)
         add(testImplementation, "androidx.test:core-ktx", versions.androidxCoreKtx)
-        add(testImplementation, "androidx.test.ext:junit", versions.androidxJunit)
+        add(testImplementation, "androidx.test.ext:junit-ktx", versions.androidxJunit)
         add(testImplementation, "androidx.test:rules", versions.androidxRules)
         add(testImplementation, "androidx.test:runner", versions.androidxRunner)
         add(testImplementation, "org.robolectric:robolectric", versions.robolectric)
@@ -56,18 +56,18 @@ public fun Project.testBlueprint(
 }
 
 public data class TestVersions(
-  val alakazam: Provider<String>?,
-  val junit: Provider<String>?,
-  val kotlin: Provider<String>?,
-  val coroutines: Provider<String>?,
-  val mockk: Provider<String>?,
-  val turbine: Provider<String>?,
-  val androidxArch: Provider<String>?,
-  val androidxCoreKtx: Provider<String>?,
-  val androidxJunit: Provider<String>?,
-  val androidxRules: Provider<String>?,
-  val androidxRunner: Provider<String>?,
-  val robolectric: Provider<String>?,
+  val alakazam: Provider<String>? = null,
+  val androidxArch: Provider<String>? = null,
+  val androidxCoreKtx: Provider<String>? = null,
+  val androidxJunit: Provider<String>? = null,
+  val androidxRules: Provider<String>? = null,
+  val androidxRunner: Provider<String>? = null,
+  val coroutines: Provider<String>? = null,
+  val junit: Provider<String>? = null,
+  val kotlin: Provider<String>? = null,
+  val mockk: Provider<String>? = null,
+  val robolectric: Provider<String>? = null,
+  val turbine: Provider<String>? = null,
 )
 
 private fun DependencyHandlerScope.add(config: Configuration, lib: String, version: Provider<String>?) {

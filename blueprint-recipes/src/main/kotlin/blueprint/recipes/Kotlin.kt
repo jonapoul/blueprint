@@ -1,11 +1,10 @@
 package blueprint.recipes
 
-import blueprint.core.intProperty
 import blueprint.core.stringProperty
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -25,9 +24,8 @@ public fun Project.kotlinBlueprint(
     }
   }
 
-  extensions.configure<KotlinTopLevelExtension> {
+  extensions.findByType(KotlinTopLevelExtension::class)?.apply {
     if (explicitApi) explicitApi()
-    jvmToolchain(jdkVersion = intProperty(key = "javaVersion"))
   }
 
   val implementation = configurations.getByName("implementation")
