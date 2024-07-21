@@ -1,6 +1,7 @@
 package blueprint.recipes
 
 import com.diffplug.gradle.spotless.SpotlessExtension
+import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 
@@ -23,6 +24,10 @@ public fun Project.spotlessBlueprint(extra: SpotlessExtension.() -> Unit = {}) {
     yaml { yaml ->
       yaml.target("*.yml", "*.yaml")
       yaml.jackson()
+    }
+    format("xml") { xml ->
+      xml.target("*.xml")
+      xml.eclipseWtp(EclipseWtpFormatterStep.XML)
     }
     extra()
   }
