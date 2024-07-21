@@ -4,6 +4,7 @@ import blueprint.core.javaVersionInt
 import blueprint.core.javaVersionString
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
@@ -13,7 +14,7 @@ public fun Project.kotlinJvmBlueprint(
   kotlinVersion: Provider<String>,
   freeCompilerArgs: List<String> = DEFAULT_KOTLIN_FREE_COMPILER_ARGS,
 ) {
-  kotlinBaseBlueprint(kotlinVersion, freeCompilerArgs)
+  kotlinBaseBlueprint(freeCompilerArgs)
 
   tasks.withType<KotlinCompile> {
     kotlinOptions {
@@ -23,5 +24,10 @@ public fun Project.kotlinJvmBlueprint(
 
   extensions.getByType(KotlinTopLevelExtension::class).apply {
     jvmToolchain(javaVersionInt())
+  }
+
+  val implementation = configurations.getByName("implementation")
+  dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion.get()}")
   }
 }
