@@ -12,16 +12,14 @@ public val DEFAULT_KOTLIN_FREE_COMPILER_ARGS: List<String> = listOf(
 )
 
 public val DEFAULT_KOVER_EXCLUDE_CLASSES: List<String> = listOf(
-  // Generated files
   "*.BuildConfig",
   "*_Factory*",
-
-  // DI Modules
-  "*.di.*",
+  "*Hilt_*",
 )
 
 public val DEFAULT_KOVER_EXCLUDE_PACKAGES: List<String> = listOf(
-  // TBC
+  "*hilt_aggregated_deps.*",
+  "*.di.*",
 )
 
 public val DEFAULT_KOVER_EXCLUDE_ANNOTATIONS: List<String> = listOf(
