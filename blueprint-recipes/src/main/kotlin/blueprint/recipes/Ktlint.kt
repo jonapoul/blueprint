@@ -1,6 +1,7 @@
 package blueprint.recipes
 
 import blueprint.core.getValue
+import blueprint.core.isAndroid
 import blueprint.core.provideDelegate
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
@@ -18,6 +19,7 @@ public fun Project.ktlintBlueprint(
   }
 
   extensions.getByType(KtlintExtension::class).apply {
+    android.set(isAndroid())
     version.set(ktlintCliVersion.get())
     reporters {
       it.reporter(ReporterType.HTML)
