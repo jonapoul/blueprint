@@ -18,6 +18,7 @@ public fun Project.androidBaseBlueprint() {
 
     defaultConfig {
       minSdk = intProperty(key = "android.minSdk")
+      testInstrumentationRunnerArguments["disableAnalytics"] = "true"
     }
 
     compileOptions {
