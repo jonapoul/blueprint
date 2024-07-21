@@ -25,7 +25,20 @@ public fun Project.androidLibBlueprint() {
     }
 
     packagingOptions {
-      resources.excludes.add("META-INF/*")
+      resources {
+        excludes.addAll(
+          listOf(
+            "META-INF/DEPENDENCIES",
+            "META-INF/LICENSE*",
+            "META-INF/NOTICE*",
+            "META-INF/ASL2.0",
+          )
+        )
+      }
+
+      jniLibs {
+        useLegacyPackaging = true
+      }
     }
   }
 }
