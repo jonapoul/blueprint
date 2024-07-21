@@ -4,9 +4,12 @@ package blueprint.recipes
 
 import blueprint.core.intProperty
 import blueprint.core.javaVersion
+import blueprint.core.javaVersionString
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 public fun Project.androidBaseBlueprint() {
   with(plugins) {
@@ -19,6 +22,10 @@ public fun Project.androidBaseBlueprint() {
     defaultConfig {
       minSdk = intProperty(key = "android.minSdk")
       testInstrumentationRunnerArguments["disableAnalytics"] = "true"
+    }
+
+    extensions.findByType(KotlinJvmOptions::class)?.apply {
+      jvmTarget = javaVersionString()
     }
 
     compileOptions {

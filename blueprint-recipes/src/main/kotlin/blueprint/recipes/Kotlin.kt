@@ -1,7 +1,7 @@
 package blueprint.recipes
 
 import blueprint.core.boolPropertyOrElse
-import blueprint.core.stringProperty
+import blueprint.core.javaVersionString
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
@@ -18,7 +18,7 @@ public fun Project.kotlinBlueprint(
 
   tasks.withType<KotlinCompile> {
     kotlinOptions {
-      jvmTarget = stringProperty(key = "javaVersion")
+      jvmTarget = javaVersionString()
       this.freeCompilerArgs += freeCompilerArgs
       if (explicitApi) {
         this.freeCompilerArgs += "-Xexplicit-api=strict"
