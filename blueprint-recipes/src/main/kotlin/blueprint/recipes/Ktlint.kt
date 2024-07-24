@@ -20,9 +20,9 @@ public fun Project.ktlintBlueprint(
   }
 
   extensions.getByType(KtlintExtension::class).apply {
-    android.set(boolPropertyOrElse(key = "ktlint.isAndroid", default = isAndroid()))
-    verbose.set(boolPropertyOrElse(key = "ktlint.verbose", default = true))
-    enableExperimentalRules.set(boolPropertyOrElse(key = "ktlint.experimentalRules", default = false))
+    android.set(boolPropertyOrElse(key = "blueprint.ktlint.isAndroid", default = isAndroid()))
+    verbose.set(boolPropertyOrElse(key = "blueprint.ktlint.verbose", default = true))
+    enableExperimentalRules.set(boolPropertyOrElse(key = "blueprint.ktlint.experimentalRules", default = false))
     version.set(ktlintCliVersion.get())
     reporters {
       it.reporter(ReporterType.HTML)

@@ -27,15 +27,15 @@ public fun Project.atakPluginBlueprint(
   val gitVersionName = gitVersionName()
   val gitVersionCode = gitVersionCode()
 
-  val pluginVersion = stringProperty(key = "atak.pluginVersion")
-  val apkName = stringProperty(key = "atak.apkName")
-  val atakVersion = stringProperty(key = "atak.appVersion")
+  val pluginVersion = stringProperty(key = "blueprint.atak.pluginVersion")
+  val apkName = stringProperty(key = "blueprint.atak.apkName")
+  val atakVersion = stringProperty(key = "blueprint.atak.appVersion")
 
   extensions.getByType(ApplicationExtension::class).apply {
     defaultConfig.apply {
       versionCode = gitVersionCode
       versionName = "$pluginVersion (${gitVersionName}) - [$atakVersion]"
-      targetSdk = intProperty(key = "android.targetSdk")
+      targetSdk = intProperty(key = "blueprint.android.targetSdk")
       buildConfigField("String", "GIT_HASH", "\"${gitVersionName}\"")
 
       if (kotlinxDatetimeVersion != null) {

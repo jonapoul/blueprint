@@ -13,7 +13,7 @@ import org.gradle.kotlin.dsl.getByType
 
 @Suppress("LongParameterList")
 public fun Project.koverBlueprint(
-  minCoverage: Int = intProperty(key = "kover.minCoverage"),
+  minCoverage: Int = intProperty(key = "blueprint.kover.minCoverage"),
   metricType: MetricType = MetricType.INSTRUCTION,
   aggregationType: AggregationType = AggregationType.COVERED_PERCENTAGE,
   excludedClasses: List<String> = DEFAULT_KOVER_EXCLUDE_CLASSES,

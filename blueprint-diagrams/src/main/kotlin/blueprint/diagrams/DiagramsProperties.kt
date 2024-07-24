@@ -9,15 +9,15 @@ import org.gradle.api.Project
 internal class DiagramsProperties(project: Project) {
   private val keyPrefix = "blueprint.diagrams"
 
-  val generateModules = project.boolPropertyOrElse(key = "generateModules", default = true)
-  val generateDependencies = project.boolPropertyOrElse(key = "generateDependencies", default = true)
+  val generateModules = project.boolPropertyOrElse(key = "$keyPrefix.generateModules", default = true)
+  val generateDependencies = project.boolPropertyOrElse(key = "$keyPrefix.generateDependencies", default = true)
 
-  val showLegend = project.boolPropertyOrElse(key = "legend.show", default = true)
-  val legendBackground = project.stringPropertyOrElse(key = "legend.background", default = "#bbbbbb")
+  val showLegend = project.boolPropertyOrElse(key = "$keyPrefix.legend.show", default = true)
+  val legendBackground = project.stringPropertyOrElse(key = "$keyPrefix.legend.background", default = "#bbbbbb")
 
-  val legendTitleFontSize = project.intPropertyOrElse(key = "legend.fontSize.title", default = 20)
-  val legendFontSize = project.intPropertyOrElse(key = "fontSize.legend.rows", default = 15)
-  val nodeFontSize = project.intPropertyOrElse(key = "fontSize.nodes", default = 30)
+  val legendTitleFontSize = project.intPropertyOrElse(key = "$keyPrefix.legend.fontSize.title", default = 20)
+  val legendFontSize = project.intPropertyOrElse(key = "$keyPrefix.fontSize.legend.rows", default = 15)
+  val nodeFontSize = project.intPropertyOrElse(key = "$keyPrefix.fontSize.nodes", default = 30)
 
-  val rankSeparation = project.doublePropertyOrElse(key = "rankSeparation", default = 1.5)
+  val rankSeparation = project.doublePropertyOrElse(key = "$keyPrefix.rankSeparation", default = 1.5)
 }

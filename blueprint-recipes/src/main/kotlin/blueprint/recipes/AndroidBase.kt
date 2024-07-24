@@ -17,10 +17,10 @@ public fun Project.androidBaseBlueprint() {
   }
 
   extensions.getByType(CommonExtension::class).apply {
-    compileSdk = intProperty(key = "android.compileSdk")
+    compileSdk = intProperty(key = "blueprint.android.compileSdk")
 
     defaultConfig {
-      minSdk = intProperty(key = "android.minSdk")
+      minSdk = intProperty(key = "blueprint.android.minSdk")
       testInstrumentationRunnerArguments["disableAnalytics"] = "true"
     }
 
