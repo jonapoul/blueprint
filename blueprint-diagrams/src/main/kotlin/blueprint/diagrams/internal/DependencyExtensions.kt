@@ -1,4 +1,4 @@
-package blueprint.diagrams
+package blueprint.diagrams.internal
 
 import guru.nidi.graphviz.attribute.Color
 import org.gradle.api.Project

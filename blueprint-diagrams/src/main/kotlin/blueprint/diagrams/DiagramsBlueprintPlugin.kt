@@ -1,5 +1,9 @@
 package blueprint.diagrams
 
+import blueprint.diagrams.internal.DiagramsProperties
+import blueprint.diagrams.internal.depColour
+import blueprint.diagrams.internal.getOutputFile
+import blueprint.diagrams.internal.toNiceString
 import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorExtension.Generator
 import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorExtension.ProjectGenerator
 import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorTask
@@ -21,13 +25,15 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     target.pluginManager.apply("com.vanniktech.dependency.graph.generator")
     val properties = DiagramsProperties(target)
 
+    val extension = target.extensions.create("diagramsBlueprint", DiagramsBlueprintExtension::class.java)
+
     if (!properties.generateModules && properties.generateDependencies) {
       target.logger.warn("No diagrams will be generated from ${target.path}")
       return
     }
 
     val modulePngTask = if (properties.generateModules) {
-      target.registerModuleTasks(properties)
+      target.registerModuleTasks(properties, extension)
     } else {
       null
     }
@@ -45,13 +51,21 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
     }
   }
 
-  private fun Project.registerModuleTasks(properties: DiagramsProperties): TaskProvider<GenerateGraphVizPngTask> {
+  private fun Project.registerModuleTasks(
+    properties: DiagramsProperties,
+    extension: DiagramsBlueprintExtension,
+  ): TaskProvider<GenerateGraphVizPngTask> {
+
     val projectGenerator = ProjectGenerator(
       outputFormats = listOf(),
-      projectNode = { node, proj -> node.add(Shape.BOX).add(proj.projColor()) },
+      projectNode = { node, proj ->
+        val moduleTypeFinder = extension.moduleTypeFinder.get()
+        node.add(Shape.BOX).add(moduleTypeFinder.color(proj))
+      },
       includeProject = { proj -> proj != proj.rootProject },
       graph = { graph ->
-        if (properties.showLegend) graph.add(buildLegend(properties))
+        val moduleTypes = extension.moduleTypes.get()
+        if (properties.showLegend) graph.add(buildLegend(properties, moduleTypes))
         graph.graphAttrs().add(Rank.sep(properties.rankSeparation), Font.size(properties.nodeFontSize))
       },
     )
@@ -62,10 +76,24 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
       task.outputDirectory = projectDir
     }
 
+    val tidyDotFileTask = tasks.register("tidyDotFileTask", TidyDotFileTask::class.java) { task ->
+      task.dotFile.set(dotTask.get().getOutputFile())
+      task.toRemove.set(properties.removeModulePrefix)
+      task.replacement.set(properties.replacementModulePrefix)
+      task.dependsOn(dotTask)
+    }
+
     val tempDotTask = tasks.register("tempModulesDotfile", ProjectDependencyGraphGeneratorTask::class.java) { task ->
       task.group = JavaBasePlugin.VERIFICATION_GROUP
       task.projectGenerator = projectGenerator
       task.outputDirectory = project.layout.buildDirectory.file("diagrams-modules-temp").get().asFile
+    }
+
+    val tempTidyDotFileTask = tasks.register("tempTidyDotFileTask", TidyDotFileTask::class.java) { task ->
+      task.dotFile.set(tempDotTask.get().getOutputFile())
+      task.toRemove.set(properties.removeModulePrefix)
+      task.replacement.set(properties.replacementModulePrefix)
+      task.dependsOn(tempDotTask)
     }
 
     val checkDotTask = tasks.register("checkModulesDotfile", CheckDotFileTask::class.java) { task ->
@@ -73,7 +101,7 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
       task.taskPath.set(dotTask.get().path)
       task.expectedDotFile.set(dotTask.get().getOutputFile())
       task.actualDotFile.set(tempDotTask.get().getOutputFile())
-      task.dependsOn(tempDotTask)
+      task.dependsOn(tempTidyDotFileTask)
     }
     tasks.findByName("check")?.dependsOn(checkDotTask)
 
@@ -82,12 +110,12 @@ public class DiagramsBlueprintPlugin : Plugin<Project> {
       task.dotFile.convention(task.reportDir.file("project-dependency-graph.dot"))
       task.pngFile.convention(task.reportDir.file("project-dependency-graph.png"))
       task.errorFile.convention(task.reportDir.file("project-dependency-error.log"))
-      task.dependsOn(dotTask)
+      task.dependsOn(tidyDotFileTask)
     }
   }
 
-  private fun buildLegend(properties: DiagramsProperties): MutableGraph {
-    val rows = ModuleType.values().map {
+  private fun buildLegend(properties: DiagramsProperties, moduleTypes: Set<ModuleType>): MutableGraph {
+    val rows = moduleTypes.map {
       "<TR><TD>${it.string}</TD><TD BGCOLOR=\"${it.color}\">module-name</TD></TR>"
     }
     return Parser().read(

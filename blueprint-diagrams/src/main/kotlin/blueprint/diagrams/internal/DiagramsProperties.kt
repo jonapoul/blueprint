@@ -1,4 +1,4 @@
-package blueprint.diagrams
+package blueprint.diagrams.internal
 
 import blueprint.core.boolPropertyOrElse
 import blueprint.core.doublePropertyOrElse
@@ -20,4 +20,7 @@ internal class DiagramsProperties(project: Project) {
   val nodeFontSize = project.intPropertyOrElse(key = "$keyPrefix.fontSize.nodes", default = 30)
 
   val rankSeparation = project.doublePropertyOrElse(key = "$keyPrefix.rankSeparation", default = 1.5)
+
+  val removeModulePrefix = project.stringPropertyOrElse(key = "$keyPrefix.removeModulePrefix", default = ":modules:")
+  val replacementModulePrefix = project.stringPropertyOrElse(key = "$keyPrefix.replacementModulePrefix", default = ":")
 }

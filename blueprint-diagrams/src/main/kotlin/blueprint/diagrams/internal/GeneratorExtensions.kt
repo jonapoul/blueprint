@@ -6,7 +6,7 @@
   "INVISIBLE_REFERENCE",
 )
 
-package blueprint.diagrams
+package blueprint.diagrams.internal
 
 import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorTask
 import com.vanniktech.dependency.graph.generator.ProjectDependencyGraphGeneratorTask
