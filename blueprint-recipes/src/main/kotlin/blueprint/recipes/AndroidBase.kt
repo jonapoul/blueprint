@@ -49,8 +49,14 @@ public fun Project.androidBaseBlueprint() {
     }
 
     lint {
-      checkReleaseBuilds = false
       abortOnError = false
+      checkGeneratedSources = false
+      checkReleaseBuilds = false
+      checkReleaseBuilds = false
+      checkTestSources = true
+      explainIssues = true
+      htmlReport = true
+      xmlReport = true
       lintConfig = rootProject.file("lint.xml")
     }
 
