@@ -16,4 +16,4 @@ org.jetbrains.kotlin:kotlin-test-junit:1.8.22
 org.jetbrains.kotlin:kotlin-test:1.8.22
 org.jetbrains.kotlinx:kover-gradle-plugin:0.7.6
 org.jetbrains:annotations:13.0
-org.jlleitschuh.gradle:ktlint-gradle:12.1.0
+org.jlleitschuh.gradle:ktlint-gradle:12.1.1

@@ -30,6 +30,6 @@ org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
 org.jetbrains.kotlin:kotlin-stdlib:1.8.22
 org.jetbrains.kotlinx:kover-gradle-plugin:0.7.6
 org.jetbrains:annotations:13.0
-org.jlleitschuh.gradle:ktlint-gradle:12.1.0
+org.jlleitschuh.gradle:ktlint-gradle:12.1.1
 org.slf4j:slf4j-api:1.7.36
 org.tukaani:xz:1.9
