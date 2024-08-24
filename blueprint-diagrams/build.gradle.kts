@@ -7,7 +7,10 @@ plugins {
 dependencies {
   compileOnly(gradleApi())
   api(projects.blueprintCore)
-  api(libs.plugin.dependencyGraph)
+  api(libs.plugin.dependencyGraph) {
+    // this dep brings in 1.9.25, we need 1.8.22
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+  }
 }
 
 gradlePlugin {
