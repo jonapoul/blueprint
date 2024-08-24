@@ -29,5 +29,5 @@ org.jetbrains.kotlin:kotlin-tooling-core:1.8.22
 org.jetbrains.kotlin:kotlin-util-io:1.8.22
 org.jetbrains.kotlinx:kover-gradle-plugin:0.7.6
 org.jetbrains:annotations:13.0
-org.jlleitschuh.gradle:ktlint-gradle:12.1.0
+org.jlleitschuh.gradle:ktlint-gradle:12.1.1
 org.ow2.asm:asm:9.2
