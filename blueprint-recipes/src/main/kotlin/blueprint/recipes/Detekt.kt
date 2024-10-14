@@ -13,7 +13,6 @@ import org.gradle.kotlin.dsl.withType
 
 public fun Project.detektBlueprint(
   configFile: ConfigurableFileCollection = rootProject.files("detekt.yml"),
-  composeDetektVersion: Provider<String>? = null,
 ) {
   with(plugins) {
     apply("io.gitlab.arturbosch.detekt")
@@ -33,12 +32,5 @@ public fun Project.detektBlueprint(
   if (detektMain != null) {
     val check by tasks
     check.dependsOn(detektMain)
-  }
-
-  val detektPlugins by configurations
-  dependencies {
-    if (composeDetektVersion != null) {
-      detektPlugins("com.twitter.compose.rules:detekt:${composeDetektVersion.get()}")
-    }
   }
 }
