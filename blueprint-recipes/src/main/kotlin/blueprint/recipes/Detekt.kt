@@ -26,6 +26,7 @@ public fun Project.detektBlueprint(
 
   tasks.withType<Detekt> {
     reports.html.required.set(true)
+    exclude { it.file.path.contains("generated") }
   }
 
   val detektMain = tasks.findByName("detektMain")
