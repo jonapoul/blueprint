@@ -6,6 +6,7 @@ import blueprint.core.intProperty
 import blueprint.core.javaVersion
 import blueprint.core.javaVersionString
 import com.android.build.api.dsl.CommonExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
@@ -28,8 +29,9 @@ public fun Project.androidBaseBlueprint() {
       jvmTarget = javaVersionString()
     }
 
+    val version = javaVersion()
+
     compileOptions {
-      val version = javaVersion()
       sourceCompatibility = version
       targetCompatibility = version
     }
@@ -64,7 +66,11 @@ public fun Project.androidBaseBlueprint() {
       unitTests {
         isIncludeAndroidResources = true
         isReturnDefaultValues = true
-        all { it.jvmArgs("-noverify") }
+
+        if (version < JavaVersion.VERSION_13) {
+          // deprecated in java 13
+          all { it.jvmArgs("-noverify") }
+        }
       }
     }
   }
