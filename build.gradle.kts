@@ -27,4 +27,4 @@ tasks.dependencyUpdates {
   rejectVersionIf { !candidate.version.isStable() && currentVersion.isStable() }
 }
 
-fun String.isStable(): Boolean = listOf("alpha", "beta", "rc").none { toLowerCase().contains(it) }
+fun String.isStable(): Boolean = listOf("alpha", "beta", "rc").none { lowercase().contains(it) }
