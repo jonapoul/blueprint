@@ -1,9 +1,12 @@
+@file:Suppress("LongParameterList")
+
 package blueprint.recipes
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
@@ -56,21 +59,77 @@ public fun Project.testBlueprint(
 }
 
 public data class TestVersions(
-  val alakazam: Provider<String>? = null,
-  val androidxArch: Provider<String>? = null,
-  val androidxCoreKtx: Provider<String>? = null,
-  val androidxJunit: Provider<String>? = null,
-  val androidxRules: Provider<String>? = null,
-  val androidxRunner: Provider<String>? = null,
-  val coroutines: Provider<String>? = null,
-  val junit: Provider<String>? = null,
-  val kotlin: Provider<String>? = null,
-  val mockk: Provider<String>? = null,
-  val robolectric: Provider<String>? = null,
-  val turbine: Provider<String>? = null,
+  val alakazam: String? = null,
+  val androidxArch: String? = null,
+  val androidxCoreKtx: String? = null,
+  val androidxJunit: String? = null,
+  val androidxRules: String? = null,
+  val androidxRunner: String? = null,
+  val coroutines: String? = null,
+  val junit: String? = null,
+  val kotlin: String? = null,
+  val mockk: String? = null,
+  val robolectric: String? = null,
+  val turbine: String? = null,
 )
 
-private fun DependencyHandlerScope.add(config: Configuration, lib: String, version: Provider<String>?) {
+public fun TestVersions(
+  alakazam: Provider<String>? = null,
+  androidxArch: Provider<String>? = null,
+  androidxCoreKtx: Provider<String>? = null,
+  androidxJunit: Provider<String>? = null,
+  androidxRules: Provider<String>? = null,
+  androidxRunner: Provider<String>? = null,
+  coroutines: Provider<String>? = null,
+  junit: Provider<String>? = null,
+  kotlin: Provider<String>? = null,
+  mockk: Provider<String>? = null,
+  robolectric: Provider<String>? = null,
+  turbine: Provider<String>? = null,
+): TestVersions = TestVersions(
+  alakazam = alakazam?.get(),
+  androidxArch = androidxArch?.get(),
+  androidxCoreKtx = androidxCoreKtx?.get(),
+  androidxJunit = androidxJunit?.get(),
+  androidxRules = androidxRules?.get(),
+  androidxRunner = androidxRunner?.get(),
+  coroutines = coroutines?.get(),
+  junit = junit?.get(),
+  kotlin = kotlin?.get(),
+  mockk = mockk?.get(),
+  robolectric = robolectric?.get(),
+  turbine = turbine?.get(),
+)
+
+public fun TestVersions(
+  alakazam: VersionConstraint? = null,
+  androidxArch: VersionConstraint? = null,
+  androidxCoreKtx: VersionConstraint? = null,
+  androidxJunit: VersionConstraint? = null,
+  androidxRules: VersionConstraint? = null,
+  androidxRunner: VersionConstraint? = null,
+  coroutines: VersionConstraint? = null,
+  junit: VersionConstraint? = null,
+  kotlin: VersionConstraint? = null,
+  mockk: VersionConstraint? = null,
+  robolectric: VersionConstraint? = null,
+  turbine: VersionConstraint? = null,
+): TestVersions = TestVersions(
+  alakazam = alakazam?.toString(),
+  androidxArch = androidxArch?.toString(),
+  androidxCoreKtx = androidxCoreKtx?.toString(),
+  androidxJunit = androidxJunit?.toString(),
+  androidxRules = androidxRules?.toString(),
+  androidxRunner = androidxRunner?.toString(),
+  coroutines = coroutines?.toString(),
+  junit = junit?.toString(),
+  kotlin = kotlin?.toString(),
+  mockk = mockk?.toString(),
+  robolectric = robolectric?.toString(),
+  turbine = turbine?.toString(),
+)
+
+private fun DependencyHandlerScope.add(config: Configuration, lib: String, version: String?) {
   version ?: return
-  config("$lib:${version.get()}")
+  config("$lib:$version")
 }

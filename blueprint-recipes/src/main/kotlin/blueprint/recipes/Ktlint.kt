@@ -5,6 +5,7 @@ import blueprint.core.getValue
 import blueprint.core.isAndroid
 import blueprint.core.provideDelegate
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -15,6 +16,26 @@ public fun Project.ktlintBlueprint(
   ktlintCliVersion: Provider<String>,
   ktlintComposeVersion: Provider<String>? = null,
 ) {
+  ktlintBlueprint(
+    ktlintCliVersion = ktlintCliVersion.get(),
+    ktlintComposeVersion = ktlintComposeVersion?.get(),
+  )
+}
+
+public fun Project.ktlintBlueprint(
+  ktlintCliVersion: VersionConstraint,
+  ktlintComposeVersion: VersionConstraint? = null,
+) {
+  ktlintBlueprint(
+    ktlintCliVersion = ktlintCliVersion.toString(),
+    ktlintComposeVersion = ktlintComposeVersion?.toString(),
+  )
+}
+
+public fun Project.ktlintBlueprint(
+  ktlintCliVersion: String,
+  ktlintComposeVersion: String? = null,
+) {
   with(plugins) {
     apply("org.jlleitschuh.gradle.ktlint")
   }
@@ -23,7 +44,7 @@ public fun Project.ktlintBlueprint(
     android.set(boolPropertyOrElse(key = "blueprint.ktlint.isAndroid", default = isAndroid()))
     verbose.set(boolPropertyOrElse(key = "blueprint.ktlint.verbose", default = true))
     enableExperimentalRules.set(boolPropertyOrElse(key = "blueprint.ktlint.experimentalRules", default = false))
-    version.set(ktlintCliVersion.get())
+    version.set(ktlintCliVersion)
     reporters {
       it.reporter(ReporterType.HTML)
     }
@@ -32,7 +53,7 @@ public fun Project.ktlintBlueprint(
   val ktlintRuleset by configurations
   dependencies {
     if (ktlintComposeVersion != null) {
-      ktlintRuleset("com.twitter.compose.rules:ktlint:${ktlintComposeVersion.get()}")
+      ktlintRuleset("com.twitter.compose.rules:ktlint:$ktlintComposeVersion")
     }
   }
 }

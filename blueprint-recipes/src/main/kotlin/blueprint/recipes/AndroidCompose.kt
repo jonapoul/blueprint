@@ -6,6 +6,7 @@ import blueprint.core.getValue
 import blueprint.core.provideDelegate
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
@@ -19,6 +20,38 @@ public fun Project.androidComposeBlueprint(
   experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
   writeMetrics: Boolean = true,
 ) {
+  androidComposeBlueprint(
+    composeCompilerVersion = composeCompilerVersion.get(),
+    composeBomVersion = composeBomVersion.get(),
+    composeLintVersion = composeLintVersion?.get(),
+    experimentalApis = experimentalApis,
+    writeMetrics = writeMetrics,
+  )
+}
+
+public fun Project.androidComposeBlueprint(
+  composeCompilerVersion: VersionConstraint,
+  composeBomVersion: VersionConstraint,
+  composeLintVersion: VersionConstraint?,
+  experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
+  writeMetrics: Boolean = true,
+) {
+  androidComposeBlueprint(
+    composeCompilerVersion = composeCompilerVersion.toString(),
+    composeBomVersion = composeBomVersion.toString(),
+    composeLintVersion = composeLintVersion?.toString(),
+    experimentalApis = experimentalApis,
+    writeMetrics = writeMetrics,
+  )
+}
+
+public fun Project.androidComposeBlueprint(
+  composeCompilerVersion: String,
+  composeBomVersion: String,
+  composeLintVersion: String?,
+  experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
+  writeMetrics: Boolean = true,
+) {
   with(plugins) {
     apply("org.jetbrains.kotlin.android")
   }
@@ -29,7 +62,7 @@ public fun Project.androidComposeBlueprint(
     }
 
     composeOptions {
-      kotlinCompilerExtensionVersion = composeCompilerVersion.get()
+      kotlinCompilerExtensionVersion = composeCompilerVersion
     }
   }
 
@@ -37,9 +70,9 @@ public fun Project.androidComposeBlueprint(
   val lintChecks by configurations
 
   dependencies {
-    implementation(platform("androidx.compose:compose-bom:${composeBomVersion.get()}"))
+    implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     if (composeLintVersion != null) {
-      lintChecks("com.slack.lint.compose:compose-lint-checks:${composeLintVersion.get()}")
+      lintChecks("com.slack.lint.compose:compose-lint-checks:$composeLintVersion")
     }
   }
 

@@ -12,14 +12,21 @@ import blueprint.core.stringProperty
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import java.io.File
 
-public fun Project.atakPluginBlueprint(
-  kotlinxDatetimeVersion: Provider<String>?,
-) {
+public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: Provider<String>) {
+  atakPluginBlueprint(kotlinxDatetimeVersion.get())
+}
+
+public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: VersionConstraint) {
+  atakPluginBlueprint(kotlinxDatetimeVersion.toString())
+}
+
+public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: String?) {
   with(plugins) {
     apply("org.jetbrains.kotlin.android")
   }
@@ -152,7 +159,7 @@ public fun Project.atakPluginBlueprint(
     val implementation by configurations
     dependencies {
       if (kotlinxDatetimeVersion != null) {
-        implementation("org.jetbrains.kotlinx:kotlinx-datetime:${kotlinxDatetimeVersion.get()}")
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
       }
     }
   }

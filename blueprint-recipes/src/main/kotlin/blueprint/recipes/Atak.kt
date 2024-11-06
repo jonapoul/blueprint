@@ -8,7 +8,6 @@ import org.gradle.kotlin.dsl.exclude
 
 public fun isTakGovPipeline(): Boolean = System.getenv("ATAK_CI")?.toIntOrNull() == 1
 
-@Suppress("UnstableApiUsage")
 public fun Project.atakBlueprint(
   atakSdk: Provider<MinimalExternalModuleDependency>,
   excludes: List<String> = DEFAULT_EXCLUDES,
