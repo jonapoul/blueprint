@@ -3,15 +3,17 @@ package blueprint.recipes
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Project
-import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.gradle.kotlin.dsl.withType
+import java.io.File
+
+public fun Project.detektDefaultConfigFile(): File = rootProject.file("detekt.yml")
 
 public fun Project.detektBlueprint(
-  configFile: ConfigurableFileCollection = rootProject.files("detekt.yml"),
+  configFile: File = detektDefaultConfigFile(),
   detektAllConfig: DetektAll = DetektAll.Ignore,
 ) {
   with(plugins) {
