@@ -14,7 +14,7 @@ spotless = "6.23.0"
 test-junit = "4.13.2"
 testParameterInjector = "1.18"
 turtle = "0.8.0"
-versions = "0.51.0"
+versions = "0.52.0"
 
 [libraries]
 # Runtime
