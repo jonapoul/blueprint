@@ -4,7 +4,7 @@ package blueprint.recipes
 
 import blueprint.core.getValue
 import blueprint.core.gitVersionCode
-import blueprint.core.gitVersionName
+import blueprint.core.gitVersionHash
 import blueprint.core.intProperty
 import blueprint.core.localProperties
 import blueprint.core.provideDelegate
@@ -31,7 +31,7 @@ public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: String?) {
     apply("org.jetbrains.kotlin.android")
   }
 
-  val gitVersionName = gitVersionName()
+  val gitVersionHash = gitVersionHash()
   val gitVersionCode = gitVersionCode()
 
   val pluginVersion = stringProperty(key = "blueprint.atak.pluginVersion")
@@ -41,9 +41,9 @@ public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: String?) {
   extensions.getByType(ApplicationExtension::class).apply {
     defaultConfig.apply {
       versionCode = gitVersionCode
-      versionName = "$pluginVersion (${gitVersionName}) - [$atakVersion]"
+      versionName = "$pluginVersion (${gitVersionHash}) - [$atakVersion]"
       targetSdk = intProperty(key = "blueprint.android.targetSdk")
-      buildConfigField("String", "GIT_HASH", "\"${gitVersionName}\"")
+      buildConfigField("String", "GIT_HASH", "\"${gitVersionHash}\"")
 
       if (kotlinxDatetimeVersion != null) {
         buildConfigField(
@@ -141,7 +141,7 @@ public fun Project.atakPluginBlueprint(kotlinxDatetimeVersion: String?) {
     sourceSets {
       getByName("main").apply {
         java.srcDirs("src/main/kotlin")
-        setProperty("archivesBaseName", "ATAK-Plugin-$apkName-${pluginVersion}-${gitVersionName}-${atakVersion}")
+        setProperty("archivesBaseName", "ATAK-Plugin-$apkName-${pluginVersion}-${gitVersionHash}-${atakVersion}")
       }
 
       getByName("debug").setRoot("build-types/debug")

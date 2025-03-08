@@ -8,8 +8,6 @@ dependencies {
   compileOnly(gradleKotlinDsl())
   compileOnly(libs.plugin.agp)
 
-  api(libs.plugin.turtle)
-
   testImplementation(gradleTestKit())
   testImplementation(libs.test.junit)
   testImplementation(libs.test.kotlin.common)

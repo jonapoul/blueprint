@@ -12,7 +12,6 @@ com.google.guava:guava:33.0.0-jre
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.googlecode.concurrent-trees:concurrent-trees:2.6.1
 com.googlecode.javaewah:JavaEWAH:1.2.3
-com.lordcodes.turtle:turtle:0.8.0
 com.squareup.okhttp3:okhttp:4.11.0
 com.squareup.okio:okio-jvm:3.2.0
 com.squareup.okio:okio:3.2.0
