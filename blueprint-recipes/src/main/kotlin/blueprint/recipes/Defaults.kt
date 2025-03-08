@@ -24,4 +24,8 @@ public val DEFAULT_KOVER_EXCLUDE_PACKAGES: List<String> = listOf(
 
 public val DEFAULT_KOVER_EXCLUDE_ANNOTATIONS: List<String> = listOf(
   "androidx.compose.runtime.Composable",
+  "dagger.Generated",
+  "dagger.Module",
+  "dagger.Provides",
+  "javax.annotation.processing.Generated",
 )

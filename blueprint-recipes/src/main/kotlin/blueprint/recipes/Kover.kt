@@ -1,20 +1,19 @@
 package blueprint.recipes
 
+import blueprint.core.boolPropertyOrElse
 import blueprint.core.intProperty
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
-import kotlinx.kover.gradle.plugin.dsl.KoverReportExtension
-import kotlinx.kover.gradle.plugin.dsl.MetricType
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "NestedBlockDepth")
 public fun Project.koverBlueprint(
   minCoverage: Int = intProperty(key = "blueprint.kover.minCoverage"),
-  metricType: MetricType = MetricType.INSTRUCTION,
+  useJacoco: Boolean = boolPropertyOrElse(key = "blueprint.kover.useJacoco", default = false),
+  coverageUnit: CoverageUnit = CoverageUnit.INSTRUCTION,
   aggregationType: AggregationType = AggregationType.COVERED_PERCENTAGE,
   excludedClasses: List<String> = DEFAULT_KOVER_EXCLUDE_CLASSES,
   excludedPackages: List<String> = DEFAULT_KOVER_EXCLUDE_PACKAGES,
@@ -24,60 +23,41 @@ public fun Project.koverBlueprint(
     apply("org.jetbrains.kotlinx.kover")
   }
 
-  val isAtak = project.plugins.any { it.javaClass.simpleName == "TakDevPlugin" }
-  val isAndroid = project.extensions.findByType(LibraryExtension::class) != null ||
-    project.extensions.findByType(AppExtension::class) != null
+  extensions.getByType(KoverProjectExtension::class).apply {
+    this.useJacoco.set(useJacoco)
+    reports.apply {
+      total.apply {
+        filters.apply {
+          excludes.apply {
+            classes(excludedClasses)
+            packages(excludedPackages)
+            excludedAnnotations.forEach { annotatedBy(it) }
+          }
+        }
 
-  val androidVariant = when {
-    isAtak -> "civDebug"
-    isAndroid -> "debug"
-    else -> null // kotlin JVM, no variant to merge with
-  }
+        html.apply {
+          onCheck.set(true)
+        }
 
-  extensions.getByType(KoverReportExtension::class).apply {
-    defaults { defaults ->
-      if (androidVariant != null) {
-        defaults.mergeWith(androidVariant)
-      }
-
-      defaults.filters { filters ->
-        filters.excludes { filter ->
-          filter.classes(excludedClasses)
-          filter.packages(excludedPackages)
-          excludedAnnotations.forEach { filter.annotatedBy(it) }
+        log.apply {
+          onCheck.set(true)
+          coverageUnits.set(coverageUnit)
+          aggregationForGroup.set(aggregationType)
         }
       }
 
-      defaults.html {
-        it.onCheck = true
-      }
-
-      defaults.log {
-        it.onCheck = true
-        it.coverageUnits = metricType
-        it.aggregationForGroup = aggregationType
-      }
-
-      defaults.verify { verify ->
-        verify.onCheck = project == rootProject
-        verify.rule { rule ->
-          rule.isEnabled = true
-          rule.bound {
-            it.minValue = minCoverage
-            it.metric = metricType
-            it.aggregation = aggregationType
+      verify.apply {
+        rule { r ->
+          r.disabled.set(project != project.rootProject)
+          r.bound { b ->
+            b.minValue.set(minCoverage)
+            b.coverageUnits.set(coverageUnit)
+            b.aggregationForGroup.set(aggregationType)
           }
         }
       }
     }
-
-    if (androidVariant != null) {
-      androidReports(androidVariant) {
-        // No-op, all same config as default
-      }
-    }
   }
-
 
   val kover = configurations.getByName("kover")
   rootProject.dependencies {

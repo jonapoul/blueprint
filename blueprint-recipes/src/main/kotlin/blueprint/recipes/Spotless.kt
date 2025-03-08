@@ -13,7 +13,7 @@ public fun Project.spotlessBlueprint(extra: SpotlessExtension.() -> Unit = {}) {
   extensions.getByType(SpotlessExtension::class).apply {
     format("misc") { format ->
       format.target("*.gradle", "*.gitignore", "*.pro")
-      format.indentWithSpaces()
+      format.leadingTabsToSpaces()
       format.trimTrailingWhitespace()
       format.endWithNewline()
     }

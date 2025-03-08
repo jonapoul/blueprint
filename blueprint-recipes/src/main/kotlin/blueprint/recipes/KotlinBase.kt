@@ -4,7 +4,7 @@ import blueprint.core.boolPropertyOrElse
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 public fun Project.kotlinBaseBlueprint(
@@ -12,15 +12,15 @@ public fun Project.kotlinBaseBlueprint(
   explicitApi: Boolean = boolPropertyOrElse(key = "blueprint.kotlin.explicitApi", default = false),
 ) {
   tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      this.freeCompilerArgs += freeCompilerArgs
+    compilerOptions {
+      this.freeCompilerArgs.addAll(freeCompilerArgs)
       if (explicitApi) {
-        this.freeCompilerArgs += "-Xexplicit-api=strict"
+        this.freeCompilerArgs.add("-Xexplicit-api=strict")
       }
     }
   }
 
-  extensions.findByType(KotlinTopLevelExtension::class)?.apply {
+  extensions.findByType(KotlinBaseExtension::class)?.apply {
     if (explicitApi) explicitApi()
   }
 }

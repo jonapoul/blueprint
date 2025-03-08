@@ -77,15 +77,15 @@ public fun Project.androidComposeBlueprint(
   }
 
   tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      freeCompilerArgs += experimentalApis.map { "-opt-in=$it" }
+    compilerOptions {
+      freeCompilerArgs.addAll(experimentalApis.map { "-opt-in=$it" })
 
       if (writeMetrics) {
         // From https://chrisbanes.me/posts/composable-metrics/
         val propertyRoot = "plugin:androidx.compose.compiler.plugins.kotlin"
         val metricReportDir = project.layout.buildDirectory.dir("compose_metrics").get().asFile
-        freeCompilerArgs += listOf("-P", "$propertyRoot:reportsDestination=${metricReportDir.absolutePath}")
-        freeCompilerArgs += listOf("-P", "$propertyRoot:metricsDestination=${metricReportDir.absolutePath}")
+        freeCompilerArgs.addAll(listOf("-P", "$propertyRoot:reportsDestination=${metricReportDir.absolutePath}"))
+        freeCompilerArgs.addAll(listOf("-P", "$propertyRoot:metricsDestination=${metricReportDir.absolutePath}"))
       }
     }
   }

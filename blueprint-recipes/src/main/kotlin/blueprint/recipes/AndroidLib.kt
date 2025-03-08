@@ -24,7 +24,7 @@ public fun Project.androidLibBlueprint() {
       prefabPublishing = false
     }
 
-    packagingOptions {
+    packaging {
       resources {
         excludes.addAll(
           listOf(

@@ -1,14 +1,14 @@
 package blueprint.recipes
 
 import blueprint.core.javaVersionInt
-import blueprint.core.javaVersionString
+import blueprint.core.jvmTarget
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 public fun Project.kotlinJvmBlueprint(
@@ -32,12 +32,12 @@ public fun Project.kotlinJvmBlueprint(
   kotlinBaseBlueprint(freeCompilerArgs)
 
   tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = javaVersionString()
+    compilerOptions {
+      jvmTarget.set(project.jvmTarget())
     }
   }
 
-  extensions.getByType(KotlinTopLevelExtension::class).apply {
+  extensions.getByType(KotlinBaseExtension::class).apply {
     jvmToolchain(javaVersionInt())
   }
 
