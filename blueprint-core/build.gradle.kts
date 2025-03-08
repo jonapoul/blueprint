@@ -1,6 +1,6 @@
 plugins {
-  id("convention-kotlin")
-  id("convention-publish")
+  alias(libs.plugins.convention.kotlin)
+  alias(libs.plugins.convention.publish)
 }
 
 dependencies {

@@ -43,3 +43,6 @@ dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependen
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
+
+convention-kotlin = { id = "blueprint.convention.kotlin" }
+convention-publish = { id = "blueprint.convention.publish" }

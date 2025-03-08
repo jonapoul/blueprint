@@ -7,7 +7,6 @@ plugins {
 val rootProps = Properties()
 val propsFile = File(rootDir.parentFile, "gradle.properties")
 rootProps.load(propsFile.inputStream())
-
 val javaVersion = rootProps["javaVersion"]?.toString()?.toInt() ?: error("Require javaVersion property")
 
 java {
@@ -15,12 +14,25 @@ java {
   targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
-dependencies {
-  implementation(libs.plugin.dependencyGuard)
-  implementation(libs.plugin.dokka)
-  implementation(libs.plugin.kotlin)
-  implementation(libs.plugin.publish)
+kotlin {
+  jvmToolchain(javaVersion)
+}
 
-  // https://stackoverflow.com/a/70878181/15634757
-  implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+dependencies {
+  compileOnly(libs.plugin.dependencyGuard)
+  compileOnly(libs.plugin.dokka)
+  compileOnly(libs.plugin.kotlin)
+  compileOnly(libs.plugin.publish)
+}
+
+gradlePlugin {
+  plugins {
+    create(id = "blueprint.convention.kotlin", impl = "blueprint.gradle.ConventionKotlin")
+    create(id = "blueprint.convention.publish", impl = "blueprint.gradle.ConventionPublish")
+  }
+}
+
+fun NamedDomainObjectContainer<PluginDeclaration>.create(id: String, impl: String) = create(id) {
+  this.id = id
+  implementationClass = impl
 }
