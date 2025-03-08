@@ -1,12 +1,14 @@
 package blueprint.recipes
 
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
+import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
 import java.io.File
 
@@ -32,12 +34,12 @@ public fun Project.detektBlueprint(
 
   if (detektAllConfig is DetektAll.Apply) {
     val check by tasks.getting
-    val detektAll by tasks.creating
+    val detektAll by tasks.registering
 
     tasks.withType<Detekt>().configureEach { task ->
       if (!detektAllConfig.ignoreRelease || !task.name.contains("release", ignoreCase = true)) {
         check.dependsOn(task)
-        detektAll.dependsOn(task)
+        detektAll.dependsOn(task.name)
       }
     }
   }
