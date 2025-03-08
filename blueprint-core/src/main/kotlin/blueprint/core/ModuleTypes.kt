@@ -17,8 +17,6 @@ public fun Project.isAndroidCompose(): Boolean {
 
 public fun Project.isAndroidLib(): Boolean = plugins.hasPlugin("com.android.library")
 
-public fun Project.isAtak(): Boolean = plugins.hasPlugin("atak-takdev-plugin")
-
 public fun Project.isKotlinJvm(): Boolean = plugins.hasPlugin("org.jetbrains.kotlin.jvm")
 
 public fun Project.isKotlinAndroid(): Boolean = plugins.hasPlugin("org.jetbrains.kotlin.android")
