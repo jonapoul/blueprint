@@ -19,6 +19,7 @@ versions = "0.52.0"
 # Runtime
 plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-androidCacheFix = { module = "org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin", version.ref = "androidCacheFix" }
+plugin-compose = { module = "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
 plugin-dependencyGraph = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph" }
 plugin-dependencyGuard = { module = "com.dropbox.dependency-guard:com.dropbox.dependency-guard.gradle.plugin", version.ref = "dependencyGuard" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }

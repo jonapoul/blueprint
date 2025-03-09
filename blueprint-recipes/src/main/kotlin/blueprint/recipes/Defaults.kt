@@ -1,5 +1,9 @@
 package blueprint.recipes
 
+import org.gradle.api.Project
+import org.gradle.api.file.RegularFile
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+
 public val DEFAULT_COMPOSE_EXPERIMENTAL_APIS: List<String> = listOf(
   "androidx.compose.foundation.ExperimentalFoundationApi",
   "androidx.compose.ui.ExperimentalComposeUiApi",
@@ -29,3 +33,10 @@ public val DEFAULT_KOVER_EXCLUDE_ANNOTATIONS: List<String> = listOf(
   "dagger.Provides",
   "javax.annotation.processing.Generated",
 )
+
+public val DEFAULT_COMPOSE_PLATFORMS: Set<KotlinPlatformType> = setOf(
+  KotlinPlatformType.androidJvm,
+)
+
+public val Project.defaultStabilityFile: RegularFile
+  get() = rootProject.layout.projectDirectory.file("compose-stability.conf")

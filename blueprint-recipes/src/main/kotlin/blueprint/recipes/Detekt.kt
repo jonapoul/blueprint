@@ -36,17 +36,18 @@ public fun Project.detektBlueprint(
     val check by tasks.getting
     val detektAll by tasks.registering
 
-    tasks.withType<Detekt>().configureEach { task ->
+    val detektTasks = tasks.withType<Detekt>()
+    detektTasks.map { it.name }.forEach { detektAll.dependsOn(it) }
+    detektTasks.configureEach { task ->
       if (!detektAllConfig.ignoreRelease || !task.name.contains("release", ignoreCase = true)) {
         check.dependsOn(task)
-        detektAll.dependsOn(task.name)
       }
     }
   }
 }
 
 public sealed interface DetektAll {
-  public object Ignore : DetektAll
+  public data object Ignore : DetektAll
 
   public data class Apply(
     val ignoreRelease: Boolean,

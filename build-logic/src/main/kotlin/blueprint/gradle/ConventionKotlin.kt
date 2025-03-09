@@ -9,30 +9,32 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 class ConventionKotlin : Plugin<Project> {
   override fun apply(target: Project): Unit = with(target) {
     with(pluginManager) {
       apply(KotlinPluginWrapper::class)
+      apply(ConventionIdea::class)
       apply(DependencyGuardPlugin::class)
     }
 
     val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
 
     tasks.withType<KotlinCompile> {
-      kotlinOptions {
-        jvmTarget = javaVersion
-        freeCompilerArgs += listOf(
+      compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersion))
+        freeCompilerArgs.addAll(
           "-Xsam-conversions=class",
           "-Xexplicit-api=strict",
         )
       }
     }
 
-    extensions.configure<KotlinTopLevelExtension> {
+    extensions.configure<KotlinBaseExtension> {
       explicitApi()
     }
 
