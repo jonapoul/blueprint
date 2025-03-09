@@ -1,3 +1,4 @@
+app.cash.licensee:licensee-gradle-plugin:1.12.0
 com.android.tools.build:apksig:8.9.0
 com.android.tools.build:apkzlib:8.9.0
 com.android.tools.build:builder-model:8.9.0
@@ -9,7 +10,11 @@ com.android:zipflinger:8.9.0
 com.diffplug.spotless:spotless-lib-extra:3.0.2
 com.diffplug.spotless:spotless-lib:3.0.2
 com.diffplug.spotless:spotless-plugin-gradle:7.0.2
+com.github.ben-manes.versions:com.github.ben-manes.versions.gradle.plugin:0.52.0
+com.github.ben-manes:gradle-versions-plugin:0.52.0
+com.squareup.sort-dependencies:com.squareup.sort-dependencies.gradle.plugin:0.14
 com.squareup:javawriter:2.5.0
+com.squareup:sort-dependencies-gradle-plugin:0.14
 gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:3.0.1
 io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8
 org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin:3.0.1
@@ -22,6 +27,7 @@ org.jetbrains.kotlin:kotlin-gradle-plugin-model:2.1.10
 org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10
 org.jetbrains.kotlin:kotlin-gradle-plugins-bom:2.1.10
 org.jetbrains.kotlin:kotlin-native-utils:2.1.10
+org.jetbrains.kotlin:kotlin-power-assert:2.1.10
 org.jetbrains.kotlin:kotlin-stdlib:2.1.10
 org.jetbrains.kotlin:kotlin-tooling-core:2.1.10
 org.jetbrains.kotlin:kotlin-util-io:2.1.10

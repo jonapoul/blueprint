@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "LongParameterList")
+@file:Suppress("LongParameterList")
 
 package blueprint.recipes
 
@@ -16,11 +16,10 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
-import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-public fun Project.androidComposeBlueprint(
+public fun Project.composeBlueprint(
   composeBomVersion: Provider<String>,
   composeLintVersion: Provider<String>?,
   experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
@@ -28,7 +27,7 @@ public fun Project.androidComposeBlueprint(
   targetPlatforms: Set<KotlinPlatformType> = DEFAULT_COMPOSE_PLATFORMS,
   stabilityFile: RegularFile = defaultStabilityFile,
 ) {
-  androidComposeBlueprint(
+  composeBlueprint(
     composeBomVersion = composeBomVersion.get(),
     composeLintVersion = composeLintVersion?.get(),
     experimentalApis = experimentalApis,
@@ -38,7 +37,7 @@ public fun Project.androidComposeBlueprint(
   )
 }
 
-public fun Project.androidComposeBlueprint(
+public fun Project.composeBlueprint(
   composeBomVersion: VersionConstraint,
   composeLintVersion: VersionConstraint?,
   experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
@@ -46,7 +45,7 @@ public fun Project.androidComposeBlueprint(
   targetPlatforms: Set<KotlinPlatformType> = DEFAULT_COMPOSE_PLATFORMS,
   stabilityFile: RegularFile = defaultStabilityFile,
 ) {
-  androidComposeBlueprint(
+  composeBlueprint(
     composeBomVersion = composeBomVersion.toString(),
     composeLintVersion = composeLintVersion?.toString(),
     experimentalApis = experimentalApis,
@@ -56,7 +55,7 @@ public fun Project.androidComposeBlueprint(
   )
 }
 
-public fun Project.androidComposeBlueprint(
+public fun Project.composeBlueprint(
   composeBomVersion: String,
   composeLintVersion: String?,
   experimentalApis: List<String> = DEFAULT_COMPOSE_EXPERIMENTAL_APIS,
@@ -65,7 +64,6 @@ public fun Project.androidComposeBlueprint(
   stabilityFile: RegularFile = defaultStabilityFile,
 ) {
   with(plugins) {
-    apply(KotlinAndroidPluginWrapper::class)
     apply(ComposeCompilerGradleSubplugin::class)
   }
 

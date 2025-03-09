@@ -10,7 +10,6 @@ public val DEFAULT_COMPOSE_EXPERIMENTAL_APIS: List<String> = listOf(
 )
 
 public val DEFAULT_KOTLIN_FREE_COMPILER_ARGS: List<String> = listOf(
-  "-Xsam-conversions=class", // used in sample project plugintemplate. Not sure why
   "-Xjvm-default=all-compatibility",
   "-opt-in=kotlin.RequiresOptIn",
 )
@@ -40,3 +39,21 @@ public val DEFAULT_COMPOSE_PLATFORMS: Set<KotlinPlatformType> = setOf(
 
 public val Project.defaultStabilityFile: RegularFile
   get() = rootProject.layout.projectDirectory.file("compose-stability.conf")
+
+public val DEFAULT_LICENSE_SPDX_IDS: List<String> = listOf(
+  "Apache-2.0",
+  "MIT",
+  "BSD-3-Clause",
+  "BSD-2-Clause",
+  "EPL-1.0",
+)
+
+public val DEFAULT_POWER_ASSERT_FUNCTIONS: Set<String> = setOf(
+  "kotlin.assert",
+  "kotlin.test.assertEquals",
+  "kotlin.test.assertFalse",
+  "kotlin.test.assertIs",
+  "kotlin.test.assertNotNull",
+  "kotlin.test.assertNull",
+  "kotlin.test.assertTrue",
+)

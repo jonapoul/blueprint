@@ -8,18 +8,18 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.testing.Test
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.findByType
-import org.gradle.kotlin.dsl.withType
 
 public fun Project.testBlueprint(
   versions: TestVersions,
   otherKotlinTestLibs: List<String> = emptyList(),
   otherAndroidTestLibs: List<String> = emptyList(),
+  disableReleaseTests: Boolean = false,
 ) {
+  testBaseBlueprint(disableReleaseTests)
+
   val isAndroid = project.extensions.findByType(LibraryExtension::class) != null ||
     project.extensions.findByType(AppExtension::class) != null
 
@@ -44,16 +44,6 @@ public fun Project.testBlueprint(
         add(testImplementation, "org.robolectric:robolectric", versions.robolectric)
         otherAndroidTestLibs.forEach { testImplementation(it) }
       }
-    }
-  }
-
-  tasks.withType<Test> {
-    testLogging {
-      it.exceptionFormat = TestExceptionFormat.FULL
-      it.showCauses = true
-      it.showExceptions = true
-      it.showStackTraces = true
-      it.showStandardStreams = true
     }
   }
 }

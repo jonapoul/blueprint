@@ -14,6 +14,7 @@ public fun Project.kotlinBaseBlueprint(
   tasks.withType<KotlinCompile> {
     compilerOptions {
       this.freeCompilerArgs.addAll(freeCompilerArgs)
+
       if (explicitApi) {
         this.freeCompilerArgs.add("-Xexplicit-api=strict")
       }
