@@ -18,6 +18,7 @@ public fun Project.androidLibBlueprint() {
   extensions.getByType(LibraryExtension::class).apply {
     buildFeatures {
       // Enabled in modules that need them
+      androidResources = false
       dataBinding = false
       mlModelBinding = false
       prefabPublishing = false

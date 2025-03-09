@@ -16,9 +16,8 @@ public fun Project.testBlueprint(
   versions: TestVersions,
   otherKotlinTestLibs: List<String> = emptyList(),
   otherAndroidTestLibs: List<String> = emptyList(),
-  disableReleaseTests: Boolean = false,
 ) {
-  testBaseBlueprint(disableReleaseTests)
+  testBaseBlueprint()
 
   val isAndroid = project.extensions.findByType(LibraryExtension::class) != null ||
     project.extensions.findByType(AppExtension::class) != null

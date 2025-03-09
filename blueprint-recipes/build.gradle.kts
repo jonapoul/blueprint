@@ -18,9 +18,7 @@ dependencies {
   compileOnly(libs.plugin.licensee)
   compileOnly(libs.plugin.powerAssert)
   compileOnly(libs.plugin.spotless)
-
-  api(projects.blueprintCore)
-
+  implementation(projects.blueprintCore)
   testImplementation(gradleTestKit())
   testImplementation(libs.test.junit)
   testImplementation(libs.test.kotlin.common)

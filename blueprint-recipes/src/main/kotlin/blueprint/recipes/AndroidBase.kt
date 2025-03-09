@@ -2,22 +2,23 @@
 
 package blueprint.recipes
 
+import blueprint.core.boolPropertyOrElse
 import blueprint.core.getOrCreate
 import blueprint.core.intProperty
 import blueprint.core.javaVersion
 import blueprint.core.jvmTarget
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.HasAndroidTestBuilder
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 
 public fun Project.androidBaseBlueprint(
-  enableTestInDebug: Boolean = true,
-  enableTestInRelease: Boolean = false,
+  enableTestInDebug: Boolean = boolPropertyOrElse(key = "blueprint.android.enableTestInDebug", default = true),
+  enableTestInRelease: Boolean = boolPropertyOrElse(key = "blueprint.android.enableTestInRelease", default = false),
 ) {
   with(plugins) {
     apply("org.gradle.android.cache-fix")
@@ -57,10 +58,12 @@ public fun Project.androidBaseBlueprint(
       }
     }
 
-    extensions.configure<LibraryAndroidComponentsExtension> {
+    extensions.findByType(AndroidComponentsExtension::class)?.apply {
       // disable instrumented tests if androidTest folder doesn't exist
       beforeVariants {
-        it.enableAndroidTest = it.enableAndroidTest && projectDir.resolve("src/androidTest").exists()
+        if (it is HasAndroidTestBuilder) {
+          it.enableAndroidTest = it.enableAndroidTest && projectDir.resolve("src/androidTest").exists()
+        }
       }
     }
   }

@@ -2,10 +2,12 @@ package blueprint.recipes
 
 import blueprint.core.boolPropertyOrElse
 import blueprint.core.intProperty
+import kotlinx.kover.gradle.plugin.KoverGradlePlugin
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
@@ -20,7 +22,7 @@ public fun Project.koverBlueprint(
   excludedAnnotations: List<String> = DEFAULT_KOVER_EXCLUDE_ANNOTATIONS,
 ) {
   with(plugins) {
-    apply("org.jetbrains.kotlinx.kover")
+    apply(KoverGradlePlugin::class)
   }
 
   extensions.getByType(KoverProjectExtension::class).apply {
