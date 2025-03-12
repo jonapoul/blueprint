@@ -14,6 +14,7 @@ kover = "0.9.1"
 ktlint = "12.2.0"
 licensee = "1.12.0"
 publish = "0.31.0"
+publishReport = "1.3.3"
 spotless = "7.0.2"
 test-junit = "4.13.2"
 testParameterInjector = "1.18"
@@ -53,6 +54,7 @@ dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependen
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
+publishReport = { id = "io.github.gmazzo.publications.report", version.ref = "publishReport" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
 
 convention-kotlin = { id = "blueprint.convention.kotlin" }
