@@ -3,3 +3,6 @@
 build/
 .kotlin/
 local.properties
+
+# CI
+dependency-graph-reports/
