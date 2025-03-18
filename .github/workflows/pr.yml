@@ -6,6 +6,7 @@ on:
 
 env:
   CI: true
+  ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: false
 
 permissions:
   contents: write
