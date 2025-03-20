@@ -1,4 +1,4 @@
-app.cash.licensee:licensee-gradle-plugin:1.12.0
+app.cash.licensee:licensee-gradle-plugin:1.13.0
 com.android.tools.build:apksig:8.9.0
 com.android.tools.build:apkzlib:8.9.0
 com.android.tools.build:builder-model:8.9.0
