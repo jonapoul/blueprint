@@ -19,6 +19,14 @@ tasks.dependencyUpdates {
 fun String.isStable(): Boolean = listOf("alpha", "beta", "rc").none { lowercase().contains(it) }
 
 dependencyAnalysis {
+  useTypesafeProjectAccessors(true)
+
+  usage {
+    analysis {
+      checkSuperClasses(true)
+    }
+  }
+
   structure {
     ignoreKtx(ignore = true)
     bundle(name = "kotlin") { includeGroup("org.jetbrains.kotlin") }
