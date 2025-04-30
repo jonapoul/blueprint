@@ -9,9 +9,10 @@ public val DEFAULT_COMPOSE_EXPERIMENTAL_APIS: List<String> = listOf(
   "androidx.compose.ui.ExperimentalComposeUiApi",
 )
 
-public val DEFAULT_KOTLIN_FREE_COMPILER_ARGS: List<String> = listOf(
+public val DEFAULT_KOTLIN_COMPILER_ARGS: List<String> = listOf(
   "-Xjvm-default=all-compatibility",
   "-opt-in=kotlin.RequiresOptIn",
+  "-opt-in=kotlin.uuid.ExperimentalUuidApi",
 )
 
 public val DEFAULT_KOVER_EXCLUDE_CLASSES: List<String> = listOf(
