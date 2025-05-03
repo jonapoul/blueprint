@@ -1,11 +1,3 @@
-// https://publicobject.com/2024/01/30/internal-visibility/
-// Only used to access the "outputFileNameDot" properties, which are declared internal
-@file:Suppress(
-  "CANNOT_OVERRIDE_INVISIBLE_MEMBER",
-  "INVISIBLE_MEMBER",
-  "INVISIBLE_REFERENCE",
-)
-
 package blueprint.diagrams.internal
 
 import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorTask
@@ -13,9 +5,9 @@ import com.vanniktech.dependency.graph.generator.ProjectDependencyGraphGenerator
 import java.io.File
 
 internal fun ProjectDependencyGraphGeneratorTask.getOutputFile(): File {
-  return File(outputDirectory, projectGenerator.outputFileNameDot)
+  return File(outputDirectory, "project-dependency-graph.dot")
 }
 
 internal fun DependencyGraphGeneratorTask.getOutputFile(): File {
-  return File(outputDirectory, generator.outputFileNameDot)
+  return File(outputDirectory, "dependency-graph.dot")
 }
