@@ -1,11 +1,11 @@
-com.android.tools.build:apksig:8.9.2
-com.android.tools.build:apkzlib:8.9.2
-com.android.tools.build:builder-model:8.9.2
-com.android.tools.build:builder:8.9.2
-com.android.tools.build:gradle-api:8.9.2
-com.android.tools.build:gradle:8.9.2
-com.android.tools.build:manifest-merger:31.9.2
-com.android:zipflinger:8.9.2
+com.android.tools.build:apksig:8.10.0
+com.android.tools.build:apkzlib:8.10.0
+com.android.tools.build:builder-model:8.10.0
+com.android.tools.build:builder:8.10.0
+com.android.tools.build:gradle-api:8.10.0
+com.android.tools.build:gradle:8.10.0
+com.android.tools.build:manifest-merger:31.10.0
+com.android:zipflinger:8.10.0
 com.squareup:javawriter:2.5.0
 org.jetbrains.kotlin:fus-statistics-gradle-plugin:2.1.21
 org.jetbrains.kotlin:kotlin-build-tools-api:2.1.21
@@ -19,4 +19,4 @@ org.jetbrains.kotlin:kotlin-stdlib:2.1.21
 org.jetbrains.kotlin:kotlin-tooling-core:2.1.21
 org.jetbrains.kotlin:kotlin-util-io:2.1.21
 org.jetbrains:annotations:13.0
-org.ow2.asm:asm:9.7
+org.ow2.asm:asm:9.7.1
