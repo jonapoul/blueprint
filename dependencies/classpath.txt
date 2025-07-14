@@ -70,6 +70,7 @@ org.jetbrains.kotlin:kotlin-klib-commonizer-api:2.1.21
 org.jetbrains.kotlin:kotlin-metadata-jvm:2.1.21
 org.jetbrains.kotlin:kotlin-native-utils:2.1.21
 org.jetbrains.kotlin:kotlin-reflect:2.0.21
+org.jetbrains.kotlin:kotlin-stdlib-common:2.0.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21
 org.jetbrains.kotlin:kotlin-stdlib:2.0.21
