@@ -43,11 +43,11 @@ public open class DiagramsBlueprintExtension @Inject constructor(
     .property(Int::class.java)
     .convention(30)
 
-  public val removeModulePrefix: Property<String?> = objects
+  public val removeModulePrefix: Property<String> = objects
     .property(String::class.java)
     .convention(":modules:")
 
-  public val replacementModulePrefix: Property<String?> = objects
+  public val replacementModulePrefix: Property<String> = objects
     .property(String::class.java)
     .convention(":")
 
@@ -73,7 +73,7 @@ public open class DiagramsBlueprintExtension @Inject constructor(
 
   public val moduleTypes: SetProperty<ModuleType> = objects
     .setProperty(ModuleType::class.java)
-    .convention(DefaultModuleType.values().toSet())
+    .convention(DefaultModuleType.entries.toSet())
 
   public val moduleTypeFinder: Property<ModuleType.Finder> = objects
     .property(ModuleType.Finder::class.java)

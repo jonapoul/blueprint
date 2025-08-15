@@ -3,7 +3,7 @@
 package blueprint.recipes
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryAndroidResources
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 
@@ -16,9 +16,11 @@ public fun Project.androidResourcesBlueprint(
     buildFeatures {
       this.resValues = resValues
       this.viewBinding = viewBinding
+    }
 
-      if (this is LibraryBuildFeatures) {
-        this.androidResources = androidResources
+    androidResources {
+      if (this is LibraryAndroidResources) {
+        enable = androidResources
       }
     }
   }
