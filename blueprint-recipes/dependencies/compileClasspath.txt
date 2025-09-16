@@ -33,7 +33,7 @@ org.jetbrains.kotlin:kotlin-power-assert:2.2.10
 org.jetbrains.kotlin:kotlin-stdlib:2.2.10
 org.jetbrains.kotlin:kotlin-tooling-core:2.2.10
 org.jetbrains.kotlin:kotlin-util-io:2.2.10
-org.jetbrains.kotlinx:kover-gradle-plugin:0.9.1
+org.jetbrains.kotlinx:kover-gradle-plugin:0.9.2
 org.jetbrains:annotations:13.0
 org.jlleitschuh.gradle:ktlint-gradle:13.1.0
 org.ow2.asm:asm:9.8
