@@ -10,7 +10,6 @@ dependencies {
   compileOnly(libs.plugin.androidCacheFix)
   compileOnly(libs.plugin.compose)
   compileOnly(libs.plugin.dependencySort)
-  compileOnly(libs.plugin.dependencyVersions)
   compileOnly(libs.plugin.detekt)
   compileOnly(libs.plugin.kotlin)
   compileOnly(libs.plugin.kover)

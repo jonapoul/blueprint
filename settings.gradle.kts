@@ -7,7 +7,6 @@ pluginManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
-    maven { url = uri("https://jitpack.io") }
   }
 }
 
@@ -27,5 +26,4 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 includeBuild("build-logic")
 
 include(":blueprint-core")
-include(":blueprint-diagrams")
 include(":blueprint-recipes")

@@ -39,14 +39,6 @@ jobs:
           add-job-summary: on-failure
           cache-read-only: false
 
-      - name: Run baseline
-        run: ./gradlew dependencyGuardBaseline
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v6
-        with:
-          commit_message: Baseline dependencies
-
       - name: Check
         run: ./gradlew check
 

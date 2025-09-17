@@ -1,8 +1,6 @@
 package blueprint.gradle
 
 import com.autonomousapps.DependencyAnalysisPlugin
-import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPlugin
-import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,7 +19,6 @@ class ConventionKotlin : Plugin<Project> {
       apply(KotlinPluginWrapper::class)
       apply(ConventionIdea::class)
       apply(DependencyAnalysisPlugin::class.java)
-      apply(DependencyGuardPlugin::class)
     }
 
     val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
@@ -44,13 +41,6 @@ class ConventionKotlin : Plugin<Project> {
       val javaInt = javaVersion.toInt()
       sourceCompatibility = JavaVersion.toVersion(javaInt)
       targetCompatibility = JavaVersion.toVersion(javaInt)
-    }
-
-    extensions.configure<DependencyGuardPluginExtension> {
-      configuration("compileClasspath")
-      configuration("runtimeClasspath")
-      configuration("testCompileClasspath")
-      configuration("testRuntimeClasspath")
     }
   }
 }

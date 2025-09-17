@@ -1,4 +1,4 @@
 package blueprint.core
 
-private val isGradleSync: Boolean
+public val isIntellijSyncing: Boolean
   get() = System.getProperty("idea.sync.active") == "true"

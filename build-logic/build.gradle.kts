@@ -20,7 +20,6 @@ kotlin {
 
 dependencies {
   compileOnly(libs.plugin.dependencyAnalysis)
-  compileOnly(libs.plugin.dependencyGuard)
   compileOnly(libs.plugin.dokka)
   compileOnly(libs.plugin.kotlin)
   compileOnly(libs.plugin.publish)
