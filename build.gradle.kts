@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.dependencyAnalysis)
+  alias(libs.plugins.detekt) apply false
   alias(libs.plugins.dokka) apply false
   alias(libs.plugins.kotlin) apply false
   alias(libs.plugins.publish) apply false
