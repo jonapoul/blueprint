@@ -22,7 +22,6 @@ fun DependencyHandler.plugin(dependency: Provider<PluginDependency>) =
   dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") }
 
 dependencies {
-  compileOnly(plugin(libs.plugins.dependencyAnalysis))
   compileOnly(plugin(libs.plugins.detekt))
   compileOnly(plugin(libs.plugins.dokka))
   compileOnly(plugin(libs.plugins.kotlin))

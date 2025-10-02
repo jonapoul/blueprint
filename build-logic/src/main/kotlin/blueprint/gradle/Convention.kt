@@ -1,6 +1,5 @@
 package blueprint.gradle
 
-import com.autonomousapps.DependencyAnalysisPlugin
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
@@ -37,7 +36,6 @@ class Convention : Plugin<Project> {
       apply(IdeaPlugin::class)
       apply(MavenPublishPlugin::class)
       apply(DokkaJavadocPlugin::class)
-      apply(DependencyAnalysisPlugin::class.java)
       apply(DetektPlugin::class)
       apply(SpotlessPlugin::class)
     }
