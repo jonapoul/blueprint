@@ -1,6 +1,5 @@
 plugins {
-  alias(libs.plugins.convention.kotlin)
-  alias(libs.plugins.convention.publish)
+  id("blueprint.convention")
 }
 
 dependencies {

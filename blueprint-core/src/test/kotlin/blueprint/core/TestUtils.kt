@@ -24,7 +24,8 @@ internal fun createRunner(fixtureDir: File, propertyValue: Any? = null): GradleR
     args += "-P$TARGET_PROPERTY_NAME=$propertyValue"
   }
 
-  return GradleRunner.create()
+  return GradleRunner
+    .create()
     .withProjectDir(fixtureDir)
     .withDebug(true) // Run in-process
     .withArguments(args)
@@ -38,7 +39,7 @@ internal fun BuildResult.assertAssembleSuccess() {
 internal fun BuildResult.assertContains(message: String) {
   assertTrue(
     actual = output.contains(message),
-    message = "Should find \"$message\", got:\n$output"
+    message = "Should find \"$message\", got:\n$output",
   )
 }
 
@@ -46,7 +47,7 @@ internal fun BuildResult.assertPropertyValuePrinted(value: String) {
   val expected = "$TARGET_PROPERTY_NAME = $value"
   assertTrue(
     actual = output.contains(expected),
-    message = "Should find \"$expected\", got:\n$output"
+    message = "Should find \"$expected\", got:\n$output",
   )
 }
 

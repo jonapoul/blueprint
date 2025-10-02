@@ -18,22 +18,27 @@ kotlin {
   jvmToolchain(javaVersion)
 }
 
+fun DependencyHandler.plugin(dependency: Provider<PluginDependency>) =
+  dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") }
+
 dependencies {
-  compileOnly(libs.plugin.dependencyAnalysis)
-  compileOnly(libs.plugin.dependencyGuard)
-  compileOnly(libs.plugin.dokka)
-  compileOnly(libs.plugin.kotlin)
-  compileOnly(libs.plugin.publish)
+  compileOnly(plugin(libs.plugins.dependencyAnalysis))
+  compileOnly(plugin(libs.plugins.dokka))
+  compileOnly(plugin(libs.plugins.kotlin))
+  compileOnly(plugin(libs.plugins.publish))
+  compileOnly(plugin(libs.plugins.spotless))
 }
 
 gradlePlugin {
   plugins {
-    create(id = "blueprint.convention.kotlin", impl = "blueprint.gradle.ConventionKotlin")
-    create(id = "blueprint.convention.publish", impl = "blueprint.gradle.ConventionPublish")
+    create(id = "blueprint.convention", impl = "blueprint.gradle.Convention")
   }
 }
 
-fun NamedDomainObjectContainer<PluginDeclaration>.create(id: String, impl: String) = create(id) {
+fun NamedDomainObjectContainer<PluginDeclaration>.create(
+  id: String,
+  impl: String,
+) = create(id) {
   this.id = id
   implementationClass = impl
 }

@@ -11,9 +11,8 @@ public fun Project.isAndroid(): Boolean = plugins.hasPlugin("com.android.base")
 
 public fun Project.isAndroidApp(): Boolean = plugins.hasPlugin("com.android.application")
 
-public fun Project.isAndroidCompose(): Boolean {
-  return extensions.findByType(CommonExtension::class)?.buildFeatures?.compose == true
-}
+public fun Project.isAndroidCompose(): Boolean =
+  extensions.findByType(CommonExtension::class)?.buildFeatures?.compose == true
 
 public fun Project.isAndroidLib(): Boolean = plugins.hasPlugin("com.android.library")
 
