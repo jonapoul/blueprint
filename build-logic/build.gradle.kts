@@ -22,7 +22,7 @@ fun DependencyHandler.plugin(dependency: Provider<PluginDependency>) =
   dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") }
 
 dependencies {
-  compileOnly(plugin(libs.plugins.dependencyAnalysis))
+  compileOnly(plugin(libs.plugins.detekt))
   compileOnly(plugin(libs.plugins.dokka))
   compileOnly(plugin(libs.plugins.kotlin))
   compileOnly(plugin(libs.plugins.publish))
@@ -31,14 +31,9 @@ dependencies {
 
 gradlePlugin {
   plugins {
-    create(id = "blueprint.convention", impl = "blueprint.gradle.Convention")
+    create("convention") {
+      id = "blueprint.convention"
+      implementationClass = "blueprint.gradle.Convention"
+    }
   }
-}
-
-fun NamedDomainObjectContainer<PluginDeclaration>.create(
-  id: String,
-  impl: String,
-) = create(id) {
-  this.id = id
-  implementationClass = impl
 }
