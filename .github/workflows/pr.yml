@@ -27,6 +27,15 @@ jobs:
           fetch-tags: true
           ref: ${{ github.head_ref }}
 
+      - name: Install ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.7.1/ktlint
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+
+      - name: Run ktlint
+        run: scripts/ktlintCheck.sh
+
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:

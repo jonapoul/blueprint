@@ -35,7 +35,7 @@ public fun Project.androidLibBlueprint() {
             "META-INF/LICENSE*",
             "META-INF/NOTICE*",
             "META-INF/ASL2.0",
-          )
+          ),
         )
       }
 

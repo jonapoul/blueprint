@@ -1,22 +1,23 @@
+import blueprint.gradle.plugin
+
 plugins {
-  alias(libs.plugins.convention.kotlin)
-  alias(libs.plugins.convention.publish)
+  id("blueprint.convention")
 }
 
 dependencies {
   compileOnly(gradleApi())
   compileOnly(gradleKotlinDsl())
   compileOnly(libs.plugin.agp)
-  compileOnly(libs.plugin.androidCacheFix)
-  compileOnly(libs.plugin.compose)
-  compileOnly(libs.plugin.dependencySort)
-  compileOnly(libs.plugin.detekt)
   compileOnly(libs.plugin.kotlin)
   compileOnly(libs.plugin.kover)
-  compileOnly(libs.plugin.ktlint)
-  compileOnly(libs.plugin.licensee)
   compileOnly(libs.plugin.powerAssert)
-  compileOnly(libs.plugin.spotless)
+  compileOnly(plugin(libs.plugins.androidCacheFix))
+  compileOnly(plugin(libs.plugins.compose))
+  compileOnly(plugin(libs.plugins.dependencySort))
+  compileOnly(plugin(libs.plugins.detekt))
+  compileOnly(plugin(libs.plugins.ktlint))
+  compileOnly(plugin(libs.plugins.licensee))
+  compileOnly(plugin(libs.plugins.spotless))
   implementation(projects.blueprintCore)
   testImplementation(gradleTestKit())
   testImplementation(libs.test.junit)

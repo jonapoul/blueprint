@@ -75,7 +75,10 @@ public fun Project.composeBlueprint(
 
   extensions.configure<ComposeCompilerGradlePluginExtension> {
     if (writeMetrics) {
-      val metricReportDir = project.layout.buildDirectory.dir("compose_metrics").get().asFile
+      val metricReportDir = project.layout.buildDirectory
+        .dir("compose_metrics")
+        .get()
+        .asFile
       metricsDestination.set(metricReportDir)
       reportsDestination.set(metricReportDir)
     }
