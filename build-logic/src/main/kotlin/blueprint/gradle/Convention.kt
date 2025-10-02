@@ -1,6 +1,8 @@
 package blueprint.gradle
 
 import com.autonomousapps.DependencyAnalysisPlugin
+import com.diffplug.gradle.spotless.SpotlessExtension
+import com.diffplug.gradle.spotless.SpotlessPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
@@ -9,6 +11,11 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getValue
@@ -32,11 +39,20 @@ class Convention : Plugin<Project> {
       apply(DokkaJavadocPlugin::class)
       apply(DependencyAnalysisPlugin::class.java)
       apply(DetektPlugin::class)
+      apply(SpotlessPlugin::class)
     }
 
+    kotlin()
+    test()
+    idea()
+    detekt()
+    spotless()
+  }
+
+  private fun Project.kotlin() {
     val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
 
-    tasks.withType<KotlinCompile> {
+    tasks.withType<KotlinCompile>().configureEach {
       compilerOptions {
         jvmTarget.set(JvmTarget.fromTarget(javaVersion))
         freeCompilerArgs.addAll(
@@ -55,14 +71,48 @@ class Convention : Plugin<Project> {
       sourceCompatibility = JavaVersion.toVersion(javaInt)
       targetCompatibility = JavaVersion.toVersion(javaInt)
     }
+  }
 
+  private fun Project.test() {
+    tasks.withType<Test>().configureEach {
+      testLogging {
+        events = setOf(PASSED, SKIPPED, FAILED)
+        exceptionFormat = FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = false
+        displayGranularity = 2
+      }
+    }
+  }
+
+  private fun Project.spotless() {
+    extensions.configure<SpotlessExtension> {
+      format("misc") {
+        target("*.gradle", "*.md", ".gitignore")
+        trimTrailingWhitespace()
+        leadingTabsToSpaces(2)
+        endWithNewline()
+      }
+
+      format("licenseKotlin") {
+        licenseHeaderFile(rootProject.file("config/spotless.kt"), "(package|@file:)")
+        target("src/**/*.kt")
+      }
+    }
+  }
+
+  private fun Project.idea() {
     extensions.configure<IdeaModel> {
       module {
         isDownloadSources = true
         isDownloadJavadoc = true
       }
     }
+  }
 
+  private fun Project.detekt() {
     extensions.configure<DetektExtension> {
       config.setFrom(rootProject.file("config/detekt.yml"))
       buildUponDefaultConfig = true

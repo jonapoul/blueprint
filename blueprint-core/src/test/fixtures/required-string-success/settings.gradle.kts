@@ -1,9 +1,20 @@
 @file:Suppress("UnstableApiUsage")
 
 pluginManagement {
-  includeBuild("../../test-build-logic")
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    google()
+  }
 }
 
-plugins {
-  id("blueprintTests")
+dependencyResolutionManagement {
+  versionCatalogs.register("libs") {
+    from(files("../../../../../gradle/libs.versions.toml"))
+  }
+
+  repositories {
+    mavenCentral()
+    google()
+  }
 }
