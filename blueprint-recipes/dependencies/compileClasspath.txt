@@ -16,9 +16,9 @@ com.github.ben-manes:gradle-versions-plugin:0.52.0
 com.squareup.sort-dependencies:com.squareup.sort-dependencies.gradle.plugin:0.15
 com.squareup:javawriter:2.5.0
 com.squareup:sort-dependencies-gradle-plugin:0.15
-gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:3.0.1
+gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:3.0.2
 io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8
-org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin:3.0.1
+org.gradle.android.cache-fix:org.gradle.android.cache-fix.gradle.plugin:3.0.2
 org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.2.10
 org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.2.10
 org.jetbrains.kotlin:fus-statistics-gradle-plugin:2.2.10
