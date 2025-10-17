@@ -16,7 +16,7 @@ androidCacheFix = { id = "org.gradle.android.cache-fix", version = "3.0.2" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dependencySort = { id = "com.squareup.sort-dependencies", version = "0.15" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
-dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
+dokka = { id = "org.jetbrains.dokka", version = "2.1.0" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "13.1.0" }
 licensee = { id = "app.cash.licensee", version = "1.14.1" }
