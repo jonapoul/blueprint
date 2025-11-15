@@ -18,4 +18,7 @@ public val Project.libs: VersionCatalog
 public operator fun VersionCatalog.invoke(alias: String): Provider<MinimalExternalModuleDependency> =
   findLibrary(alias).get()
 
+public operator fun VersionCatalog.get(alias: String): Provider<MinimalExternalModuleDependency> =
+  invoke(alias)
+
 public fun VersionCatalog.version(alias: String): VersionConstraint = findVersion(alias).get()
