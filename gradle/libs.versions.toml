@@ -9,7 +9,7 @@ plugin-powerAssert = { module = "org.jetbrains.kotlin:kotlin-power-assert", vers
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotlin-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
 test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-test-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.19" }
+test-testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.20" }
 
 [plugins]
 androidCacheFix = { id = "org.gradle.android.cache-fix", version = "3.0.3" }
