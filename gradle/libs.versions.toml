@@ -14,7 +14,7 @@ test-testParameterInjector = { module = "com.google.testparameterinjector:test-p
 [plugins]
 androidCacheFix = { id = "org.gradle.android.cache-fix", version = "3.0.3" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-dependencySort = { id = "com.squareup.sort-dependencies", version = "0.15" }
+dependencySort = { id = "com.squareup.sort-dependencies", version = "0.16" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
 dokka = { id = "org.jetbrains.dokka", version = "2.1.0" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
