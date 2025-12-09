@@ -4,7 +4,7 @@ kotlin = "2.2.21"
 [libraries]
 plugin-agp = { module = "com.android.tools.build:gradle", version = "8.13.1" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version = "0.9.3" }
+plugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version = "0.9.4" }
 plugin-powerAssert = { module = "org.jetbrains.kotlin:kotlin-power-assert", version.ref = "kotlin" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotlin-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
