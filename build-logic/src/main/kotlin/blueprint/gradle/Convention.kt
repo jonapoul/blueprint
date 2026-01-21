@@ -16,16 +16,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
-import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.dokka.gradle.formats.DokkaJavadocPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtensionConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -48,11 +46,11 @@ class Convention : Plugin<Project> {
   }
 
   private fun Project.kotlin() {
-    val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
+    val javaVersion = providers.gradleProperty("blueprint.javaVersion")
 
-    tasks.withType<KotlinCompile>().configureEach {
+    tasks.withType(KotlinCompile::class.java).configureEach {
       compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(javaVersion))
+        jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
         freeCompilerArgs.addAll(
           "-Xsam-conversions=class",
           "-Xexplicit-api=strict",
@@ -60,19 +58,19 @@ class Convention : Plugin<Project> {
       }
     }
 
-    extensions.configure<KotlinBaseExtension> {
+    extensions.configure(KotlinTopLevelExtensionConfig::class.java) {
       explicitApi()
     }
 
-    extensions.configure<JavaPluginExtension> {
-      val javaInt = javaVersion.toInt()
-      sourceCompatibility = JavaVersion.toVersion(javaInt)
-      targetCompatibility = JavaVersion.toVersion(javaInt)
+    val javaInt = javaVersion.map { JavaVersion.toVersion(it.toInt()) }
+    extensions.configure(JavaPluginExtension::class.java) {
+      sourceCompatibility = javaInt.get()
+      targetCompatibility = javaInt.get()
     }
   }
 
   private fun Project.test() {
-    tasks.withType<Test>().configureEach {
+    tasks.withType(Test::class.java).configureEach {
       testLogging {
         events = setOf(PASSED, SKIPPED, FAILED)
         exceptionFormat = FULL
@@ -86,23 +84,18 @@ class Convention : Plugin<Project> {
   }
 
   private fun Project.spotless() {
-    extensions.configure<SpotlessExtension> {
+    extensions.configure(SpotlessExtension::class.java) {
       format("misc") {
         target("*.gradle", "*.md", ".gitignore")
         trimTrailingWhitespace()
         leadingTabsToSpaces(2)
         endWithNewline()
       }
-
-      format("licenseKotlin") {
-        licenseHeaderFile(rootProject.file("config/spotless.kt"), "(package|@file:)")
-        target("src/**/*.kt")
-      }
     }
   }
 
   private fun Project.idea() {
-    extensions.configure<IdeaModel> {
+    extensions.configure(IdeaModel::class.java) {
       module {
         isDownloadSources = true
         isDownloadJavadoc = true
@@ -111,12 +104,12 @@ class Convention : Plugin<Project> {
   }
 
   private fun Project.detekt() {
-    extensions.configure<DetektExtension> {
+    extensions.configure(DetektExtension::class.java) {
       config.setFrom(rootProject.file("config/detekt.yml"))
       buildUponDefaultConfig = true
     }
 
-    val detektTasks = tasks.withType<Detekt>()
+    val detektTasks = tasks.withType(Detekt::class.java)
     val detektCheck by tasks.registering { dependsOn(detektTasks) }
     tasks.named("check").configure { dependsOn(detektCheck) }
 

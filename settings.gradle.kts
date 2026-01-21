@@ -15,8 +15,6 @@ dependencyResolutionManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    mavenLocal()
   }
 }
 
@@ -25,5 +23,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 includeBuild("build-logic")
 
-include(":blueprint-core")
-include(":blueprint-recipes")
+include(
+  ":blueprint-core",
+)

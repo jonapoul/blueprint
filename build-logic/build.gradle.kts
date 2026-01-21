@@ -7,7 +7,7 @@ plugins {
 val rootProps = Properties()
 val propsFile = File(rootDir.parentFile, "gradle.properties")
 rootProps.load(propsFile.inputStream())
-val javaVersion = rootProps["javaVersion"]?.toString()?.toInt() ?: error("Require javaVersion property")
+val javaVersion = rootProps["blueprint.javaVersion"]?.toString()?.toInt() ?: error("Require javaVersion property")
 
 java {
   sourceCompatibility = JavaVersion.toVersion(javaVersion)
@@ -18,15 +18,15 @@ kotlin {
   jvmToolchain(javaVersion)
 }
 
-fun DependencyHandler.plugin(dependency: Provider<PluginDependency>) =
-  dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") }
-
 dependencies {
-  compileOnly(plugin(libs.plugins.detekt))
-  compileOnly(plugin(libs.plugins.dokka))
-  compileOnly(plugin(libs.plugins.kotlin))
-  compileOnly(plugin(libs.plugins.publish))
-  compileOnly(plugin(libs.plugins.spotless))
+  fun DependencyHandler.compileOnlyPlugin(dependency: Provider<PluginDependency>) =
+    compileOnly(dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") })
+
+  compileOnlyPlugin(libs.plugins.detekt)
+  compileOnlyPlugin(libs.plugins.dokka)
+  compileOnlyPlugin(libs.plugins.kotlin)
+  compileOnlyPlugin(libs.plugins.publish)
+  compileOnlyPlugin(libs.plugins.spotless)
 }
 
 gradlePlugin {
