@@ -1,7 +1,7 @@
 package blueprint.core
 
-import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.process.ExecOperations
@@ -10,11 +10,11 @@ import java.time.Instant
 import java.time.ZoneOffset
 import javax.inject.Inject
 
-public fun Project.gitVersionHash(): Provider<String> = providers.of(GitVersionHashValueSource::class.java) {}
+public fun ProviderFactory.gitVersionHash(): Provider<String> = of(GitVersionHashValueSource::class.java) {}
 
-public fun Project.gitVersionCode(): Provider<Int> = providers.of(GitVersionCodeValueSource::class.java) {}
+public fun ProviderFactory.gitVersionCode(): Provider<Int> = of(GitVersionCodeValueSource::class.java) {}
 
-public fun Project.gitVersionDate(): Provider<String> = gitVersionCode().map { seconds ->
+public fun ProviderFactory.gitVersionDate(): Provider<String> = gitVersionCode().map { seconds ->
   val date = Instant.ofEpochSecond(seconds.toLong())
     .atZone(ZoneOffset.UTC)
     .toLocalDate()

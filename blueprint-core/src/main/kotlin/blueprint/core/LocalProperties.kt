@@ -2,6 +2,7 @@ package blueprint.core
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.initialization.Settings
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
@@ -20,6 +21,15 @@ public fun Project.localProperties(
   }
 }
 
+public fun Settings.localProperties(
+  filename: String = "local.properties",
+): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) { spec ->
+  spec.parameters { params ->
+    val propsFile = rootProject.projectDir.resolve(filename)
+    params.propertiesFile.set(propsFile)
+  }
+}
+
 public fun Provider<Map<String, String>>.getOptional(key: String): String? =
   map { it[key] ?: error("No '$key' in ${it.keys}") }
     .orNull
@@ -33,7 +43,7 @@ private abstract class LocalPropertiesValueSource :
 
   override fun obtain(): Map<String, String> {
     val file = parameters.propertiesFile.asFile.get()
-    if (!file.exists()) return emptyMap()
+    if (!file.isFile) return emptyMap()
     return Properties()
       .apply { file.reader().use(::load) }
       .run { stringPropertyNames().associateWith(::getProperty) }

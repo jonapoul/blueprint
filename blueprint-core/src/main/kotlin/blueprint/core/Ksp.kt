@@ -3,12 +3,12 @@ package blueprint.core
 import org.gradle.api.Project
 
 public fun Project.kspAllConfigs(dependency: Any) {
-  dependencies.apply {
+  with(dependencies) {
     configurations
-      .map { config -> config.name }
-      .filter { name -> name.startsWith("ksp") && name != "ksp" }
-      .ifEmpty { error("No KSP configurations found in $path") }
-      .onEach { name -> logger.info("Applying $dependency to config $name") }
-      .forEach { name -> add(name, dependency) }
+      .matching { config -> config.name.startsWith("ksp") && config.name != "ksp" }
+      .configureEach { config ->
+        logger.info("Applying {} to config {}", dependency, config.name)
+        add(config.name, dependency)
+      }
   }
 }
