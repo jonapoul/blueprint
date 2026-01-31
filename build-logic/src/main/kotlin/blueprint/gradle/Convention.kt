@@ -1,7 +1,5 @@
 package blueprint.gradle
 
-import com.diffplug.gradle.spotless.SpotlessExtension
-import com.diffplug.gradle.spotless.SpotlessPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
@@ -35,14 +33,12 @@ class Convention : Plugin<Project> {
       apply(MavenPublishPlugin::class)
       apply(DokkaJavadocPlugin::class)
       apply(DetektPlugin::class)
-      apply(SpotlessPlugin::class)
     }
 
     kotlin()
     test()
     idea()
     detekt()
-    spotless()
   }
 
   private fun Project.kotlin() {
@@ -79,17 +75,6 @@ class Convention : Plugin<Project> {
         showStackTraces = true
         showStandardStreams = false
         displayGranularity = 2
-      }
-    }
-  }
-
-  private fun Project.spotless() {
-    extensions.configure(SpotlessExtension::class.java) {
-      format("misc") {
-        target("*.gradle", "*.md", ".gitignore")
-        trimTrailingWhitespace()
-        leadingTabsToSpaces(2)
-        endWithNewline()
       }
     }
   }

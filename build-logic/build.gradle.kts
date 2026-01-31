@@ -26,7 +26,6 @@ dependencies {
   compileOnlyPlugin(libs.plugins.dokka)
   compileOnlyPlugin(libs.plugins.kotlin)
   compileOnlyPlugin(libs.plugins.publish)
-  compileOnlyPlugin(libs.plugins.spotless)
 }
 
 gradlePlugin {
