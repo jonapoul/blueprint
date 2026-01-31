@@ -19,8 +19,6 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
-import org.gradle.plugins.ide.idea.IdeaPlugin
-import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.jetbrains.dokka.gradle.formats.DokkaJavadocPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtensionConfig
@@ -31,7 +29,6 @@ class Convention : Plugin<Project> {
   override fun apply(target: Project): Unit = with(target) {
     with(pluginManager) {
       apply(KotlinPluginWrapper::class)
-      apply(IdeaPlugin::class)
       apply(MavenPublishPlugin::class)
       apply(DokkaJavadocPlugin::class)
       apply(DetektPlugin::class)
@@ -41,7 +38,6 @@ class Convention : Plugin<Project> {
 
     kotlin()
     test()
-    idea()
     detekt()
   }
 
@@ -79,15 +75,6 @@ class Convention : Plugin<Project> {
         showStackTraces = true
         showStandardStreams = false
         displayGranularity = 2
-      }
-    }
-  }
-
-  private fun Project.idea() {
-    extensions.configure(IdeaModel::class.java) {
-      module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
       }
     }
   }
