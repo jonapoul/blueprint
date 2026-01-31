@@ -1,6 +1,5 @@
 plugins {
   id("blueprint.convention")
-  alias(libs.plugins.dependencyGuard)
 }
 
 dependencyGuard {

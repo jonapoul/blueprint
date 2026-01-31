@@ -1,5 +1,6 @@
 package blueprint.gradle
 
+import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
@@ -33,6 +34,7 @@ class Convention : Plugin<Project> {
       apply(MavenPublishPlugin::class)
       apply(DokkaJavadocPlugin::class)
       apply(DetektPlugin::class)
+      apply(DependencyGuardPlugin::class)
     }
 
     kotlin()
