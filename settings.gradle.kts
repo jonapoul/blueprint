@@ -3,6 +3,7 @@
 rootProject.name = "blueprint"
 
 pluginManagement {
+  includeBuild("build-logic")
   repositories {
     mavenCentral()
     google()
@@ -18,10 +19,16 @@ dependencyResolutionManagement {
   }
 }
 
-enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+plugins {
+  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+  id("com.gradle.develocity") version "4.3.1"
+}
 
-includeBuild("build-logic")
+develocity {
+  buildScan.publishing.onlyIf { false }
+}
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 include(
   ":blueprint-core",
