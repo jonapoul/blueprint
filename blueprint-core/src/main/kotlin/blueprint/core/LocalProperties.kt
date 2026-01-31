@@ -31,7 +31,8 @@ public fun Settings.localProperties(
 }
 
 public fun Provider<Map<String, String>>.getOptional(key: String): String? =
-  map { it[key] ?: error("No '$key' in ${it.keys}") }
+//   map { it[key] ?: error("No '$key' in ${it.keys}") }
+  map { props -> props[key] }
     .orNull
     ?.takeIf { it.isNotEmpty() }
 

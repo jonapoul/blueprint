@@ -43,6 +43,7 @@ private abstract class GitVersionCodeValueSource : ValueSource<Int, ValueSourceP
       spec.commandLine("git", "show", "-s", "--format=%ct")
       spec.standardOutput = output
     }
-    return output.toString().trim().toInt()
+    val result = output.toString().trim()
+    return requireNotNull(result.toIntOrNull()) { "Expected integer output, got $result" }
   }
 }
