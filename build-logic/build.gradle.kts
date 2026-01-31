@@ -22,11 +22,13 @@ dependencies {
   fun DependencyHandler.compileOnlyPlugin(dependency: Provider<PluginDependency>) =
     compileOnly(dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") })
 
+  compileOnlyPlugin(libs.plugins.buildConfig)
   compileOnlyPlugin(libs.plugins.dependencyAnalysis)
   compileOnlyPlugin(libs.plugins.dependencyGuard)
   compileOnlyPlugin(libs.plugins.detekt)
   compileOnlyPlugin(libs.plugins.dokka)
   compileOnlyPlugin(libs.plugins.kotlin)
+  compileOnlyPlugin(libs.plugins.kotlinAbi)
   compileOnlyPlugin(libs.plugins.publish)
 }
 

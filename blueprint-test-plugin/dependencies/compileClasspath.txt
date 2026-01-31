@@ -1,0 +1,4 @@
+com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:5.5.1
+com.github.gmazzo.buildconfig:plugin:5.5.1
+org.jetbrains.kotlin:kotlin-stdlib:2.0.21
+org.jetbrains:annotations:13.0

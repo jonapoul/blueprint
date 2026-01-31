@@ -1,0 +1,38 @@
+public final class blueprint/test/FileTree {
+	public final fun getFiles ()Ljava/util/Map;
+}
+
+public final class blueprint/test/FileTree$Builder {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun build ()Lblueprint/test/FileTree;
+	public final fun div (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun invoke (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun invoke (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class blueprint/test/FileTreeKt {
+	public static final field DEFAULT_REPOSITORIES_KTS Ljava/lang/String;
+}
+
+public abstract interface class blueprint/test/Scenario {
+	public abstract fun getRootDir ()Ljava/io/File;
+	public abstract fun getRunner ()Lorg/gradle/testkit/runner/GradleRunner;
+}
+
+public final class blueprint/test/ScenarioKt {
+	public static final fun runTask (Lblueprint/test/Scenario;Ljava/lang/String;[Ljava/lang/String;)Lorg/gradle/testkit/runner/GradleRunner;
+}
+
+public abstract class blueprint/test/ScenarioTest {
+	public field rootDir Ljava/io/File;
+	public fun <init> ()V
+	protected fun defaultRunner ()Lorg/gradle/testkit/runner/GradleRunner;
+	protected final fun fileTree (Lkotlin/jvm/functions/Function1;)Lblueprint/test/FileTree;
+	protected abstract fun getFileTree ()Lblueprint/test/FileTree;
+	protected abstract fun getGradleVersion ()Ljava/lang/String;
+	public final fun getRootDir ()Ljava/io/File;
+	protected final fun runScenario (Lorg/gradle/testkit/runner/GradleRunner;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun runScenario$default (Lblueprint/test/ScenarioTest;Lorg/gradle/testkit/runner/GradleRunner;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun setRootDir (Ljava/io/File;)V
+}
+

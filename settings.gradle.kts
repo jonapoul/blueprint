@@ -32,4 +32,7 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 include(
   ":blueprint-core",
+  ":blueprint-test-assertk",
+  ":blueprint-test-plugin",
+  ":blueprint-test-runtime",
 )

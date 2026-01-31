@@ -13,28 +13,25 @@ import java.util.Properties
 
 public fun Project.localProperties(
   filename: String = "local.properties",
-): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) { spec ->
-  spec.parameters { params ->
+): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
+  parameters {
     @Suppress("UnstableApiUsage")
     val propsFile = rootProject.isolated.projectDirectory.file(filename)
-    params.propertiesFile.set(propsFile)
+    propertiesFile.set(propsFile)
   }
 }
 
 public fun Settings.localProperties(
   filename: String = "local.properties",
-): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) { spec ->
-  spec.parameters { params ->
+): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
+  parameters {
     val propsFile = rootProject.projectDir.resolve(filename)
-    params.propertiesFile.set(propsFile)
+    propertiesFile.set(propsFile)
   }
 }
 
 public fun Provider<Map<String, String>>.getOptional(key: String): String? =
-//   map { it[key] ?: error("No '$key' in ${it.keys}") }
-  map { props -> props[key] }
-    .orNull
-    ?.takeIf { it.isNotEmpty() }
+  map { props -> props[key] }.orNull?.takeIf { it.isNotEmpty() }
 
 private abstract class LocalPropertiesValueSource :
   ValueSource<Map<String, String>, LocalPropertiesValueSource.Parameters> {

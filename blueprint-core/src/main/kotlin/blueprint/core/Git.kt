@@ -15,7 +15,8 @@ public fun ProviderFactory.gitVersionHash(): Provider<String> = of(GitVersionHas
 public fun ProviderFactory.gitVersionCode(): Provider<Int> = of(GitVersionCodeValueSource::class.java) {}
 
 public fun ProviderFactory.gitVersionDate(): Provider<String> = gitVersionCode().map { seconds ->
-  val date = Instant.ofEpochSecond(seconds.toLong())
+  val date = Instant
+    .ofEpochSecond(seconds.toLong())
     .atZone(ZoneOffset.UTC)
     .toLocalDate()
   "%04d.%02d.%02d".format(date.year, date.monthValue, date.dayOfMonth)
@@ -26,9 +27,9 @@ private abstract class GitVersionHashValueSource : ValueSource<String, ValueSour
 
   override fun obtain(): String {
     val output = ByteArrayOutputStream()
-    execOperations.exec { spec ->
-      spec.commandLine("git", "rev-parse", "--short=8", "HEAD")
-      spec.standardOutput = output
+    execOperations.exec {
+      commandLine("git", "rev-parse", "--short=8", "HEAD")
+      standardOutput = output
     }
     return output.toString().trim()
   }
@@ -39,9 +40,9 @@ private abstract class GitVersionCodeValueSource : ValueSource<Int, ValueSourceP
 
   override fun obtain(): Int {
     val output = ByteArrayOutputStream()
-    execOperations.exec { spec ->
-      spec.commandLine("git", "show", "-s", "--format=%ct")
-      spec.standardOutput = output
+    execOperations.exec {
+      commandLine("git", "show", "-s", "--format=%ct")
+      standardOutput = output
     }
     val result = output.toString().trim()
     return requireNotNull(result.toIntOrNull()) { "Expected integer output, got $result" }

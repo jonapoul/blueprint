@@ -1,0 +1,62 @@
+public final class blueprint/core/BlueprintPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public final class blueprint/core/DependenciesKt {
+	public static final fun invoke (Lorg/gradle/kotlin/dsl/DependencyHandlerScope;Ljava/lang/String;Lorg/gradle/api/provider/Provider;)V
+}
+
+public final class blueprint/core/GitKt {
+	public static final fun gitVersionCode (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
+	public static final fun gitVersionDate (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
+	public static final fun gitVersionHash (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
+}
+
+public final class blueprint/core/KspKt {
+	public static final fun kspAllConfigs (Lorg/gradle/api/Project;Ljava/lang/Object;)V
+}
+
+public final class blueprint/core/LocalPropertiesKt {
+	public static final fun getOptional (Lorg/gradle/api/provider/Provider;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun localProperties (Lorg/gradle/api/Project;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun localProperties (Lorg/gradle/api/initialization/Settings;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static synthetic fun localProperties$default (Lorg/gradle/api/Project;Ljava/lang/String;ILjava/lang/Object;)Lorg/gradle/api/provider/Provider;
+	public static synthetic fun localProperties$default (Lorg/gradle/api/initialization/Settings;Ljava/lang/String;ILjava/lang/Object;)Lorg/gradle/api/provider/Provider;
+}
+
+public final class blueprint/core/MultiplatformKt {
+	public static final fun androidMainDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun androidUnitTestDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun commonMainDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun commonTestDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun jvmMainDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun jvmTestDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Lkotlin/jvm/functions/Function1;)V
+	public static final fun multiplatformDependencies (Lorg/jetbrains/kotlin/gradle/dsl/KotlinMultiplatformExtension;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class blueprint/core/PluginsKt {
+	public static final fun withAnyId (Lorg/gradle/api/plugins/PluginContainer;[Ljava/lang/String;Lorg/gradle/api/Action;)V
+}
+
+public final class blueprint/core/SystemPropertiesKt {
+	public static final fun isIntellijSyncing (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
+}
+
+public final class blueprint/core/TypedPropertiesKt {
+	public static final fun boolProperty (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun doubleProperty (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun floatProperty (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun intProperty (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun stringListProperty (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static synthetic fun stringListProperty$default (Lorg/gradle/api/provider/ProviderFactory;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/gradle/api/provider/Provider;
+}
+
+public final class blueprint/core/VersionCatalogsKt {
+	public static final fun get (Lorg/gradle/api/artifacts/VersionCatalog;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun getLibs (Lorg/gradle/api/Project;)Lorg/gradle/api/artifacts/VersionCatalog;
+	public static final fun plugin (Lorg/gradle/api/artifacts/VersionCatalog;Ljava/lang/String;)Lorg/gradle/api/provider/Provider;
+	public static final fun version (Lorg/gradle/api/artifacts/VersionCatalog;Ljava/lang/String;)Lorg/gradle/api/artifacts/VersionConstraint;
+}
+
