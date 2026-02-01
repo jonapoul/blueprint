@@ -3,14 +3,15 @@ import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 
 plugins {
   alias(libs.plugins.buildConfig) apply false
+  alias(libs.plugins.detekt) apply false
   alias(libs.plugins.dokka) apply false
   alias(libs.plugins.kotlin) apply false
   alias(libs.plugins.kotlinAbi) apply false
   alias(libs.plugins.publish) apply false
 
+  base
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.dependencyGuard)
-  alias(libs.plugins.detekt)
   alias(libs.plugins.publishReport)
 }
 
@@ -30,7 +31,7 @@ val detektReportMergeSarif by tasks.registering(ReportMergeTask::class) {
   output = layout.buildDirectory.file("reports/detekt/merge.sarif.json")
 }
 
-tasks.named("check").configure { dependsOn(detektReportMergeSarif) }
+tasks.named("check") { dependsOn(detektReportMergeSarif) }
 
 allprojects {
   detektReportMergeSarif.configure {

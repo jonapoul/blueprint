@@ -138,6 +138,7 @@ class Convention : Plugin<Project> {
 
     detektTasks.configureEach {
       reports.html.required.set(true)
+      reports.sarif.required.set(true)
       exclude { it.file.path.contains("generated") }
     }
   }
