@@ -202,13 +202,56 @@ Version is defined in `gradle.properties` as `VERSION_NAME=2.0.0-SNAPSHOT`. For 
 
 ### CI/CD
 
-The PR workflow (`.github/workflows/pr.yml`) runs:
-1. Gitleaks secret scanning
-2. ktlint checks
-3. `./gradlew check` (tests, detekt)
-4. Publishes test reports and uploads build artifacts
+The project uses multiple GitHub Actions workflows for continuous integration and deployment:
 
-Java 21 is used in CI (via Zulu distribution) despite the library targeting Java 17.
+#### Pull Request Workflows
+
+**pr.yml** - Main PR validation (runs on `pull_request`):
+- Checks out code with full history and tags
+- Sets up JDK 17 (Zulu distribution) from `.github/workflows/.java-version`
+- Configures Gradle with caching (read-only mode for PRs to avoid cache pollution)
+- Runs `./gradlew check` (includes tests and detekt)
+- Publishes test report annotations via `gmazzo/publish-report-annotations`
+- Uploads detekt SARIF results to GitHub Code Scanning
+- Uses concurrency control to cancel outdated PR builds
+
+**gitleaks.yml** - Secret scanning (runs on `pull_request`):
+- Scans git history for leaked secrets using gitleaks/gitleaks-action
+- Requires full git history (`fetch-depth: 0`) to scan all commits
+- Uses config from `./config/gitleaks.toml`
+
+**ktlint.yml** - Kotlin linting (runs on `pull_request` when `**.kt` or `**.kts` files change):
+- Caches ktlint binary (version 1.8.0) to avoid repeated downloads
+- Runs `scripts/ktlintCheck.sh` for Kotlin code style validation
+
+**validate.yml** - Workflow validation (runs on `push` when workflow files change):
+- Validates GitHub Actions workflow syntax using actionlint
+
+#### Publishing Workflows
+
+**publish-snapshot.yml** - Snapshot publishing (runs on push to `main` or `workflow_dispatch`):
+- Only publishes if version contains `-SNAPSHOT` and repository is `jonapoul/blueprint`
+- Extracts version from `gradle.properties` (VERSION_NAME)
+- Runs `./gradlew publishToMavenCentral -x dokkaGeneratePublicationHtml --no-configuration-cache`
+- Uses sequential concurrency (group: `publish`) to prevent parallel publish jobs
+- Requires secrets: SONATYPE_USERNAME, SONATYPE_PASSWORD, GPG_IN_MEMORY_KEY, GPG_KEY_PASSWORD
+
+**publish-release.yml** - Release publishing (runs on git tag push or `workflow_dispatch`):
+- Two jobs: `verify-version` and `publish`
+- `verify-version`: Validates that git tag matches VERSION_NAME in gradle.properties
+- `publish`: Runs `./gradlew publish` and creates GitHub release with auto-generated notes
+- Uses sequential concurrency (group: `publish`) to prevent parallel publish jobs
+
+#### Common Configuration
+
+- **Java Version**: JDK 17 (Zulu distribution) specified in `.github/workflows/.java-version`
+- **Gradle Setup**: Uses `gradle/actions/setup-gradle@v5` with:
+  - Build cache encryption via GRADLE_ENCRYPTION_KEY secret
+  - Read-only cache for PR builds (prevents cache pollution)
+  - Write cache for main/release builds
+  - Job summaries on failure
+- **Permissions**: Workflows use minimal required permissions (principle of least privilege)
+- **Caching**: ktlint binary is cached to avoid repeated downloads; Gradle wrapper and dependencies are cached via setup-gradle action
 
 ### Adding New Utilities
 

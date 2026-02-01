@@ -7,6 +7,9 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 # This ensures publish jobs run sequentially instead of in parallel
 concurrency:
   group: publish
@@ -20,7 +23,7 @@ jobs:
       git-tag: ${{ steps.git-tag.outputs.version }}
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-tags: true
@@ -60,7 +63,7 @@ jobs:
     needs: verify-version
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v6
 
       - name: Setup JDK

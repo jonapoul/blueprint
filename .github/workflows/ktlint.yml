@@ -1,14 +1,13 @@
 name: ktlint
 
 on:
-  push:
+  pull_request:
     paths:
       - "**.kt"
       - "**.kts"
 
 permissions:
   contents: read
-  pull-requests: read
 
 jobs:
   ktlint:
@@ -17,11 +16,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install
-        run: |
-          curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
-          chmod a+x ktlint
-          sudo mv ktlint /usr/local/bin/
+      - name: Cache ktlint
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/bin/ktlint
+          key: ktlint-1.8.0
 
-      - name: Run
+      - name: Install ktlint
+        run: |
+          if [ ! -f /usr/local/bin/ktlint ]; then
+            curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
+            chmod a+x ktlint
+            sudo mv ktlint /usr/local/bin/
+          fi
+
+      - name: Run ktlint
         run: scripts/ktlintCheck.sh

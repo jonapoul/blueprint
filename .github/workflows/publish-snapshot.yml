@@ -18,17 +18,14 @@ jobs:
   publish-snapshot:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          fetch-tags: true
 
-      - name: Set up Java
+      - name: Setup JDK
         uses: actions/setup-java@v5
         with:
-          distribution: "zulu"
           java-version-file: .github/workflows/.java-version
+          distribution: "zulu"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
