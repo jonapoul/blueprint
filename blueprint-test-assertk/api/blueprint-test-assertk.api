@@ -1,0 +1,15 @@
+public final class blueprint/test/AssertionsKt {
+	public static final fun assertThatTask (Lblueprint/test/Scenario;Ljava/lang/String;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun buildsSuccessfully (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun failsBuild (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun outputContains (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun outputContainsLine (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun outputContainsMatch (Lassertk/Assert;Lkotlin/text/Regex;)Lassertk/Assert;
+	public static final fun outputDoesNotContain (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskFailed (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskHadResult (Lassertk/Assert;Ljava/lang/String;Lorg/gradle/testkit/runner/TaskOutcome;)Lassertk/Assert;
+	public static final fun taskSkipped (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskSucceeded (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskUpToDate (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+}
+

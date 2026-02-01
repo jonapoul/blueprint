@@ -1,7 +1,3 @@
-/**
- * Copyright © 2025 Jon Poulton
- * SPDX-License-Identifier: Apache-2.0
- */
 package blueprint.core
 
 import org.gradle.api.Action
@@ -14,9 +10,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension as KMPExtens
 public fun KMPExtension.multiplatformDependencies(
   name: String,
   handler: KotlinDependencyHandler.() -> Unit,
-): Unit = sourceSets { container ->
-  container.getByName(name) { sourceSet ->
-    sourceSet.dependencies(handler)
+): Unit = sourceSets {
+  named(name) {
+    dependencies(handler)
   }
 }
 

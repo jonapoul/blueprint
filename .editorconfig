@@ -9,11 +9,6 @@ insert_final_newline = true
 max_line_length = 120
 trim_trailing_whitespace = true
 
-# Disable all ktlint rules for generated code folder
-# noinspection EditorConfigKeyCorrectness
-[**/test/fixtures/**]
-ktlint = disabled
-
 [*.{kt,kts}]
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
 ij_kotlin_allow_trailing_comma = true
@@ -27,7 +22,3 @@ ij_kotlin_name_count_to_use_star_import_for_members = 999
 ktlint_standard_function-signature = disabled
 ktlint_standard_multiline-expression-wrapping = disabled
 ktlint_standard_string-template-indent = disabled
-
-# noinspection EditorConfigKeyCorrectness
-[config/spotless.kt]
-ktlint = disabled

@@ -1,23 +1,31 @@
 plugins {
   id("blueprint.convention")
+  `kotlin-dsl`
+  `java-gradle-plugin` // only needed for gradleTestKit
+}
+
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.add("-Xcontext-receivers")
+  }
 }
 
 dependencies {
   compileOnly(gradleApi())
-  compileOnly(gradleKotlinDsl())
-  compileOnly(libs.plugin.agp)
-  compileOnly(libs.plugin.kotlin)
-  testImplementation(gradleTestKit())
-  testImplementation(libs.test.junit)
-  testImplementation(libs.test.kotlin.common)
-  testImplementation(libs.test.kotlin.junit)
-  testImplementation(libs.test.testParameterInjector)
+  compileOnly(kotlin("gradle-plugin"))
+  testImplementation(project(":blueprint-test-assertk"))
+  testImplementation(project(":blueprint-test-runtime"))
+  testPluginClasspath(kotlin("gradle-plugin"))
 }
 
-val blueprintVersion = properties["VERSION_NAME"]?.toString() ?: error("No version")
-tasks.withType<Test> {
-  systemProperty("blueprintVersion", blueprintVersion)
-  systemProperty("kotlinVersion", libs.versions.kotlin.get())
-  systemProperty("line.separator", "\n")
-  dependsOn("publishToMavenLocal")
+gradlePlugin {
+  vcsUrl = "https://github.com/jonapoul/blueprint.git"
+  website = "https://github.com/jonapoul/blueprint"
+  plugins.register("blueprint") {
+    id = "dev.jonpoulton.blueprint"
+    description = properties["POM_DESCRIPTION"]?.toString()
+    implementationClass = "blueprint.core.BlueprintPlugin"
+    displayName = "Blueprint"
+    tags.addAll("gradle", "blueprint", "utilities")
+  }
 }

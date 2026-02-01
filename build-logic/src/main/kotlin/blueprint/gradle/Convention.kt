@@ -1,14 +1,22 @@
+@file:Suppress("UnstableApiUsage")
+
 package blueprint.gradle
 
-import com.diffplug.gradle.spotless.SpotlessExtension
-import com.diffplug.gradle.spotless.SpotlessPlugin
+import com.autonomousapps.DependencyAnalysisPlugin
+import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPlugin
+import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
+import com.github.gmazzo.buildconfig.BuildConfigExtension
+import com.github.gmazzo.buildconfig.BuildConfigPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import kotlinx.validation.BinaryCompatibilityValidatorPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -16,16 +24,21 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.buildConfigField
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
-import org.gradle.plugins.ide.idea.IdeaPlugin
-import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
+import org.gradle.util.GradleVersion
 import org.jetbrains.dokka.gradle.formats.DokkaJavadocPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtensionConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -33,26 +46,27 @@ class Convention : Plugin<Project> {
   override fun apply(target: Project): Unit = with(target) {
     with(pluginManager) {
       apply(KotlinPluginWrapper::class)
-      apply(IdeaPlugin::class)
       apply(MavenPublishPlugin::class)
       apply(DokkaJavadocPlugin::class)
       apply(DetektPlugin::class)
-      apply(SpotlessPlugin::class)
+      apply(DependencyAnalysisPlugin::class)
+      apply(BuildConfigPlugin::class)
+      apply(BinaryCompatibilityValidatorPlugin::class)
+      apply(DependencyGuardPlugin::class)
     }
 
     kotlin()
     test()
-    idea()
     detekt()
-    spotless()
+    dependencyGuard()
   }
 
   private fun Project.kotlin() {
-    val javaVersion = properties["javaVersion"]?.toString() ?: error("Require javaVersion property")
+    val javaVersion = providers.gradleProperty("blueprint.javaVersion")
 
-    tasks.withType<KotlinCompile>().configureEach {
+    tasks.withType(KotlinCompile::class).configureEach {
       compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(javaVersion))
+        jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
         freeCompilerArgs.addAll(
           "-Xsam-conversions=class",
           "-Xexplicit-api=strict",
@@ -60,20 +74,21 @@ class Convention : Plugin<Project> {
       }
     }
 
-    extensions.configure<KotlinBaseExtension> {
+    extensions.configure(KotlinTopLevelExtensionConfig::class) {
       explicitApi()
     }
 
-    extensions.configure<JavaPluginExtension> {
-      val javaInt = javaVersion.toInt()
-      sourceCompatibility = JavaVersion.toVersion(javaInt)
-      targetCompatibility = JavaVersion.toVersion(javaInt)
+    val javaInt = javaVersion.map { JavaVersion.toVersion(it.toInt()) }
+    extensions.configure(JavaPluginExtension::class) {
+      sourceCompatibility = javaInt.get()
+      targetCompatibility = javaInt.get()
     }
   }
 
   private fun Project.test() {
-    tasks.withType<Test>().configureEach {
+    tasks.withType(Test::class).configureEach {
       testLogging {
+        useJUnitPlatform()
         events = setOf(PASSED, SKIPPED, FAILED)
         exceptionFormat = FULL
         showCauses = true
@@ -83,46 +98,62 @@ class Convention : Plugin<Project> {
         displayGranularity = 2
       }
     }
-  }
 
-  private fun Project.spotless() {
-    extensions.configure<SpotlessExtension> {
-      format("misc") {
-        target("*.gradle", "*.md", ".gitignore")
-        trimTrailingWhitespace()
-        leadingTabsToSpaces(2)
-        endWithNewline()
-      }
-
-      format("licenseKotlin") {
-        licenseHeaderFile(rootProject.file("config/spotless.kt"), "(package|@file:)")
-        target("src/**/*.kt")
+    extensions.configure(BuildConfigExtension::class) {
+      generateAtSync.set(true)
+      sourceSets.named("test") {
+        packageName.set("blueprint.test")
+        useKotlinOutput { topLevelConstants = true }
+        buildConfigField("GRADLE_VERSION", GradleVersion.current().version)
       }
     }
-  }
 
-  private fun Project.idea() {
-    extensions.configure<IdeaModel> {
-      module {
-        isDownloadSources = true
-        isDownloadJavadoc = true
-      }
+    val testPluginClasspath by configurations.registering { isCanBeResolved = true }
+
+    tasks.withType(PluginUnderTestMetadata::class).configureEach {
+      pluginClasspath.from(testPluginClasspath)
+    }
+
+    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+    dependencies {
+      "testImplementation"(kotlin("stdlib"))
+      "testImplementation"(kotlin("test"))
+      "testImplementation"(libs.findLibrary("assertk").get())
+      "testImplementation"(libs.findLibrary("junit-api").get())
+      "testRuntimeOnly"(libs.findLibrary("junit-launcher").get())
     }
   }
 
   private fun Project.detekt() {
-    extensions.configure<DetektExtension> {
-      config.setFrom(rootProject.file("config/detekt.yml"))
+    extensions.configure(DetektExtension::class) {
+      config.setFrom(rootProject.isolated.projectDirectory.file("config/detekt.yml"))
       buildUponDefaultConfig = true
     }
 
-    val detektTasks = tasks.withType<Detekt>()
+    val detektTasks = tasks.withType(Detekt::class)
     val detektCheck by tasks.registering { dependsOn(detektTasks) }
-    tasks.named("check").configure { dependsOn(detektCheck) }
+
+    pluginManager.withPlugin("base") {
+      tasks.named("check").configure { dependsOn(detektCheck) }
+    }
+
+    rootProject.tasks.named("detektReportMergeSarif", ReportMergeTask::class) {
+      input.from(detektTasks.map { it.sarifReportFile })
+      dependsOn(detektTasks)
+    }
 
     detektTasks.configureEach {
       reports.html.required.set(true)
+      reports.sarif.required.set(true)
       exclude { it.file.path.contains("generated") }
+    }
+  }
+
+  private fun Project.dependencyGuard() {
+    extensions.configure(DependencyGuardPluginExtension::class) {
+      configuration("compileClasspath")
+      configuration("runtimeClasspath")
     }
   }
 }

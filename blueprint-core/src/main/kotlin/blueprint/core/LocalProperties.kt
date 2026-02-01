@@ -1,39 +1,49 @@
-/**
- * Copyright © 2025 Jon Poulton
- * SPDX-License-Identifier: Apache-2.0
- */
 package blueprint.core
 
-import org.gradle.api.GradleException
 import org.gradle.api.Project
-import java.io.File
-import java.io.FileNotFoundException
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.initialization.Settings
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity.NONE
 import java.util.Properties
 
-public fun Project.localProperties(filename: String = DEFAULT_FILENAME): Properties {
-  val file = File(projectDir, filename)
-  if (!file.exists() || !file.isFile) {
-    throw FileNotFoundException("No properties file found at ${file.absolutePath}")
+public fun Project.localProperties(
+  filename: String = "local.properties",
+): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
+  parameters {
+    @Suppress("UnstableApiUsage")
+    val propsFile = rootProject.isolated.projectDirectory.file(filename)
+    propertiesFile.set(propsFile)
   }
-  val props = Properties()
-  file.reader().use { props.load(it) }
-  return props
 }
 
-public fun Project.localPropertiesOrNull(filename: String = DEFAULT_FILENAME): Properties? = try {
-  localProperties(filename)
-} catch (e: FileNotFoundException) {
-  logger.warn(e.toString())
-  null
+public fun Settings.localProperties(
+  filename: String = "local.properties",
+): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
+  parameters {
+    val propsFile = rootProject.projectDir.resolve(filename)
+    propertiesFile.set(propsFile)
+  }
 }
 
-public fun Project.rootLocalProperties(filename: String = DEFAULT_FILENAME): Properties =
-  rootProject.localProperties(filename)
+public fun Provider<Map<String, String>>.getOptional(key: String): String? =
+  map { props -> props[key] }.orNull?.takeIf { it.isNotEmpty() }
 
-public fun Project.rootLocalPropertiesOrNull(filename: String = DEFAULT_FILENAME): Properties? =
-  rootProject.localPropertiesOrNull(filename)
+private abstract class LocalPropertiesValueSource :
+  ValueSource<Map<String, String>, LocalPropertiesValueSource.Parameters> {
+  interface Parameters : ValueSourceParameters {
+    @get:[InputFile PathSensitive(NONE)] val propertiesFile: RegularFileProperty
+  }
 
-public fun Properties.getStringOrThrow(key: String): String =
-  get(key)?.toString() ?: throw GradleException("Required key $key from local.properties, had $this")
-
-private const val DEFAULT_FILENAME = "local.properties"
+  override fun obtain(): Map<String, String> {
+    val file = parameters.propertiesFile.asFile.get()
+    if (!file.isFile) return emptyMap()
+    return Properties()
+      .apply { file.reader().use(::load) }
+      .run { stringPropertyNames().associateWith(::getProperty) }
+  }
+}

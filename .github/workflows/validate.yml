@@ -1,0 +1,20 @@
+name: Validate Workflows
+
+on:
+  push:
+    paths:
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Lint actions
+        id: actionlint
+        uses: raven-actions/actionlint@v2

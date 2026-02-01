@@ -3,6 +3,7 @@
 rootProject.name = "blueprint"
 
 pluginManagement {
+  includeBuild("build-logic")
   repositories {
     mavenCentral()
     google()
@@ -15,15 +16,23 @@ dependencyResolutionManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    mavenLocal()
   }
 }
 
+plugins {
+  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+  id("com.gradle.develocity") version "4.3.1"
+}
+
+develocity {
+  buildScan.publishing.onlyIf { false }
+}
+
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-includeBuild("build-logic")
-
-include(":blueprint-core")
-include(":blueprint-recipes")
+include(
+  ":blueprint-core",
+  ":blueprint-test-assertk",
+  ":blueprint-test-plugin",
+  ":blueprint-test-runtime",
+)

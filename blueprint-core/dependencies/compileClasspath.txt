@@ -1,0 +1,12 @@
+org.jetbrains.kotlin:kotlin-gradle-plugin-annotations:2.0.21
+org.jetbrains.kotlin:kotlin-gradle-plugin-api:2.0.21
+org.jetbrains.kotlin:kotlin-gradle-plugin-model:2.0.21
+org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21
+org.jetbrains.kotlin:kotlin-gradle-plugins-bom:2.0.21
+org.jetbrains.kotlin:kotlin-native-utils:2.0.21
+org.jetbrains.kotlin:kotlin-reflect:2.0.21
+org.jetbrains.kotlin:kotlin-stdlib:2.0.21
+org.jetbrains.kotlin:kotlin-tooling-core:2.0.21
+org.jetbrains.kotlin:kotlin-util-io:2.0.21
+org.jetbrains.kotlin:kotlin-util-klib:2.0.21
+org.jetbrains:annotations:13.0
