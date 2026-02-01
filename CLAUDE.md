@@ -42,6 +42,9 @@ scripts/dependencyUpdates.sh  # Check for available dependency updates
 The project uses a multi-module Gradle setup with composite builds:
 
 - **blueprint-core**: The main library module containing all public APIs and utilities
+- **blueprint-test-runtime**: Testing framework providing `ScenarioTest` base class and `FileTree` DSL for declarative test project setup
+- **blueprint-test-assertk**: AssertK extensions for fluent assertions on Gradle TestKit results
+- **blueprint-test-plugin**: Gradle plugin (`dev.jonpoulton.blueprint.test`) that automatically configures the test infrastructure
 - **build-logic**: A composite build that defines the `blueprint.convention` Gradle plugin used by blueprint-core itself
 
 The `build-logic` module is included via `includeBuild()` in `settings.gradle.kts`, making it a separate build that provides plugins to the main build. This pattern allows the convention plugin to configure its own build while being used by other modules.
@@ -89,6 +92,65 @@ The convention plugin demonstrates best practices for Gradle plugin development.
 - **IDEA plugin** with automatic source/javadoc downloads
 
 The plugin uses modular private functions for each configuration concern and lazy task configuration.
+
+### Testing Infrastructure
+
+The project includes a sophisticated testing framework for Gradle plugin development:
+
+#### blueprint-test-runtime
+
+Provides core testing abstractions:
+
+- **ScenarioTest**: Abstract base class for Gradle TestKit tests using JUnit 5
+  - `@TempDir` integration for isolated test directories
+  - `gradleVersion` property to specify Gradle version for tests
+  - `fileTree` property for declarative project setup
+  - `runScenario()` method to execute tests with GradleRunner
+
+- **FileTree DSL**: Declarative DSL for building test project structures
+  ```kotlin
+  fileTree {
+    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    "build.gradle.kts"("""
+      plugins { id("my.plugin") }
+    """.trimIndent())
+    "src/main/kotlin" {
+      "MyClass.kt"("class MyClass")
+    }
+  }
+  ```
+  - Uses operator overloading: `String.invoke(String)` for files, `String.invoke(Builder.() -> Unit)` for directories
+  - Automatically handles path separators and directory nesting
+
+- **Scenario**: Interface wrapping GradleRunner with helper methods
+  - `runTask(task, *args)`: Executes tasks with `--configuration-cache` by default
+
+#### blueprint-test-assertk
+
+Fluent AssertK extensions for Gradle TestKit assertions:
+
+```kotlin
+assertThatTask(":myTask", "-Pkey=value")
+  .buildsSuccessfully()
+  .taskSucceeded(":myTask")
+  .outputContainsLine("expected output")
+  .outputDoesNotContain("error")
+```
+
+Provides chainable assertions:
+- `buildsSuccessfully()` / `failsBuild()`: Execute and verify build result
+- `taskSucceeded()`, `taskFailed()`, `taskSkipped()`, `taskUpToDate()`: Verify task outcomes
+- `outputContains()`, `outputContainsLine()`, `outputDoesNotContain()`, `outputContainsMatch()`: Verify build output
+
+#### blueprint-test-plugin
+
+Gradle plugin that automates test setup for plugin development:
+
+- Applies to projects using `java-gradle-plugin`
+- Registers `testPluginClasspath` configuration
+- Automatically adds `blueprint:test-runtime` to `testImplementation`
+- Configures `PluginUnderTestMetadata` tasks to include test plugin classpath
+- Uses BuildConfig to inject the correct Blueprint version
 
 ### Key Design Patterns
 
@@ -166,3 +228,45 @@ The project uses dependency-guard to track and validate dependencies. Checksums 
 - blueprint-core: compileClasspath and runtimeClasspath
 
 Run `./gradlew dependencyGuard` after dependency changes to update checksums.
+
+### Writing Tests
+
+Tests for blueprint-core utilities follow this pattern:
+
+1. Extend `ScenarioTest` and specify `gradleVersion`
+2. Define a `fileTree` with test project structure (typically includes `settings.gradle.kts`, `build.gradle.kts`, and `gradle.properties`)
+3. Use `runScenario { }` to execute test logic
+4. Use `assertThatTask()` with fluent assertions to verify behavior
+
+Example:
+```kotlin
+internal class MyUtilityScenario : ScenarioTest() {
+  override val gradleVersion = GRADLE_VERSION
+
+  override val fileTree = fileTree {
+    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    "build.gradle.kts"("""
+      import blueprint.core.*
+      plugins { id("dev.jonpoulton.blueprint") }
+
+      tasks.register("myTask") {
+        doLast { println("Hello") }
+      }
+    """.trimIndent())
+  }
+
+  @Test
+  fun `My test`() = runScenario {
+    assertThatTask(":myTask")
+      .buildsSuccessfully()
+      .taskSucceeded(":myTask")
+      .outputContainsLine("Hello")
+  }
+}
+```
+
+### Build Features
+
+- **Gradle Develocity**: Configured but build scans are disabled (`buildScan.publishing.onlyIf { false }`)
+- **Foojay Resolver**: Automatic JDK provisioning via Gradle toolchains
+- **BuildConfig**: The test plugin uses BuildConfig to generate version constants from `VERSION_NAME`

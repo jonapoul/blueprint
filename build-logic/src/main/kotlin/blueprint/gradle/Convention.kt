@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package blueprint.gradle
 
 import com.autonomousapps.DependencyAnalysisPlugin
@@ -123,13 +125,16 @@ class Convention : Plugin<Project> {
 
   private fun Project.detekt() {
     extensions.configure(DetektExtension::class.java) {
-      config.setFrom(rootProject.file("config/detekt.yml"))
+      config.setFrom(rootProject.isolated.projectDirectory.file("config/detekt.yml"))
       buildUponDefaultConfig = true
     }
 
     val detektTasks = tasks.withType(Detekt::class.java)
     val detektCheck by tasks.registering { dependsOn(detektTasks) }
-    tasks.named("check").configure { dependsOn(detektCheck) }
+
+    pluginManager.withPlugin("base") {
+      tasks.named("check").configure { dependsOn(detektCheck) }
+    }
 
     detektTasks.configureEach {
       reports.html.required.set(true)
