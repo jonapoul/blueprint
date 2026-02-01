@@ -55,16 +55,11 @@ internal class TypedPropertiesScenario : ScenarioTest() {
       ":printFloat" to "123.0",
       ":printInt" to "123",
       ":printString" to "123",
+      ":printBool" to "false",
     ).forEach { (task, expected) ->
       assertThatTask(task, "-Pkey=int")
         .buildsSuccessfully()
         .outputContainsLine(expected)
-    }
-
-    listOf(
-      ":printBool",
-    ).forEach { task ->
-      assertThatTask(task, "-Pkey=int").failsBuild()
     }
   }
 

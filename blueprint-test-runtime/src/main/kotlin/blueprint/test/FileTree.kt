@@ -5,7 +5,9 @@ import java.io.File
 public class FileTree internal constructor(
   public val files: Map<String, String>,
 ) {
-  public class Builder(private val relativeRootPath: String) {
+  public class Builder(
+    private val relativeRootPath: String,
+  ) {
     internal val files: MutableMap<String, String> = mutableMapOf()
 
     public fun build(): FileTree = FileTree(files)
