@@ -11,6 +11,7 @@ import com.vanniktech.maven.publish.MavenPublishPlugin
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import kotlinx.validation.BinaryCompatibilityValidatorPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -29,6 +30,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
@@ -62,7 +64,7 @@ class Convention : Plugin<Project> {
   private fun Project.kotlin() {
     val javaVersion = providers.gradleProperty("blueprint.javaVersion")
 
-    tasks.withType(KotlinCompile::class.java).configureEach {
+    tasks.withType(KotlinCompile::class).configureEach {
       compilerOptions {
         jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
         freeCompilerArgs.addAll(
@@ -72,19 +74,19 @@ class Convention : Plugin<Project> {
       }
     }
 
-    extensions.configure(KotlinTopLevelExtensionConfig::class.java) {
+    extensions.configure(KotlinTopLevelExtensionConfig::class) {
       explicitApi()
     }
 
     val javaInt = javaVersion.map { JavaVersion.toVersion(it.toInt()) }
-    extensions.configure(JavaPluginExtension::class.java) {
+    extensions.configure(JavaPluginExtension::class) {
       sourceCompatibility = javaInt.get()
       targetCompatibility = javaInt.get()
     }
   }
 
   private fun Project.test() {
-    tasks.withType(Test::class.java).configureEach {
+    tasks.withType(Test::class).configureEach {
       testLogging {
         useJUnitPlatform()
         events = setOf(PASSED, SKIPPED, FAILED)
@@ -124,16 +126,21 @@ class Convention : Plugin<Project> {
   }
 
   private fun Project.detekt() {
-    extensions.configure(DetektExtension::class.java) {
+    extensions.configure(DetektExtension::class) {
       config.setFrom(rootProject.isolated.projectDirectory.file("config/detekt.yml"))
       buildUponDefaultConfig = true
     }
 
-    val detektTasks = tasks.withType(Detekt::class.java)
+    val detektTasks = tasks.withType(Detekt::class)
     val detektCheck by tasks.registering { dependsOn(detektTasks) }
 
     pluginManager.withPlugin("base") {
       tasks.named("check").configure { dependsOn(detektCheck) }
+    }
+
+    rootProject.tasks.named("detektReportMergeSarif", ReportMergeTask::class) {
+      input.from(detektTasks.map { it.sarifReportFile })
+      dependsOn(detektTasks)
     }
 
     detektTasks.configureEach {

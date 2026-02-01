@@ -1,4 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 
 plugins {
@@ -31,10 +30,4 @@ val detektReportMergeSarif by tasks.registering(ReportMergeTask::class) {
   output = layout.buildDirectory.file("reports/detekt/merge.sarif.json")
 }
 
-tasks.named("check") { dependsOn(detektReportMergeSarif) }
-
-allprojects {
-  detektReportMergeSarif.configure {
-    input.from(tasks.withType<Detekt>().map { it.reports.sarif.outputLocation })
-  }
-}
+tasks.named("check").configure { dependsOn(detektReportMergeSarif) }
