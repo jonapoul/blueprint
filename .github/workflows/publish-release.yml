@@ -85,7 +85,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_IN_MEMORY_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
-        run: ./gradlew publish
+        run: ./gradlew publishToMavenCentral --no-configuration-cache
 
       - name: Create release
         uses: ncipollo/release-action@v1

@@ -1,0 +1,101 @@
+# Gradle Profiler scenarios for Blueprint performance benchmarking
+# Run with: gradle-profiler --benchmark --project-dir . --scenario-file profiler.scenarios <scenario-name>
+
+# ============================================================================
+# Configuration Time (--dry-run)
+# ============================================================================
+
+# Configuration with cache disabled (baseline)
+config_no_cache {
+    title = "Configuration time without cache"
+    versions = ["8.14.3"]
+    tasks = ["build"]
+    gradle-args = ["--dry-run", "--no-configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# Configuration cache reuse (hot)
+config_cache_hot {
+    title = "Configuration time with cache (hot)"
+    versions = ["8.14.3"]
+    tasks = ["build"]
+    gradle-args = ["--dry-run", "--configuration-cache"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# ============================================================================
+# Full Build Time
+# ============================================================================
+
+# Full build without configuration cache (baseline)
+build_no_cache {
+    title = "Full build without configuration cache"
+    versions = ["8.14.3"]
+    tasks = ["build"]
+    gradle-args = ["--no-configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# Full build with configuration cache
+build_with_cache {
+    title = "Full build with configuration cache"
+    versions = ["8.14.3"]
+    tasks = ["build"]
+    gradle-args = ["--configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# ============================================================================
+# Specific Task Profiling
+# ============================================================================
+
+# Test execution
+test_task {
+    title = "Test task execution"
+    versions = ["8.14.3"]
+    tasks = ["test"]
+    gradle-args = ["--configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# Detekt static analysis
+detekt_task {
+    title = "Detekt static analysis"
+    versions = ["8.14.3"]
+    tasks = ["detektCheck"]
+    gradle-args = ["--configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# Check task (all verification)
+check_task {
+    title = "Check task (all verification)"
+    versions = ["8.14.3"]
+    tasks = ["check"]
+    gradle-args = ["--configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}
+
+# Publish to Maven Local
+publish_local {
+    title = "Publish to Maven Local"
+    versions = ["8.14.3"]
+    tasks = ["publishToMavenLocal"]
+    gradle-args = ["--configuration-cache"]
+    cleanup-tasks = ["clean"]
+    warm-ups = 3
+    iterations = 10
+}

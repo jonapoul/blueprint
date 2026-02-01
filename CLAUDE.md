@@ -35,6 +35,56 @@ scripts/dependencyUpdates.sh  # Check for available dependency updates
 ./gradlew dependencyGuard     # Verify dependency checksums
 ```
 
+### Performance Profiling
+```bash
+scripts/profile.sh                      # List available scenarios and help
+scripts/profile.sh config_cache_hot     # Benchmark configuration cache reuse
+scripts/profile.sh build_with_cache     # Benchmark full build with cache
+scripts/profile.sh test_task            # Benchmark test execution
+scripts/profile.sh --task compileKotlin # Profile compileKotlin with JFR
+scripts/profile.sh --task test          # Profile test with JFR
+scripts/profile.sh --task build         # Profile build with JFR
+```
+
+Available scenarios for benchmarking (defined in `profiler.scenarios`):
+
+**Configuration Time:**
+- **config_no_cache**: Configuration time without cache (10 iterations, 3 warmups)
+- **config_cache_hot**: Configuration time with cache reuse (10 iterations, 3 warmups)
+
+**Full Build Time:**
+- **build_no_cache**: Full build without configuration cache (10 iterations, 3 warmups)
+- **build_with_cache**: Full build with configuration cache (10 iterations, 3 warmups)
+
+**Specific Tasks:**
+- **test_task**: Test execution
+- **detekt_task**: Detekt static analysis
+- **check_task**: Full verification suite
+- **publish_local**: Publish to Maven Local
+- **dokka_task**: Dokka HTML documentation generation
+
+**Two Modes:**
+
+1. **Benchmarking** (scenario-based):
+   - Use predefined scenarios: `scripts/profile.sh <scenario-name>`
+   - 10 iterations, 3 warmups, with cleanup between runs
+   - Produces statistical analysis and CSV results
+   - For comparing performance across changes
+
+2. **Profiling** (task-based):
+   - Use `--task` flag: `scripts/profile.sh --task <task-name>`
+   - Uses JFR (Java Flight Recorder) to generate flame graphs
+   - Detailed execution analysis with warmup runs
+   - For understanding what's slow within a build
+   - Results include flame graphs in `.gradle-profiler/results/`
+
+**Notes:**
+- Gradle version automatically pulled from wrapper
+- Profiling uses JFR (built into JDK, no kernel permissions needed)
+- Profiling uses settings from `gradle.properties` (configuration cache, etc.)
+- Requires [gradle-profiler](https://github.com/gradle/gradle-profiler) to be installed
+- Results saved to `.gradle-profiler/results/`
+
 ## Architecture
 
 ### Module Structure
