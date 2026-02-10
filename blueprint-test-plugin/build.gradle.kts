@@ -5,7 +5,12 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-  compileOnly(libs.plugins.buildConfig.map { create("${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}") })
+
+  testCompileOnly(libs.junit.api)
+  testImplementation(kotlin("stdlib"))
+  testImplementation(kotlin("test"))
+  testImplementation(libs.assertk)
+  testRuntimeOnly(libs.junit.launcher)
 }
 
 gradlePlugin {

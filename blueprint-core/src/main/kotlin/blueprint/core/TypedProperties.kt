@@ -17,7 +17,7 @@ public fun ProviderFactory.doubleProperty(key: String): Provider<Double> =
 
 public fun ProviderFactory.stringListProperty(key: String, delimiter: String = ","): Provider<List<String>> =
   gradleProperty(key).map { string ->
-    if (string.isNullOrBlank()) {
+    if (string.isBlank()) {
       emptyList()
     } else {
       string.split(delimiter)

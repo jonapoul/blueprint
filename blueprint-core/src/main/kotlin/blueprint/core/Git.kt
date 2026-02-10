@@ -8,6 +8,7 @@ import org.gradle.process.ExecOperations
 import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.ZoneOffset
+import java.util.Locale
 import javax.inject.Inject
 
 public fun ProviderFactory.gitVersionHash(): Provider<String> = of(GitVersionHashValueSource::class.java) {}
@@ -19,7 +20,7 @@ public fun ProviderFactory.gitVersionDate(): Provider<String> = gitVersionCode()
     .ofEpochSecond(seconds.toLong())
     .atZone(ZoneOffset.UTC)
     .toLocalDate()
-  "%04d.%02d.%02d".format(date.year, date.monthValue, date.dayOfMonth)
+  "%04d.%02d.%02d".format(Locale.getDefault(), date.year, date.monthValue, date.dayOfMonth)
 }
 
 private abstract class GitVersionHashValueSource : ValueSource<String, ValueSourceParameters.None> {

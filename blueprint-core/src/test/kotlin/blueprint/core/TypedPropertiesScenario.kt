@@ -21,7 +21,7 @@ internal class TypedPropertiesScenario : ScenarioTest() {
 
         plugins { id("dev.jonpoulton.blueprint") }
 
-        fun <T> registerTask(name: String, property: Provider<T>) = tasks.register(name) {
+        fun <T : Any> registerTask(name: String, property: Provider<T>) = tasks.register(name) {
           inputs.property("property", property)
           doLast { logger.lifecycle(property.get().toString()) }
         }

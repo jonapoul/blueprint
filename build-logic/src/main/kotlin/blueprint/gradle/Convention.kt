@@ -8,15 +8,13 @@ import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import com.github.gmazzo.buildconfig.BuildConfigExtension
 import com.github.gmazzo.buildconfig.BuildConfigPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektPlugin
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
-import io.gitlab.arturbosch.detekt.report.ReportMergeTask
-import kotlinx.validation.BinaryCompatibilityValidatorPlugin
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.extensions.DetektExtension
+import dev.detekt.gradle.plugin.DetektPlugin
+import dev.detekt.gradle.report.ReportMergeTask
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -26,10 +24,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.buildConfigField
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
@@ -38,7 +33,9 @@ import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
 import org.gradle.util.GradleVersion
 import org.jetbrains.dokka.gradle.formats.DokkaJavadocPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtensionConfig
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.abi.AbiValidationExtension
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -51,7 +48,6 @@ class Convention : Plugin<Project> {
       apply(DetektPlugin::class)
       apply(DependencyAnalysisPlugin::class)
       apply(BuildConfigPlugin::class)
-      apply(BinaryCompatibilityValidatorPlugin::class)
       apply(DependencyGuardPlugin::class)
     }
 
@@ -74,8 +70,13 @@ class Convention : Plugin<Project> {
       }
     }
 
-    extensions.configure(KotlinTopLevelExtensionConfig::class) {
+    extensions.configure(KotlinJvmProjectExtension::class) {
       explicitApi()
+
+      extensions.configure(AbiValidationExtension::class) {
+        @OptIn(ExperimentalAbiValidation::class)
+        enabled.set(true)
+      }
     }
 
     val javaInt = javaVersion.map { JavaVersion.toVersion(it.toInt()) }
@@ -87,6 +88,7 @@ class Convention : Plugin<Project> {
 
   private fun Project.test() {
     tasks.withType(Test::class).configureEach {
+      failOnNoDiscoveredTests.set(false)
       testLogging {
         useJUnitPlatform()
         events = setOf(PASSED, SKIPPED, FAILED)
@@ -108,27 +110,19 @@ class Convention : Plugin<Project> {
       }
     }
 
-    val testPluginClasspath by configurations.registering { isCanBeResolved = true }
+    pluginManager.withPlugin("java-gradle-plugin") {
+      val testPluginClasspath by configurations.registering { isCanBeResolved = true }
 
-    tasks.withType(PluginUnderTestMetadata::class).configureEach {
-      pluginClasspath.from(testPluginClasspath)
-    }
-
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
-    dependencies {
-      "testImplementation"(kotlin("stdlib"))
-      "testImplementation"(kotlin("test"))
-      "testImplementation"(libs.findLibrary("assertk").get())
-      "testImplementation"(libs.findLibrary("junit-api").get())
-      "testRuntimeOnly"(libs.findLibrary("junit-launcher").get())
+      tasks.withType(PluginUnderTestMetadata::class).configureEach {
+        pluginClasspath.from(testPluginClasspath)
+      }
     }
   }
 
   private fun Project.detekt() {
     extensions.configure(DetektExtension::class) {
       config.setFrom(rootProject.isolated.projectDirectory.file("config/detekt.yml"))
-      buildUponDefaultConfig = true
+      buildUponDefaultConfig.set(true)
     }
 
     val detektTasks = tasks.withType(Detekt::class)
@@ -139,7 +133,7 @@ class Convention : Plugin<Project> {
     }
 
     rootProject.tasks.named("detektReportMergeSarif", ReportMergeTask::class) {
-      input.from(detektTasks.map { it.sarifReportFile })
+      input.from(detektTasks.map { it.reports.sarif.outputLocation })
       dependsOn(detektTasks)
     }
 
