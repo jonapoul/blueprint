@@ -101,7 +101,7 @@ The `build-logic` module is included via `includeBuild()` in `settings.gradle.kt
 
 ### Core Abstractions (blueprint-core/src/main/kotlin/blueprint/core/)
 
-The library provides nine main utility files:
+The library provides ten main utility files:
 
 1. **Delegates.kt**: Kotlin property delegates for Gradle's `NamedDomainObjectCollection` and `NamedDomainObjectProvider`. Enables syntax like `val myTask: SomeTask by tasks`.
 
@@ -130,18 +130,20 @@ The library provides nine main utility files:
 
 9. **Multiplatform.kt**: Kotlin Multiplatform DSL helpers for source set dependencies (`commonMainDependencies()`, `jvmMainDependencies()`, etc.).
 
+10. **JavaVersion.kt**: Configuration-cache-compatible `.java-version` file readers using a custom `ValueSource`. Provides `Project.javaVersion()`, `Project.jvmTarget()`, `Project.javaLanguageVersion()`, `Project.javaVersionString()` and equivalent `Settings` extensions.
+
 ### Convention Plugin (build-logic/src/main/kotlin/Convention.kt)
 
 The convention plugin demonstrates best practices for Gradle plugin development. It applies and configures:
 
-- **Kotlin JVM** with explicit API mode and SAM conversions
+- **Kotlin JVM** with explicit API mode, SAM conversions, and ABI validation
 - **Testing** with enhanced logging (shows passed/skipped/failed tests, full exception format)
 - **Detekt** with custom config from `/config/detekt.yml`
 - **Dokka** for Javadoc generation
 - **Maven Publish** for artifact publication
-- **IDEA plugin** with automatic source/javadoc downloads
+- **Dependency Guard** for tracking compileClasspath and runtimeClasspath
 
-The plugin uses modular private functions for each configuration concern and lazy task configuration.
+Java version is read from the root `.java-version` file (not `gradle.properties`). The plugin uses modular private functions for each configuration concern and lazy task configuration.
 
 ### Testing Infrastructure
 
@@ -216,7 +218,7 @@ Gradle plugin that automates test setup for plugin development:
 
 ### Kotlin Compilation
 
-- Target: Java 17 (defined in `gradle.properties` as `blueprint.javaVersion`)
+- Target: Java 17 (defined in root `.java-version` file)
 - Explicit API mode is enforced (all public APIs must have explicit visibility and return types)
 - SAM conversions use class generation (`-Xsam-conversions=class`)
 - Kotlin stdlib default dependency is disabled (`kotlin.stdlib.default.dependency=false`)
@@ -243,7 +245,7 @@ The `check` task runs all verifications including tests, detekt.
 
 ### Publishing Workflow
 
-Version is defined in `gradle.properties` as `VERSION_NAME=2.0.0-SNAPSHOT`. For releases:
+Version is defined in `gradle.properties` as `VERSION_NAME=2.1.0-SNAPSHOT`. For releases:
 
 1. Update `VERSION_NAME` to release version (e.g., `2.0.0`)
 2. Create a matching git tag (e.g., `v2.0.0`)
@@ -258,7 +260,7 @@ The project uses multiple GitHub Actions workflows for continuous integration an
 
 **pr.yml** - Main PR validation (runs on `pull_request`):
 - Checks out code with full history and tags
-- Sets up JDK 17 (Zulu distribution) from `.github/workflows/.java-version`
+- Sets up JDK 21 (Zulu distribution) from `.java-version`
 - Configures Gradle with caching (read-only mode for PRs to avoid cache pollution)
 - Runs `./gradlew check` (includes tests and detekt)
 - Publishes test report annotations via `gmazzo/publish-report-annotations`
@@ -294,7 +296,7 @@ The project uses multiple GitHub Actions workflows for continuous integration an
 
 #### Common Configuration
 
-- **Java Version**: JDK 17 (Zulu distribution) specified in `.github/workflows/.java-version`
+- **Java Version**: JDK 21 (Zulu distribution) specified in `.java-version`
 - **Gradle Setup**: Uses `gradle/actions/setup-gradle@v5` with:
   - Build cache encryption via GRADLE_ENCRYPTION_KEY secret
   - Read-only cache for PR builds (prevents cache pollution)

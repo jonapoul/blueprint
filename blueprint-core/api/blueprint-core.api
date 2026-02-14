@@ -14,6 +14,17 @@ public final class blueprint/core/GitKt {
 	public static final fun gitVersionHash (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
 }
 
+public final class blueprint/core/JavaVersionKt {
+	public static final fun javaLanguageVersion (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun javaLanguageVersion (Lorg/gradle/api/initialization/Settings;)Lorg/gradle/api/provider/Provider;
+	public static final fun javaVersion (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun javaVersion (Lorg/gradle/api/initialization/Settings;)Lorg/gradle/api/provider/Provider;
+	public static final fun javaVersionString (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun javaVersionString (Lorg/gradle/api/initialization/Settings;)Lorg/gradle/api/provider/Provider;
+	public static final fun jvmTarget (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun jvmTarget (Lorg/gradle/api/initialization/Settings;)Lorg/gradle/api/provider/Provider;
+}
+
 public final class blueprint/core/KspKt {
 	public static final fun kspAllConfigs (Lorg/gradle/api/Project;Ljava/lang/Object;)V
 }

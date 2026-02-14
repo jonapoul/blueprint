@@ -58,7 +58,10 @@ class Convention : Plugin<Project> {
   }
 
   private fun Project.kotlin() {
-    val javaVersion = providers.gradleProperty("blueprint.javaVersion")
+    val javaVersion = providers
+      .fileContents(rootProject.isolated.projectDirectory.file(".java-version"))
+      .asText
+      .map { it.trim() }
 
     tasks.withType(KotlinCompile::class).configureEach {
       compilerOptions {
