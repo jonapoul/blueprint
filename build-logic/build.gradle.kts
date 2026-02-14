@@ -4,10 +4,11 @@ plugins {
   `kotlin-dsl`
 }
 
-val javaVersion: Provider<Int> = providers
-  .fileContents(layout.projectDirectory.file("../.java-version"))
-  .asText
-  .map { it.trim().toInt() }
+val javaVersion: Provider<Int> =
+  providers
+    .fileContents(layout.projectDirectory.file("../.java-version"))
+    .asText
+    .map { it.trim().toInt() }
 
 java {
   sourceCompatibility = JavaVersion.toVersion(javaVersion.get())

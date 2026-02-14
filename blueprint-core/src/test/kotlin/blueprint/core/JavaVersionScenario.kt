@@ -78,7 +78,7 @@ internal class JavaVersionScenario : ScenarioTest() {
 
 
 
-      """
+      """,
     )
 
     assertThatTask(":printJavaVersion")
