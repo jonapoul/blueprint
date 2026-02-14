@@ -218,7 +218,7 @@ Gradle plugin that automates test setup for plugin development:
 
 ### Kotlin Compilation
 
-- Target: Java 17 (defined in root `.java-version` file)
+- Target: Java 21 (defined in root `.java-version` file)
 - Explicit API mode is enforced (all public APIs must have explicit visibility and return types)
 - SAM conversions use class generation (`-Xsam-conversions=class`)
 - Kotlin stdlib default dependency is disabled (`kotlin.stdlib.default.dependency=false`)
