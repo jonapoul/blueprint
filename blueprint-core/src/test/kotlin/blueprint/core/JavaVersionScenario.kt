@@ -12,9 +12,9 @@ import blueprint.test.buildsSuccessfully
 import blueprint.test.failsBuild
 import blueprint.test.outputContainsLine
 import blueprint.test.outputContainsMatch
-import org.gradle.testkit.runner.GradleRunner
 import java.io.File
 import kotlin.test.Test
+import org.gradle.testkit.runner.GradleRunner
 
 internal class JavaVersionScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
@@ -24,28 +24,28 @@ internal class JavaVersionScenario : ScenarioTest() {
 
     "build.gradle.kts"(
       $$"""
-        import blueprint.core.*
+      import blueprint.core.*
 
-        plugins { id("dev.jonpoulton.blueprint") }
+      plugins { id("dev.jonpoulton.blueprint") }
 
-        fun <T : Any> registerTask(name: String, property: Provider<T>) = tasks.register(name) {
-          inputs.property("property", property)
-          inputs.property("name", name)
-          doLast { logger.lifecycle("$name = ${property.get()}") }
-        }
+      fun <T : Any> registerTask(name: String, property: Provider<T>) = tasks.register(name) {
+        inputs.property("property", property)
+        inputs.property("name", name)
+        doLast { logger.lifecycle("$name = ${property.get()}") }
+      }
 
-        registerTask("printJavaVersion", javaVersion())
-        registerTask("printJvmTarget", jvmTarget())
-        registerTask("printJavaLanguageVersion", javaLanguageVersion())
-        registerTask("printJavaVersionString", javaVersionString())
-      """.trimIndent(),
+      registerTask("printJavaVersion", javaVersion())
+      registerTask("printJvmTarget", jvmTarget())
+      registerTask("printJavaLanguageVersion", javaLanguageVersion())
+      registerTask("printJavaVersionString", javaVersionString())
+      """
+        .trimIndent()
     )
   }
 
   @Test
   fun `Fail if file doesn't exist`() = runScenario {
-    assertThat(javaVersionFile())
-      .doesNotExist()
+    assertThat(javaVersionFile()).doesNotExist()
 
     assertThatAllTasks()
       .failsBuild()
@@ -72,15 +72,16 @@ internal class JavaVersionScenario : ScenarioTest() {
 
   @Test
   fun `Still works if file has spaces or newlines`() = runScenario {
-    javaVersionFile().writeText(
-      @Suppress("TrimMultilineRawString")
-      """
+    javaVersionFile()
+      .writeText(
+        @Suppress("TrimMultilineRawString")
+        """
         11
 
 
 
-      """,
-    )
+      """
+      )
 
     assertThatTask(":printJavaVersion")
       .buildsSuccessfully()
@@ -101,12 +102,13 @@ internal class JavaVersionScenario : ScenarioTest() {
 
   private fun Scenario.javaVersionFile(): File = rootDir.resolve(".java-version")
 
-  private fun Scenario.assertThatAllTasks(): Assert<GradleRunner> = assertThatTask(
-    ":printJavaLanguageVersion",
-    ":printJavaVersion",
-    ":printJavaVersionString",
-    ":printJvmTarget",
-  )
+  private fun Scenario.assertThatAllTasks(): Assert<GradleRunner> =
+    assertThatTask(
+      ":printJavaLanguageVersion",
+      ":printJavaVersion",
+      ":printJavaVersionString",
+      ":printJvmTarget",
+    )
 
   private fun Assert<File>.doesNotExist() = transform { actual ->
     if (actual.exists()) expected("to not exist") else actual

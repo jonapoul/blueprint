@@ -16,50 +16,52 @@ internal class VersionCatalogScenario : ScenarioTest() {
 
     "build.gradle.kts"(
       """
-        import blueprint.core.get
-        import blueprint.core.plugin
-        import blueprint.core.version
-        import blueprint.core.libs as blueprintLibs
+      import blueprint.core.get
+      import blueprint.core.plugin
+      import blueprint.core.version
+      import blueprint.core.libs as blueprintLibs
 
-        plugins { id("dev.jonpoulton.blueprint") }
+      plugins { id("dev.jonpoulton.blueprint") }
 
-        val libs = blueprintLibs
+      val libs = blueprintLibs
 
-        tasks.register("printJunitApi") {
-          val junitApi = libs["junit.api"].map { it.toString() }
-          doLast { logger.lifecycle(junitApi.get()) }
-        }
+      tasks.register("printJunitApi") {
+        val junitApi = libs["junit.api"].map { it.toString() }
+        doLast { logger.lifecycle(junitApi.get()) }
+      }
 
-        tasks.register("printJunitVersion") {
-          val junit = libs.version("junit").toString()
-          doLast { logger.lifecycle(junit) }
-        }
+      tasks.register("printJunitVersion") {
+        val junit = libs.version("junit").toString()
+        doLast { logger.lifecycle(junit) }
+      }
 
-        tasks.register("printAssertkVersion") {
-          val assertk = libs["assertk"].map { it.version }
-          doLast { logger.lifecycle(assertk.get()) }
-        }
+      tasks.register("printAssertkVersion") {
+        val assertk = libs["assertk"].map { it.version }
+        doLast { logger.lifecycle(assertk.get()) }
+      }
 
-        tasks.register("printKotlinPluginId") {
-          val kotlinId = libs.plugin("kotlin").map { it.pluginId }
-          doLast { logger.lifecycle(kotlinId.get()) }
-        }
-      """.trimIndent(),
+      tasks.register("printKotlinPluginId") {
+        val kotlinId = libs.plugin("kotlin").map { it.pluginId }
+        doLast { logger.lifecycle(kotlinId.get()) }
+      }
+      """
+        .trimIndent()
     )
 
     "gradle" {
       "libs.versions.toml"(
         """
-          [versions]
-          junit = "6.0.2"
+        [versions]
+        junit = "6.0.2"
 
-          [libraries]
-          assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
-          junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+        [libraries]
+        assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
+        junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 
-          [plugins]
-          kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
-        """.trimIndent(),
+        [plugins]
+        kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
+        """
+          .trimIndent()
       )
     }
   }
@@ -73,16 +75,12 @@ internal class VersionCatalogScenario : ScenarioTest() {
 
   @Test
   fun `Print junit version string`() = runScenario {
-    assertThatTask(":printJunitVersion")
-      .buildsSuccessfully()
-      .outputContainsLine("6.0.2")
+    assertThatTask(":printJunitVersion").buildsSuccessfully().outputContainsLine("6.0.2")
   }
 
   @Test
   fun `Print assertk version string`() = runScenario {
-    assertThatTask(":printAssertkVersion")
-      .buildsSuccessfully()
-      .outputContainsLine("0.28.1")
+    assertThatTask(":printAssertkVersion").buildsSuccessfully().outputContainsLine("0.28.1")
   }
 
   @Test

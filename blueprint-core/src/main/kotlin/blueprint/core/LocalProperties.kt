@@ -2,6 +2,7 @@
 
 package blueprint.core
 
+import java.util.Properties
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.initialization.Settings
@@ -11,26 +12,27 @@ import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import java.util.Properties
 
 public fun Project.localProperties(
-  filename: String = "local.properties",
-): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
-  parameters {
-    @Suppress("UnstableApiUsage")
-    val propsFile = rootProject.isolated.projectDirectory.file(filename)
-    propertiesFile.set(propsFile)
+  filename: String = "local.properties"
+): Provider<Map<String, String>> =
+  providers.of(LocalPropertiesValueSource::class.java) {
+    parameters {
+      @Suppress("UnstableApiUsage")
+      val propsFile = rootProject.isolated.projectDirectory.file(filename)
+      propertiesFile.set(propsFile)
+    }
   }
-}
 
 public fun Settings.localProperties(
-  filename: String = "local.properties",
-): Provider<Map<String, String>> = providers.of(LocalPropertiesValueSource::class.java) {
-  parameters {
-    val propsFile = rootProject.projectDir.resolve(filename)
-    propertiesFile.set(propsFile)
+  filename: String = "local.properties"
+): Provider<Map<String, String>> =
+  providers.of(LocalPropertiesValueSource::class.java) {
+    parameters {
+      val propsFile = rootProject.projectDir.resolve(filename)
+      propertiesFile.set(propsFile)
+    }
   }
-}
 
 public fun Provider<Map<String, String>>.getOptional(key: String): String? =
   map { props -> props[key] }.orNull?.takeIf { it.isNotEmpty() }

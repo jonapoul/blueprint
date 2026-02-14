@@ -40,36 +40,35 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class Convention : Plugin<Project> {
-  override fun apply(target: Project): Unit = with(target) {
-    with(pluginManager) {
-      apply(KotlinPluginWrapper::class)
-      apply(MavenPublishPlugin::class)
-      apply(DokkaJavadocPlugin::class)
-      apply(DetektPlugin::class)
-      apply(DependencyAnalysisPlugin::class)
-      apply(BuildConfigPlugin::class)
-      apply(DependencyGuardPlugin::class)
+  override fun apply(target: Project): Unit =
+    with(target) {
+      with(pluginManager) {
+        apply(KotlinPluginWrapper::class)
+        apply(MavenPublishPlugin::class)
+        apply(DokkaJavadocPlugin::class)
+        apply(DetektPlugin::class)
+        apply(DependencyAnalysisPlugin::class)
+        apply(BuildConfigPlugin::class)
+        apply(DependencyGuardPlugin::class)
+      }
+
+      kotlin()
+      test()
+      detekt()
+      dependencyGuard()
     }
 
-    kotlin()
-    test()
-    detekt()
-    dependencyGuard()
-  }
-
   private fun Project.kotlin() {
-    val javaVersion = providers
-      .fileContents(rootProject.isolated.projectDirectory.file(".java-version"))
-      .asText
-      .map { it.trim() }
+    val javaVersion =
+      providers
+        .fileContents(rootProject.isolated.projectDirectory.file(".java-version"))
+        .asText
+        .map { it.trim() }
 
     tasks.withType(KotlinCompile::class).configureEach {
       compilerOptions {
         jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
-        freeCompilerArgs.addAll(
-          "-Xsam-conversions=class",
-          "-Xexplicit-api=strict",
-        )
+        freeCompilerArgs.addAll("-Xsam-conversions=class")
       }
     }
 
@@ -77,8 +76,7 @@ class Convention : Plugin<Project> {
       explicitApi()
 
       extensions.configure(AbiValidationExtension::class) {
-        @OptIn(ExperimentalAbiValidation::class)
-        enabled.set(true)
+        @OptIn(ExperimentalAbiValidation::class) enabled.set(true)
       }
     }
 
@@ -133,9 +131,7 @@ class Convention : Plugin<Project> {
     val detektTasks = tasks.withType(Detekt::class)
     val detektCheck by tasks.registering { dependsOn(detektTasks) }
 
-    pluginManager.withPlugin("base") {
-      tasks.named("check").configure { dependsOn(detektCheck) }
-    }
+    pluginManager.withPlugin("base") { tasks.named("check").configure { dependsOn(detektCheck) } }
 
     rootProject.tasks.named("detektReportMergeSarif", ReportMergeTask::class) {
       input.from(detektTasks.map { it.reports.sarif.outputLocation })

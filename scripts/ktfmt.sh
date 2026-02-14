@@ -49,7 +49,7 @@ fi
 
 # Function to run ktfmt on all Kotlin files, excluding build directories
 run_ktfmt() {
-    find . -type d -name build -prune -o -type f \( -name "*.kt" -o -name "*.kts" \) -print0 | xargs -0 "$@"
+    find . \( -type d -name build -o -type d -name .gradle-profiler \) -prune -o -type f \( -name "*.kt" -o -name "*.kts" \) -print0 | xargs -0 "$@"
 }
 
 # Check if ktfmt is available in PATH

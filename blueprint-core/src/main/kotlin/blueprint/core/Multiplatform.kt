@@ -2,18 +2,14 @@ package blueprint.core
 
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension as KMPExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension as KMPExtension
 
 public fun KMPExtension.multiplatformDependencies(
   name: String,
   handler: KotlinDependencyHandler.() -> Unit,
-): Unit = sourceSets {
-  named(name) {
-    dependencies(handler)
-  }
-}
+): Unit = sourceSets { named(name) { dependencies(handler) } }
 
 public fun KMPExtension.commonMainDependencies(handler: KotlinDependencyHandler.() -> Unit): Unit =
   multiplatformDependencies(name = "commonMain", handler)
@@ -30,9 +26,12 @@ public fun KMPExtension.jvmTestDependencies(handler: KotlinDependencyHandler.() 
 public fun KMPExtension.androidMainDependencies(handler: KotlinDependencyHandler.() -> Unit): Unit =
   multiplatformDependencies(name = "androidMain", handler)
 
-public fun KMPExtension.androidUnitTestDependencies(handler: KotlinDependencyHandler.() -> Unit): Unit =
-  multiplatformDependencies(name = "androidUnitTest", handler)
+public fun KMPExtension.androidUnitTestDependencies(
+  handler: KotlinDependencyHandler.() -> Unit
+): Unit = multiplatformDependencies(name = "androidUnitTest", handler)
 
-private fun KMPExtension.sourceSets(configure: Action<NamedDomainObjectContainer<KotlinSourceSet>>) {
+private fun KMPExtension.sourceSets(
+  configure: Action<NamedDomainObjectContainer<KotlinSourceSet>>
+) {
   extensions.configure("sourceSets", configure)
 }

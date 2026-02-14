@@ -2,6 +2,7 @@
 
 package blueprint.core
 
+import java.io.File
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFile
@@ -15,9 +16,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.io.File
 
-public fun Project.javaVersion(): Provider<JavaVersion> = javaVersionString().map(JavaVersion::toVersion)
+public fun Project.javaVersion(): Provider<JavaVersion> =
+  javaVersionString().map(JavaVersion::toVersion)
 
 public fun Project.jvmTarget(): Provider<JvmTarget> = javaVersionString().map(JvmTarget::fromTarget)
 
@@ -25,28 +26,34 @@ public fun Project.javaLanguageVersion(): Provider<JavaLanguageVersion> =
   javaVersionString().map(JavaLanguageVersion::of)
 
 public fun Project.javaVersionString(): Provider<String> =
-  providers.of(JavaVersionValueSource::class.java) { parameters.javaVersionFile.set(javaVersionFile) }
+  providers.of(JavaVersionValueSource::class.java) {
+    parameters.javaVersionFile.set(javaVersionFile)
+  }
 
 private val Project.javaVersionFile: RegularFile
-  @Suppress("UnstableApiUsage")
-  get() = rootProject.isolated.projectDirectory.file(FILENAME)
+  @Suppress("UnstableApiUsage") get() = rootProject.isolated.projectDirectory.file(FILENAME)
 
-public fun Settings.javaVersion(): Provider<JavaVersion> = javaVersionString().map(JavaVersion::toVersion)
+public fun Settings.javaVersion(): Provider<JavaVersion> =
+  javaVersionString().map(JavaVersion::toVersion)
 
-public fun Settings.jvmTarget(): Provider<JvmTarget> = javaVersionString().map(JvmTarget::fromTarget)
+public fun Settings.jvmTarget(): Provider<JvmTarget> =
+  javaVersionString().map(JvmTarget::fromTarget)
 
 public fun Settings.javaLanguageVersion(): Provider<JavaLanguageVersion> =
   javaVersionString().map(JavaLanguageVersion::of)
 
 public fun Settings.javaVersionString(): Provider<String> =
-  providers.of(JavaVersionValueSource::class.java) { parameters.javaVersionFile.set(javaVersionFile) }
+  providers.of(JavaVersionValueSource::class.java) {
+    parameters.javaVersionFile.set(javaVersionFile)
+  }
 
 private val Settings.javaVersionFile: File
   get() = rootProject.projectDir.resolve(FILENAME)
 
 private const val FILENAME = ".java-version"
 
-private abstract class JavaVersionValueSource : ValueSource<String, JavaVersionValueSource.Parameters> {
+private abstract class JavaVersionValueSource :
+  ValueSource<String, JavaVersionValueSource.Parameters> {
   interface Parameters : ValueSourceParameters {
     @get:InputFile
     @get:PathSensitive(PathSensitivity.RELATIVE)

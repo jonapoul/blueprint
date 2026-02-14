@@ -1,6 +1,4 @@
-plugins {
-  id("blueprint.convention")
-}
+plugins { id("blueprint.convention") }
 
 dependencies {
   api(libs.junit.api)
