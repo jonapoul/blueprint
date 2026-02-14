@@ -1,3 +1,5 @@
+@file:Suppress("ExplicitCollectionElementAccessMethod")
+
 package blueprint.core
 
 import org.gradle.api.Project
@@ -8,7 +10,7 @@ import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity.NONE
+import org.gradle.api.tasks.PathSensitivity
 import java.util.Properties
 
 public fun Project.localProperties(
@@ -36,7 +38,9 @@ public fun Provider<Map<String, String>>.getOptional(key: String): String? =
 private abstract class LocalPropertiesValueSource :
   ValueSource<Map<String, String>, LocalPropertiesValueSource.Parameters> {
   interface Parameters : ValueSourceParameters {
-    @get:[InputFile PathSensitive(NONE)] val propertiesFile: RegularFileProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    val propertiesFile: RegularFileProperty
   }
 
   override fun obtain(): Map<String, String> {

@@ -126,6 +126,8 @@ class Convention : Plugin<Project> {
     extensions.configure(DetektExtension::class) {
       config.setFrom(rootProject.isolated.projectDirectory.file("config/detekt.yml"))
       buildUponDefaultConfig.set(true)
+      allRules.set(true)
+      parallel.set(true)
     }
 
     val detektTasks = tasks.withType(Detekt::class)

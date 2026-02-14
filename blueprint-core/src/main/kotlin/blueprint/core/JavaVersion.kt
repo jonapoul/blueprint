@@ -1,3 +1,5 @@
+@file:Suppress("ExplicitCollectionElementAccessMethod")
+
 package blueprint.core
 
 import org.gradle.api.JavaVersion
@@ -10,7 +12,7 @@ import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity.NONE
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.File
@@ -47,7 +49,7 @@ private const val FILENAME = ".java-version"
 private abstract class JavaVersionValueSource : ValueSource<String, JavaVersionValueSource.Parameters> {
   interface Parameters : ValueSourceParameters {
     @get:InputFile
-    @get:PathSensitive(NONE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     val javaVersionFile: RegularFileProperty
   }
 

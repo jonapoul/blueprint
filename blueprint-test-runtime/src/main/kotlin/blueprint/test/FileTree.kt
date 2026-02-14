@@ -2,9 +2,15 @@ package blueprint.test
 
 import java.io.File
 
-public class FileTree internal constructor(
-  public val files: Map<String, String>,
+public class FileTree private constructor(
+  private val mutableFiles: MutableMap<String, String>,
 ) {
+  public val files: Map<String, String> = mutableFiles
+
+  public operator fun set(path: String, contents: String): String? = mutableFiles.put(key = path, value = contents)
+
+  public operator fun get(path: String): String? = mutableFiles[path]
+
   public class Builder(
     private val relativeRootPath: String,
   ) {

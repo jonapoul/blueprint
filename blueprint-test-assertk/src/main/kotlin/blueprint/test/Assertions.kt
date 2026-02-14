@@ -31,6 +31,7 @@ public fun Assert<BuildResult>.taskSkipped(name: String): Assert<BuildResult> = 
 
 public fun Assert<BuildResult>.taskUpToDate(name: String): Assert<BuildResult> = taskHadResult(name, UP_TO_DATE)
 
+@Suppress("NullableToStringCall")
 public fun Assert<BuildResult>.taskHadResult(
   name: String,
   expected: TaskOutcome?,
@@ -39,7 +40,7 @@ public fun Assert<BuildResult>.taskHadResult(
   if (task?.outcome == expected) {
     result
   } else {
-    expected("task result $expected for $name, actual: ${task?.outcome}. Output:\n${result.output}")
+    expected("task result '$expected' for '$name', actual: '${task?.outcome}'. Output:\n${result.output}")
   }
 }
 

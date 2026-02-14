@@ -73,6 +73,7 @@ internal class JavaVersionScenario : ScenarioTest() {
   @Test
   fun `Still works if file has spaces or newlines`() = runScenario {
     javaVersionFile().writeText(
+      @Suppress("TrimMultilineRawString")
       """
         11
 

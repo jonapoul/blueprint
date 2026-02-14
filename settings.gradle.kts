@@ -2,21 +2,10 @@
 
 rootProject.name = "blueprint"
 
+apply(from = "gradle/repositories.gradle.kts")
+
 pluginManagement {
   includeBuild("build-logic")
-  repositories {
-    mavenCentral()
-    google()
-    gradlePluginPortal()
-  }
-}
-
-dependencyResolutionManagement {
-  repositories {
-    mavenCentral()
-    google()
-    gradlePluginPortal()
-  }
 }
 
 plugins {

@@ -26,13 +26,12 @@ public fun ProviderFactory.gitVersionDate(): Provider<String> = gitVersionCode()
 private abstract class GitVersionHashValueSource : ValueSource<String, ValueSourceParameters.None> {
   @get:Inject abstract val execOperations: ExecOperations
 
-  override fun obtain(): String {
-    val output = ByteArrayOutputStream()
+  override fun obtain(): String = ByteArrayOutputStream().use { baos ->
     execOperations.exec {
       commandLine("git", "rev-parse", "--short=8", "HEAD")
-      standardOutput = output
+      standardOutput = baos
     }
-    return output.toString().trim()
+    baos.toString().trim()
   }
 }
 
@@ -40,12 +39,13 @@ private abstract class GitVersionCodeValueSource : ValueSource<Int, ValueSourceP
   @get:Inject abstract val execOperations: ExecOperations
 
   override fun obtain(): Int {
-    val output = ByteArrayOutputStream()
-    execOperations.exec {
-      commandLine("git", "show", "-s", "--format=%ct")
-      standardOutput = output
+    val result = ByteArrayOutputStream().use { baos ->
+      execOperations.exec {
+        commandLine("git", "show", "-s", "--format=%ct")
+        standardOutput = baos
+      }
+      baos.toString().trim()
     }
-    val result = output.toString().trim()
     return requireNotNull(result.toIntOrNull()) { "Expected integer output, got $result" }
   }
 }
