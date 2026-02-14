@@ -1,23 +1,18 @@
 @file:Suppress("UnstableApiUsage")
 
-plugins {
-  `kotlin-dsl`
-}
+plugins { `kotlin-dsl` }
 
 val javaVersion: Provider<Int> =
-  providers
-    .fileContents(layout.projectDirectory.file("../.java-version"))
-    .asText
-    .map { it.trim().toInt() }
+  providers.fileContents(layout.projectDirectory.file("../.java-version")).asText.map {
+    it.trim().toInt()
+  }
 
 java {
   sourceCompatibility = JavaVersion.toVersion(javaVersion.get())
   targetCompatibility = JavaVersion.toVersion(javaVersion.get())
 }
 
-kotlin {
-  jvmToolchain(javaVersion.get())
-}
+kotlin { jvmToolchain(javaVersion.get()) }
 
 dependencies {
   fun compileOnlyPlugin(plugin: Provider<PluginDependency>) =

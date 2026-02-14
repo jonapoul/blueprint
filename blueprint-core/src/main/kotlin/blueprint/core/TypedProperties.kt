@@ -15,7 +15,10 @@ public fun ProviderFactory.boolProperty(key: String): Provider<Boolean> =
 public fun ProviderFactory.doubleProperty(key: String): Provider<Double> =
   gradleProperty(key).map(String::toDouble)
 
-public fun ProviderFactory.stringListProperty(key: String, delimiter: String = ","): Provider<List<String>> =
+public fun ProviderFactory.stringListProperty(
+  key: String,
+  delimiter: String = ",",
+): Provider<List<String>> =
   gradleProperty(key).map { string ->
     if (string.isBlank()) {
       emptyList()
