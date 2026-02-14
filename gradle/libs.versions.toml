@@ -1,4 +1,5 @@
 [versions]
+detekt = "2.0.0-alpha.2"
 junit = "6.0.2"
 
 [libraries]
@@ -8,12 +9,11 @@ junit-launcher = { module = "org.junit.platform:junit-platform-launcher", versio
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
 
 [plugins]
-buildConfig = { id = "com.github.gmazzo.buildconfig", version = "5.5.1" }
+buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.7" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "3.5.1" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version = "0.5.0" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }
-dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
-kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
-kotlinAbi = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.18.1" }
-publish = { id = "com.vanniktech.maven.publish", version = "0.35.0" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version = "2.1.0" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.2.21" }
+publish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
 publishReport = { id = "io.github.gmazzo.publications.report", version = "1.3.3" }

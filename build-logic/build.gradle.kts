@@ -19,8 +19,8 @@ kotlin {
 }
 
 dependencies {
-  fun DependencyHandler.compileOnlyPlugin(dependency: Provider<PluginDependency>) =
-    compileOnly(dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") })
+  fun compileOnlyPlugin(plugin: Provider<PluginDependency>) =
+    compileOnly(plugin.map { p -> "${p.pluginId}:${p.pluginId}.gradle.plugin:${p.version}" })
 
   compileOnlyPlugin(libs.plugins.buildConfig)
   compileOnlyPlugin(libs.plugins.dependencyAnalysis)
@@ -28,7 +28,6 @@ dependencies {
   compileOnlyPlugin(libs.plugins.detekt)
   compileOnlyPlugin(libs.plugins.dokka)
   compileOnlyPlugin(libs.plugins.kotlin)
-  compileOnlyPlugin(libs.plugins.kotlinAbi)
   compileOnlyPlugin(libs.plugins.publish)
 }
 
