@@ -1,9 +1,6 @@
 ---
 comments:
-  UndocumentedPublicFunction:
-    active: false
-  UndocumentedPublicProperty:
-    active: false
+  active: false
 
 naming:
   FunctionNameMaxLength:
