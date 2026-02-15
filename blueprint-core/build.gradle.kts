@@ -4,7 +4,7 @@ plugins {
   `java-gradle-plugin` // only needed for gradleTestKit
 }
 
-kotlin { compilerOptions { freeCompilerArgs.add("-Xcontext-receivers") } }
+kotlin { compilerOptions { freeCompilerArgs.add("-Xcontext-parameters") } }
 
 dependencies {
   compileOnly(gradleApi())
