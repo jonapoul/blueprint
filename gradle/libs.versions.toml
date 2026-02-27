@@ -11,7 +11,7 @@ ktfmt = { module = "com.facebook:ktfmt", version = "0.61" } # only used in ktfmt
 
 [plugins]
 buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.7" }
-dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "3.5.1" }
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "3.6.1" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version = "0.5.0" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version = "2.1.0" }
