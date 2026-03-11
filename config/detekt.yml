@@ -7,8 +7,6 @@ naming:
     excludes: [ '**/test/**', '**/*Test/**' ]
 
 potential-bugs:
-  ImplicitUnitReturnType:
-    excludes: [ '**/test/**', '**/*Test/**' ]
   UnnamedParameterUse:
     active: false
 
@@ -19,3 +17,5 @@ style:
     active: false
   RedundantVisibilityModifier:
     active: false
+  ReturnCount:
+    max: 3

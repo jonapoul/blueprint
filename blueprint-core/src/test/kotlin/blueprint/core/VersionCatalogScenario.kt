@@ -8,7 +8,7 @@ import blueprint.test.buildsSuccessfully
 import blueprint.test.outputContainsLine
 import kotlin.test.Test
 
-internal class VersionCatalogScenario : ScenarioTest() {
+class VersionCatalogScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {

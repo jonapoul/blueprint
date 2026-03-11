@@ -16,7 +16,7 @@ import java.io.File
 import kotlin.test.Test
 import org.gradle.testkit.runner.GradleRunner
 
-internal class JavaVersionScenario : ScenarioTest() {
+class JavaVersionScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {

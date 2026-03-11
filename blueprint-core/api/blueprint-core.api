@@ -5,7 +5,7 @@ public final class blueprint/core/BlueprintPlugin : org/gradle/api/Plugin {
 }
 
 public final class blueprint/core/DependenciesKt {
-	public static final fun invoke (Lorg/gradle/kotlin/dsl/DependencyHandlerScope;Ljava/lang/String;Lorg/gradle/api/provider/Provider;)V
+	public static final fun toDependency (Lorg/gradle/api/provider/Provider;)Lorg/gradle/api/provider/Provider;
 }
 
 public final class blueprint/core/GitKt {

@@ -9,7 +9,7 @@ import blueprint.test.failsBuild
 import blueprint.test.outputContainsLine
 import kotlin.test.Test
 
-internal class TypedPropertiesScenario : ScenarioTest() {
+class TypedPropertiesScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
