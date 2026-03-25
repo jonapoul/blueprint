@@ -8,7 +8,7 @@ pluginManagement { includeBuild("build-logic") }
 
 plugins {
   id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-  id("com.gradle.develocity") version "4.3.2"
+  id("com.gradle.develocity") version "4.4.0"
 }
 
 develocity { buildScan.publishing.onlyIf { false } }
