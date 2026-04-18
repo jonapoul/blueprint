@@ -27,6 +27,7 @@ jobs:
       wrapper: ${{ steps.filter.outputs.wrapper }}
       shell: ${{ steps.filter.outputs.shell }}
       kotlin: ${{ steps.filter.outputs.kotlin }}
+      workflows: ${{ steps.filter.outputs.workflows }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
@@ -49,8 +50,11 @@ jobs:
               - '**/*.kts'
               - 'scripts/ktfmt.sh'
               - 'gradle/libs.versions.toml'
+            workflows:
+              - '.github/workflows/**'
+              - '.github/actions/**'
 
-  validate-renovate:
+  renovate:
     needs: changed-files
     if: needs.changed-files.outputs.renovate == 'true'
     runs-on: ubuntu-latest
@@ -63,7 +67,7 @@ jobs:
       - run: npm install -g renovate
       - run: renovate-config-validator
 
-  validate-wrapper:
+  gradle-wrapper:
     needs: changed-files
     if: needs.changed-files.outputs.wrapper == 'true'
     runs-on: ubuntu-latest
@@ -105,6 +109,15 @@ jobs:
         with:
           sarif_file: ${{ steps.betterleaks.outputs.sarif-path }}
 
+  actionlint:
+    needs: changed-files
+    if: needs.changed-files.outputs.workflows == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: raven-actions/actionlint@205b530c5d9fa8f44ae9ed59f341a0db994aa6f8 # v2
+
   ktfmt:
     if: needs.changed-files.outputs.kotlin == 'true'
     runs-on: ubuntu-latest
@@ -115,7 +128,7 @@ jobs:
       - run: scripts/ktfmt.sh check --force
 
   validation:
-    needs: [ changed-files, validate-renovate, validate-wrapper, shellcheck, betterleaks, ktfmt ]
+    needs: [ changed-files, renovate, gradle-wrapper, shellcheck, betterleaks, ktfmt, actionlint ]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
