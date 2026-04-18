@@ -5,10 +5,13 @@ on:
 
 env:
   CI: true
+  GRADLE_ENCRYPTION_KEY: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
-  contents: write
+  contents: read
   checks: write
+  pull-requests: write
   security-events: write
 
 concurrency:
@@ -16,34 +19,214 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pr-check:
+  changed-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      renovate: ${{ steps.filter.outputs.renovate }}
+      wrapper: ${{ steps.filter.outputs.wrapper }}
+      shell: ${{ steps.filter.outputs.shell }}
+      kotlin: ${{ steps.filter.outputs.kotlin }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
+        id: filter
+        with:
+          filters: |
+            renovate:
+              - '.github/renovate.json'
+              - '.github/renovate.json5'
+              - 'renovate.json'
+              - 'renovate.json5'
+            wrapper:
+              - 'gradle/wrapper/**'
+              - 'gradlew'
+              - 'gradlew.bat'
+            shell:
+              - '**/*.sh'
+            kotlin:
+              - '**/*.kt'
+              - '**/*.kts'
+              - 'scripts/ktfmt.sh'
+              - 'gradle/libs.versions.toml'
+            workflows:
+              - '.github/workflows/**'
+              - '.github/actions/**'
+
+  renovate:
+    needs: changed-files
+    if: needs.changed-files.outputs.renovate == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: 'lts/*'
+      - run: npm install -g renovate
+      - run: renovate-config-validator
+
+  gradle-wrapper:
+    needs: changed-files
+    if: needs.changed-files.outputs.wrapper == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: gradle/actions/wrapper-validation@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6
+
+  shellcheck:
+    needs: changed-files
+    if: needs.changed-files.outputs.shell == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+      - run: |
+          mapfile -t files < <(git diff --name-only --diff-filter=ACMR origin/main -- '*.sh')
+          if [[ ${#files[@]} -gt 0 ]]; then
+            shellcheck "${files[@]}"
+          fi
+
+  betterleaks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+      - uses: dortort/betterleaks-action@cd0b905aa4befb8f42f8b1ab98150180c9e77515 # v0.1.0
+        id: betterleaks
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config: ./config/betterleaks.toml
+          fail-on-leak: 'true'
+      - uses: github/codeql-action/upload-sarif@95e58e9a2cdfd71adc6e0353d5c52f41a045d225 # v4
+        if: always()
+        with:
+          sarif_file: ${{ steps.betterleaks.outputs.sarif-path }}
+
+  actionlint:
+    needs: changed-files
+    if: needs.changed-files.outputs.workflows == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: raven-actions/actionlint@205b530c5d9fa8f44ae9ed59f341a0db994aa6f8 # v2
+
+  ktfmt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: ./.github/actions/setup-java
+      - run: scripts/ktfmt.sh check --force
+
+  validation:
+    needs: [ changed-files, renovate, gradle-wrapper, shellcheck, betterleaks, ktfmt, actionlint ]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more validation jobs failed or were cancelled"
+            exit 1
+          fi
 
-      - name: Setup JDK
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
-        with:
-          java-version-file: .java-version
-          distribution: "zulu"
+  check-build-logic:
+    needs: validation
+    if: ${{ !cancelled() && needs.validation.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: ./.github/actions/setup-java
+      - uses: ./.github/actions/setup-gradle
+      - run: ./gradlew -p build-logic check
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6
-        with:
-          add-job-summary: on-failure
-          cache-read-only: true
-          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-
-      - name: Check
-        run: ./gradlew check
-
-      - name: Report build results
-        uses: gmazzo/publish-report-annotations@8a848c2642d68a51451fec8b36f6ea173488b60d # v1
+  detekt:
+    needs: validation
+    if: ${{ !cancelled() && needs.validation.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: ./.github/actions/setup-java
+      - uses: ./.github/actions/setup-gradle
+      - run: ./gradlew detektReportMergeSarif
+      - uses: github/codeql-action/upload-sarif@95e58e9a2cdfd71adc6e0353d5c52f41a045d225 # v4
         if: ${{ !cancelled() }}
-
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@95e58e9a2cdfd71adc6e0353d5c52f41a045d225 # v4
-        if: success() || failure()
         with:
           sarif_file: build/reports/detekt/merge.sarif.json
+
+  tests:
+    needs: validation
+    if: ${{ !cancelled() && needs.validation.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: ./.github/actions/setup-java
+      - uses: ./.github/actions/setup-gradle
+      - run: ./gradlew test
+      - uses: gmazzo/publish-report-annotations@8a848c2642d68a51451fec8b36f6ea173488b60d # v1
+        if: ${{ !cancelled() }}
+
+  dependency-guard:
+    needs: validation
+    if: ${{ !cancelled() && needs.validation.result == 'success' && !startsWith(github.head_ref, 'renovate/') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: ./.github/actions/setup-java
+      - uses: ./.github/actions/setup-gradle
+      - run: ./gradlew dependencyGuard
+
+  dependency-guard-baseline:
+    needs: validation
+    if: ${{ !cancelled() && needs.validation.result == 'success' && startsWith(github.head_ref, 'renovate/') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/actions/setup-java
+      - uses: ./.github/actions/setup-gradle
+      - run: ./gradlew dependencyGuardBaseline
+      - name: Commit baseline updates
+        run: |
+          if git diff --exit-code; then
+            echo "No baseline changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dependencies/
+          git commit -m "Baseline"
+          git push
+
+  finish:
+    if: ${{ !cancelled() }}
+    needs:
+      - validation
+      - check-build-logic
+      - detekt
+      - tests
+      - dependency-guard
+      - dependency-guard-baseline
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs failed or were cancelled"
+            exit 1
+          fi

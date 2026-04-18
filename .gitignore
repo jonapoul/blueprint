@@ -1,9 +1,10 @@
-.idea/
-.gradle/
 .gradle-profiler/
-build/
+.gradle/
+.idea/
 .kotlin/
+build/
 local.properties
+symlinks/
 
 # CI
 dependency-graph-reports/
