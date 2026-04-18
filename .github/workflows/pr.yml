@@ -106,14 +106,13 @@ jobs:
           sarif_file: ${{ steps.betterleaks.outputs.sarif-path }}
 
   ktfmt:
-    needs: changed-files
     if: needs.changed-files.outputs.kotlin == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: ./.github/actions/setup-java
-      - run: scripts/ktfmt.sh check
+      - run: scripts/ktfmt.sh check --force
 
   validation:
     needs: [ changed-files, validate-renovate, validate-wrapper, shellcheck, betterleaks, ktfmt ]
