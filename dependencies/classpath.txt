@@ -40,8 +40,8 @@ com.squareup:kotlinpoet:2.2.0
 com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.36.0
 com.vanniktech:central-portal:0.36.0
 com.vanniktech:gradle-maven-publish-plugin:0.36.0
-dev.detekt:detekt-gradle-plugin:2.0.0-alpha.2
-dev.detekt:dev.detekt.gradle.plugin:2.0.0-alpha.2
+dev.detekt:detekt-gradle-plugin:2.0.0-alpha.3
+dev.detekt:dev.detekt.gradle.plugin:2.0.0-alpha.3
 dev.zacsweers.moshix:moshi-sealed-reflect:0.30.0
 dev.zacsweers.moshix:moshi-sealed-runtime:0.30.0
 io.github.detekt.sarif4k:sarif4k-jvm:0.6.0
