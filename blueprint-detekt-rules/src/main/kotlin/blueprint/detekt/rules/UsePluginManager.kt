@@ -44,12 +44,8 @@ internal class UsePluginManager(config: Config) :
 
     analyze(expression) {
       val receiverType =
-        expression
-          .resolveToCall()
-          ?.singleCallOrNull<KaVariableAccessCall>()
-          ?.partiallyAppliedSymbol
-          ?.dispatchReceiver
-          ?.type ?: return@analyze
+        expression.resolveToCall()?.singleCallOrNull<KaVariableAccessCall>()?.dispatchReceiver?.type
+          ?: return@analyze
 
       if (receiverType.isSubtypeOf(GRADLE_PROJECT)) {
         expression.report(description)

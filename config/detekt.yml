@@ -2,7 +2,13 @@
 comments:
   active: false
 
+complexity:
+  LabeledExpression:
+    active: false
+
 naming:
+  BooleanPropertyNaming:
+    allowedPattern: "^(is|has|are|can|allow)"
   FunctionNameMaxLength:
     excludes: [ '**/test/**', '**/*Test/**' ]
 
@@ -11,6 +17,9 @@ potential-bugs:
     active: false
 
 style:
+  CascadingCallWrapping:
+    # clashes with ktfmt
+    active: false
   UnnecessaryApply:
     active: false
   MultilineRawStringIndentation:

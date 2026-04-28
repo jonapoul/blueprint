@@ -59,7 +59,7 @@ internal class AvoidCrossProjectConfiguration(config: Config) :
 
     analyze(expression) {
       val call = expression.resolveToCall()?.singleFunctionCallOrNull() ?: return@analyze
-      val receiverType = call.partiallyAppliedSymbol.dispatchReceiver?.type ?: return@analyze
+      val receiverType = call.dispatchReceiver?.type ?: return@analyze
       if (receiverType.isSubtypeOf(GRADLE_PROJECT)) {
         expression.report("$calleeName breaks project isolation - use convention plugins instead")
       }

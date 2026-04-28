@@ -46,11 +46,10 @@ internal class AvoidExtraProperties(config: Config) :
     if (expression.getReferencedName() != EXTRA) return
 
     analyze(expression) {
-      val applied =
-        expression.resolveToCall()?.singleCallOrNull<KaVariableAccessCall>()?.partiallyAppliedSymbol
-          ?: return@analyze
+      val call =
+        expression.resolveToCall()?.singleCallOrNull<KaVariableAccessCall>() ?: return@analyze
       val receiverType =
-        applied.dispatchReceiver?.type ?: applied.extensionReceiver?.type ?: return@analyze
+        call.dispatchReceiver?.type ?: call.extensionReceiver?.type ?: return@analyze
       if (receiverType.isSubtypeOf(GradleExtensionAware)) {
         expression.report(description)
       }

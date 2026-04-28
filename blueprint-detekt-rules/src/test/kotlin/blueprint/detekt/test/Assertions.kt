@@ -36,14 +36,16 @@ internal fun <T> Assert<T>.lintedAsKts(
       .trimIndent()
 
   // recreating rule.lintWithContext with custom JAR paths
-  val ktFile =
-    KotlinAnalysisApiEngine.compile(
-      code = codeWithImports,
-      javaSourceRoots = environment.javaSourceRoots,
-      jvmClasspathRoots = environment.jvmClasspathRoots + GRADLE_JARS.map(::Path),
-      allowCompilationErrors = false,
-    )
-  rule.visitFile(ktFile, LanguageVersionSettingsImpl.DEFAULT)
+  KotlinAnalysisApiEngine().use { engine ->
+    val ktFile =
+      engine.compile(
+        code = codeWithImports,
+        javaSourceRoots = environment.javaSourceRoots,
+        jvmClasspathRoots = environment.jvmClasspathRoots + GRADLE_JARS.map(::Path),
+        allowCompilationErrors = false,
+      )
+    rule.visitFile(ktFile, LanguageVersionSettingsImpl.DEFAULT)
+  }
 }
 
 internal fun Assert<List<Finding>>.hasNoFindings() = transform { findings ->

@@ -44,18 +44,17 @@ internal class LazyCollectionOperators(config: Config) :
   @Configuration("Additional eager method names to flag on DomainObjectCollection types")
   private val additionalEagerMethods: List<String> by config(defaultValue = emptyList())
 
+  @Suppress("CognitiveComplexMethod")
   override fun visitCallExpression(expression: KtCallExpression) {
     super.visitCallExpression(expression)
     val calleeName = expression.calleeExpression?.text ?: return
 
     analyze(expression) {
       val call = expression.resolveToCall()?.singleFunctionCallOrNull() ?: return@analyze
-      val applied = call.partiallyAppliedSymbol
-
       // Gradle-specific eager member methods with targeted replacement suggestions
       val gradleReplacement = GRADLE_REPLACEMENTS[calleeName]
       if (gradleReplacement != null || calleeName in additionalEagerMethods) {
-        val dispatchType = applied.dispatchReceiver?.type ?: return@analyze
+        val dispatchType = call.dispatchReceiver?.type ?: return@analyze
         if (dispatchType.isSubtypeOf(DomainObjectCollection)) {
           val message =
             if (gradleReplacement != null) {
@@ -70,7 +69,7 @@ internal class LazyCollectionOperators(config: Config) :
 
       // Stdlib collection extensions called on Gradle collections: only check extension receivers
       // so that Gradle member methods (configureEach, named, matching, etc.) are not flagged.
-      val extensionReceiverType = applied.extensionReceiver?.type ?: return@analyze
+      val extensionReceiverType = call.extensionReceiver?.type ?: return@analyze
       if (
         extensionReceiverType.isSubtypeOf(DomainObjectCollection) &&
           extensionReceiverType.isSubtypeOf(KotlinIterable)

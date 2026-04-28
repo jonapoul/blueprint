@@ -46,7 +46,7 @@ internal class PreferGradlePropertyProvider(config: Config) :
 
     analyze(expression) {
       val call = expression.resolveToCall()?.singleFunctionCallOrNull() ?: return@analyze
-      val receiverType = call.partiallyAppliedSymbol.dispatchReceiver?.type ?: return@analyze
+      val receiverType = call.dispatchReceiver?.type ?: return@analyze
       if (receiverType.isSubtypeOf(GRADLE_PROJECT)) {
         expression.report(
           "Prefer providers.gradleProperty over $calleeName for lazy, configuration-cache-safe access"

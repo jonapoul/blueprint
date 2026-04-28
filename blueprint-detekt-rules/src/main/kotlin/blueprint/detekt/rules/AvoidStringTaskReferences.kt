@@ -65,7 +65,7 @@ internal class AvoidStringTaskReferences(config: Config) :
       // Implicit receiver (e.g. inside a task configuration lambda)
       analyze(expression) {
         val call = expression.resolveToCall()?.singleFunctionCallOrNull() ?: return@analyze
-        val receiverType = call.partiallyAppliedSymbol.dispatchReceiver?.type ?: return@analyze
+        val receiverType = call.dispatchReceiver?.type ?: return@analyze
         if (receiverType.isSubtypeOf(Task)) {
           expression.report("Use a TaskProvider instead of a string in $calleeName()")
         }
@@ -73,8 +73,9 @@ internal class AvoidStringTaskReferences(config: Config) :
     }
   }
 
-  private fun KtCallExpression.hasStringArgument(): Boolean =
-    valueArguments.any { it.getArgumentExpression() is KtStringTemplateExpression }
+  private fun KtCallExpression.hasStringArgument(): Boolean = valueArguments.any {
+    it.getArgumentExpression() is KtStringTemplateExpression
+  }
 
   private companion object {
     val Task = FqName("org.gradle.api.Task")
