@@ -4,6 +4,10 @@ junit = "6.0.3"
 
 [libraries]
 assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
+detekt-api = { module = "dev.detekt:detekt-api", version.ref = "detekt" }
+detekt-test = { module = "dev.detekt:detekt-test", version.ref = "detekt" }
+detekt-testJunit = { module = "dev.detekt:detekt-test-junit", version.ref = "detekt" }
+detekt-testUtils = { module = "dev.detekt:detekt-test-utils", version.ref = "detekt" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }

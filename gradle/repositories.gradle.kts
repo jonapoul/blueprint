@@ -3,6 +3,9 @@ pluginManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
+    maven("https://central.sonatype.com/repository/maven-snapshots/") {
+      content { includeGroup("dev.detekt") }
+    }
   }
 }
 
@@ -11,5 +14,8 @@ dependencyResolutionManagement {
     mavenCentral()
     google()
     gradlePluginPortal()
+    maven("https://central.sonatype.com/repository/maven-snapshots/") {
+      content { includeGroup("dev.detekt") }
+    }
   }
 }
