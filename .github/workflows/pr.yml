@@ -173,7 +173,7 @@ jobs:
       - uses: ./.github/actions/setup-java
       - uses: ./.github/actions/setup-gradle
       - run: ./gradlew test
-      - uses: gmazzo/publish-report-annotations@8a848c2642d68a51451fec8b36f6ea173488b60d # v1
+      - uses: gmazzo/publish-report-annotations@d9c7375f4c587879eeedba56c6e35f1235219f9f # v1
         if: ${{ !cancelled() }}
 
   dependency-guard:
