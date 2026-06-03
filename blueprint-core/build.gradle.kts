@@ -1,6 +1,5 @@
 plugins {
   id("blueprint.convention")
-  `kotlin-dsl`
   `java-gradle-plugin` // only needed for gradleTestKit
 }
 

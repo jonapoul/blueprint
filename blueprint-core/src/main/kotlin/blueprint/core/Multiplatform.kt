@@ -9,7 +9,11 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 public fun KMPExtension.multiplatformDependencies(
   name: String,
   handler: KotlinDependencyHandler.() -> Unit,
-): Unit = sourceSets { named(name) { dependencies(handler) } }
+): Unit = sourceSets { sourceSets ->
+  sourceSets.named(name) { sourceSet ->
+    sourceSet.dependencies(handler)
+  }
+}
 
 public fun KMPExtension.commonMainDependencies(handler: KotlinDependencyHandler.() -> Unit): Unit =
   multiplatformDependencies(name = "commonMain", handler)

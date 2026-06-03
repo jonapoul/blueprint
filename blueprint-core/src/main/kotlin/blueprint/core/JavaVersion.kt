@@ -26,8 +26,8 @@ public fun Project.javaLanguageVersion(): Provider<JavaLanguageVersion> =
   javaVersionString().map(JavaLanguageVersion::of)
 
 public fun Project.javaVersionString(): Provider<String> =
-  providers.of(JavaVersionValueSource::class.java) {
-    parameters.javaVersionFile.set(javaVersionFile)
+  providers.of(JavaVersionValueSource::class.java) { spec ->
+    spec.parameters.javaVersionFile.set(javaVersionFile)
   }
 
 private val Project.javaVersionFile: RegularFile
@@ -43,8 +43,8 @@ public fun Settings.javaLanguageVersion(): Provider<JavaLanguageVersion> =
   javaVersionString().map(JavaLanguageVersion::of)
 
 public fun Settings.javaVersionString(): Provider<String> =
-  providers.of(JavaVersionValueSource::class.java) {
-    parameters.javaVersionFile.set(javaVersionFile)
+  providers.of(JavaVersionValueSource::class.java) { spec ->
+    spec.parameters.javaVersionFile.set(javaVersionFile)
   }
 
 private val Settings.javaVersionFile: File

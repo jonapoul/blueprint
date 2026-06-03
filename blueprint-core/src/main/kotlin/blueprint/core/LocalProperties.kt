@@ -16,21 +16,21 @@ import org.gradle.api.tasks.PathSensitivity
 public fun Project.localProperties(
   filename: String = "local.properties"
 ): Provider<Map<String, String>> =
-  providers.of(LocalPropertiesValueSource::class.java) {
-    parameters {
+  providers.of(LocalPropertiesValueSource::class.java) { spec ->
+    spec.parameters { params ->
       @Suppress("UnstableApiUsage")
       val propsFile = rootProject.isolated.projectDirectory.file(filename)
-      propertiesFile.set(propsFile)
+      params.propertiesFile.set(propsFile)
     }
   }
 
 public fun Settings.localProperties(
   filename: String = "local.properties"
 ): Provider<Map<String, String>> =
-  providers.of(LocalPropertiesValueSource::class.java) {
-    parameters {
+  providers.of(LocalPropertiesValueSource::class.java) { spec ->
+    spec.parameters { params ->
       val propsFile = rootProject.projectDir.resolve(filename)
-      propertiesFile.set(propsFile)
+      params.propertiesFile.set(propsFile)
     }
   }
 

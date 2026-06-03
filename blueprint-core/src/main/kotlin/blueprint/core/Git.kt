@@ -28,9 +28,9 @@ private abstract class GitVersionHashValueSource : ValueSource<String, ValueSour
 
   override fun obtain(): String =
     ByteArrayOutputStream().use { baos ->
-      execOperations.exec {
-        commandLine("git", "rev-parse", "--short=8", "HEAD")
-        standardOutput = baos
+      execOperations.exec { spec ->
+        spec.commandLine("git", "rev-parse", "--short=8", "HEAD")
+        spec.standardOutput = baos
       }
       baos.toString().trim()
     }
@@ -42,9 +42,9 @@ private abstract class GitVersionCodeValueSource : ValueSource<Int, ValueSourceP
   override fun obtain(): Int {
     val result =
       ByteArrayOutputStream().use { baos ->
-        execOperations.exec {
-          commandLine("git", "show", "-s", "--format=%ct")
-          standardOutput = baos
+        execOperations.exec { spec ->
+          spec.commandLine("git", "show", "-s", "--format=%ct")
+          spec.standardOutput = baos
         }
         baos.toString().trim()
       }
