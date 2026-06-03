@@ -24,6 +24,7 @@ buildConfig {
             Closure::class, // groovy
             DependencyHandlerScope::class, // kotlin-dsl
             Project::class, // core-api
+            AntBuilder::class, // ant-api (supertype of Configuration since Gradle 9.5)
           )
           .map { it.java.protectionDomain.codeSource.location.path },
     )
