@@ -44,7 +44,8 @@ import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 internal class AvoidStringTaskReferences(config: Config) :
   Rule(
     config = config,
-    description = "Task wiring methods should reference TaskProviders rather than string task names",
+    description =
+      "Task wiring methods should reference TaskProviders rather than string task names",
   ),
   RequiresAnalysisApi {
   override fun visitCallExpression(expression: KtCallExpression) {

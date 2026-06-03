@@ -43,7 +43,8 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 internal class AvoidCrossProjectConfiguration(config: Config) :
   Rule(
     config = config,
-    description = "subprojects/allprojects break project isolation - use convention plugins instead",
+    description =
+      "subprojects/allprojects break project isolation - use convention plugins instead",
   ),
   RequiresAnalysisApi {
   @Configuration("Allow allprojects blocks, e.g. for repository declarations in the root project")
