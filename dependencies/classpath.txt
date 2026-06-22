@@ -15,8 +15,8 @@ com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3
 com.fasterxml.jackson:jackson-bom:2.15.3
 com.fasterxml.woodstox:woodstox-core:6.5.1
 com.github.ben-manes.caffeine:caffeine:3.2.3
-com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:6.0.9
-com.github.gmazzo.buildconfig:plugin:6.0.9
+com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:6.0.10
+com.github.gmazzo.buildconfig:plugin:6.0.10
 com.google.code.gson:gson:2.11.0
 com.google.errorprone:error_prone_annotations:2.43.0
 com.google.guava:failureaccess:1.0.3
