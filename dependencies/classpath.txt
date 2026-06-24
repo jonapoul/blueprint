@@ -37,9 +37,9 @@ com.squareup.retrofit2:retrofit:3.0.0
 com.squareup:javapoet:1.13.0
 com.squareup:kotlinpoet-jvm:2.2.0
 com.squareup:kotlinpoet:2.2.0
-com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.36.0
-com.vanniktech:central-portal:0.36.0
-com.vanniktech:gradle-maven-publish-plugin:0.36.0
+com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0
+com.vanniktech:central-portal:0.37.0
+com.vanniktech:gradle-maven-publish-plugin:0.37.0
 dev.detekt:detekt-gradle-plugin:2.0.0-alpha.3
 dev.detekt:dev.detekt.gradle.plugin:2.0.0-alpha.3
 dev.zacsweers.moshix:moshi-sealed-reflect:0.30.0
@@ -88,4 +88,4 @@ org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.0
 org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0
 org.jetbrains:annotations:13.0
 org.jspecify:jspecify:1.0.0
-org.slf4j:slf4j-api:1.7.36
+org.slf4j:slf4j-api:2.0.18
