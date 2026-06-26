@@ -34,8 +34,9 @@ public fun Settings.localProperties(
     }
   }
 
-public fun Provider<Map<String, String>>.getOptional(key: String): String? =
-  map { props -> props[key] }.orNull?.takeIf { it.isNotEmpty() }
+public fun Provider<Map<String, String>>.getOptional(key: String): String? = map { props ->
+  props[key]
+}.orNull?.takeIf { it.isNotEmpty() }
 
 private abstract class LocalPropertiesValueSource :
   ValueSource<Map<String, String>, LocalPropertiesValueSource.Parameters> {
