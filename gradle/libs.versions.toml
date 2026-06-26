@@ -14,7 +14,7 @@ junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref 
 ktfmt = { module = "com.facebook:ktfmt", version = "0.63" } # only used in ktfmt.sh
 
 [plugins]
-buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.9" }
+buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.10" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "3.15.0" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version = "0.5.0" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
