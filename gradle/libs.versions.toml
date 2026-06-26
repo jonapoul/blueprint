@@ -11,7 +11,7 @@ detekt-testUtils = { module = "dev.detekt:detekt-test-utils", version.ref = "det
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
-ktfmt = { module = "com.facebook:ktfmt", version = "0.63" } # only used in ktfmt.sh
+ktfmt = { module = "com.facebook:ktfmt", version = "0.64" } # only used in ktfmt.sh
 
 [plugins]
 buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.0.10" }
