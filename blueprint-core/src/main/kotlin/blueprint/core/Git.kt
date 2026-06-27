@@ -1,5 +1,10 @@
 package blueprint.core
 
+import java.io.ByteArrayOutputStream
+import java.time.Instant
+import java.time.ZoneOffset
+import java.util.Locale
+import javax.inject.Inject
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -9,11 +14,6 @@ import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.process.ExecOperations
-import java.io.ByteArrayOutputStream
-import java.time.Instant
-import java.time.ZoneOffset
-import java.util.Locale
-import javax.inject.Inject
 
 public fun Project.gitVersionHash(): Provider<String> =
   GitInfoService.registerOrGet(this).versionHash

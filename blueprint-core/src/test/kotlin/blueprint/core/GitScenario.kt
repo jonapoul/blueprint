@@ -63,7 +63,6 @@ class GitScenario : ScenarioTest() {
       .outputContainsMatch("""printDate = \d{4}\.\d{2}\.\d{2}""".toRegex())
   }
 
-  /** Initialises a git repo in [Scenario.rootDir] with a single commit and returns its commit hash. */
   private fun Scenario.initGitRepo(): String {
     git("init", "--initial-branch=main")
     git("config", "user.email", "test@example.com")
