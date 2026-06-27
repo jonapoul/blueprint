@@ -1,3 +1,5 @@
+import blueprint.gradle.findOptionalProperty
+
 plugins {
   id("blueprint.convention")
   `java-gradle-plugin`
@@ -18,7 +20,7 @@ gradlePlugin {
   website = "https://github.com/jonapoul/blueprint"
   plugins.register("blueprint") {
     id = "dev.jonpoulton.blueprint.test"
-    description = properties["POM_DESCRIPTION"]?.toString()
+    description = findOptionalProperty("POM_DESCRIPTION")
     implementationClass = "blueprint.test.BlueprintTestPlugin"
     displayName = "Blueprint Test"
     tags.addAll("gradle", "blueprint", "utilities", "test")

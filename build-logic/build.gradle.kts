@@ -12,7 +12,9 @@ java {
   targetCompatibility = JavaVersion.toVersion(javaVersion.get())
 }
 
-kotlin { jvmToolchain(javaVersion.get()) }
+kotlin {
+  jvmToolchain(javaVersion.get())
+}
 
 dependencies {
   fun compileOnlyPlugin(plugin: Provider<PluginDependency>) =

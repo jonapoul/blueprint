@@ -2,7 +2,11 @@ import groovy.lang.Closure
 
 plugins { id("blueprint.convention") }
 
-kotlin { compilerOptions { freeCompilerArgs.add("-Xcontext-parameters") } }
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.add("-Xcontext-parameters")
+  }
+}
 
 dependencies {
   compileOnly(libs.detekt.api)
