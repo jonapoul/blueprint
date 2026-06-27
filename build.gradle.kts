@@ -13,12 +13,22 @@ plugins {
   alias(libs.plugins.publishReport)
 }
 
-dependencyGuard { configuration("classpath") }
+dependencyGuard {
+  configuration("classpath")
+}
 
-dependencyAnalysis { issues { all { onAny { severity("fail") } } } }
+dependencyAnalysis {
+  issues {
+    all {
+      onAny {
+        severity("fail")
+      }
+    }
+  }
+}
 
-val detektReportMergeSarif by
-  tasks.registering(ReportMergeTask::class) {
+val detektReportMergeSarif =
+  tasks.register("detektReportMergeSarif", ReportMergeTask::class) {
     output = layout.buildDirectory.file("reports/detekt/merge.sarif.json")
   }
 

@@ -1,9 +1,15 @@
+import blueprint.gradle.findOptionalProperty
+
 plugins {
   id("blueprint.convention")
   `java-gradle-plugin` // only needed for gradleTestKit
 }
 
-kotlin { compilerOptions { freeCompilerArgs.add("-Xcontext-parameters") } }
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.add("-Xcontext-parameters")
+  }
+}
 
 dependencies {
   compileOnly(gradleApi())
@@ -24,7 +30,7 @@ gradlePlugin {
   website = "https://github.com/jonapoul/blueprint"
   plugins.register("blueprint") {
     id = "dev.jonpoulton.blueprint"
-    description = properties["POM_DESCRIPTION"]?.toString()
+    description = findOptionalProperty("POM_DESCRIPTION")
     implementationClass = "blueprint.core.BlueprintPlugin"
     displayName = "Blueprint"
     tags.addAll("gradle", "blueprint", "utilities")

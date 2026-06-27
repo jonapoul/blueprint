@@ -24,17 +24,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.buildConfigField
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.named
-import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
 import org.gradle.util.GradleVersion
 import org.jetbrains.dokka.gradle.formats.DokkaJavadocPlugin
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.dsl.abi.AbiValidationExtension
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -75,9 +72,7 @@ class Convention : Plugin<Project> {
     extensions.configure(KotlinJvmProjectExtension::class) {
       explicitApi()
 
-      extensions.configure(AbiValidationExtension::class) {
-        @OptIn(ExperimentalAbiValidation::class) enabled.set(true)
-      }
+      @OptIn(ExperimentalAbiValidation::class) abiValidation()
     }
 
     val javaInt = javaVersion.map { JavaVersion.toVersion(it.toInt()) }
@@ -112,7 +107,8 @@ class Convention : Plugin<Project> {
     }
 
     pluginManager.withPlugin("java-gradle-plugin") {
-      val testPluginClasspath by configurations.registering { isCanBeResolved = true }
+      val testPluginClasspath =
+        configurations.register("testPluginClasspath") { isCanBeResolved = true }
 
       tasks.withType(PluginUnderTestMetadata::class).configureEach {
         pluginClasspath.from(testPluginClasspath)
@@ -129,7 +125,11 @@ class Convention : Plugin<Project> {
     }
 
     val detektTasks = tasks.withType(Detekt::class)
-    val detektCheck by tasks.registering { dependsOn(detektTasks) }
+    val detektCheck =
+      tasks.register("detektCheck") {
+        group = LifecycleBasePlugin.VERIFICATION_GROUP
+        dependsOn(detektTasks)
+      }
 
     pluginManager.withPlugin("base") { tasks.named("check").configure { dependsOn(detektCheck) } }
 
