@@ -9,9 +9,9 @@ public final class blueprint/core/DependenciesKt {
 }
 
 public final class blueprint/core/GitKt {
-	public static final fun gitVersionCode (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
-	public static final fun gitVersionDate (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
-	public static final fun gitVersionHash (Lorg/gradle/api/provider/ProviderFactory;)Lorg/gradle/api/provider/Provider;
+	public static final fun gitVersionCode (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun gitVersionDate (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
+	public static final fun gitVersionHash (Lorg/gradle/api/Project;)Lorg/gradle/api/provider/Provider;
 }
 
 public final class blueprint/core/JavaVersionKt {
