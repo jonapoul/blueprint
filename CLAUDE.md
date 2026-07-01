@@ -4,146 +4,50 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Blueprint is a Gradle library (published to Maven Central as `dev.jonpoulton.blueprint:blueprint-core`) that provides type-safe Kotlin DSL extensions and utilities for Gradle build scripts. The library focuses on improving developer experience through convenience functions, type safety, and support for Gradle's configuration cache.
+Blueprint is a Gradle library (published to Maven Central as `dev.jonpoulton.blueprint:blueprint-core`) providing type-safe Kotlin DSL extensions and utilities for Gradle build scripts, with a focus on configuration-cache support.
 
 ## Commands
 
-### Build & Verification
 ```bash
-./gradlew build              # Build and test the project
-./gradlew check              # Run all verification tasks (tests, detekt)
-./gradlew test               # Run tests only
-./gradlew clean              # Clean build directory
+./gradlew build              # Build and test
+./gradlew check              # All verification (tests, detekt)
+./gradlew test               # Tests only
+./gradlew detektCheck        # Static analysis
+scripts/ktfmt.sh check       # Check formatting (add --force for all files)
+scripts/ktfmt.sh format      # Format Kotlin files (Google style)
+scripts/dependencyUpdates.sh # Check for dependency updates
+./gradlew dependencyGuard    # Verify dependency classpath files
+./gradlew dependencyGuardBaseline            # Update dependency classpath files
+./gradlew publishToMavenLocal                # Publish locally for testing
+./gradlew publishAndReleaseToMavenCentral    # Publish to Maven Central (needs credentials)
 ```
 
-### Code Quality
-```bash
-./gradlew detektCheck        # Run static code analysis
-scripts/ktlintCheck.sh       # Run ktlint checks (requires ktlint installed)
-scripts/ktlintFormat.sh      # Format code with ktlint
-```
-
-### Publishing
-```bash
-./gradlew publishToMavenLocal                 # Publish to local Maven repository for testing
-./gradlew publishAndReleaseToMavenCentral     # Publish to Maven Central (requires credentials)
-```
-
-### Dependency Management
-```bash
-scripts/dependencyUpdates.sh  # Check for available dependency updates
-./gradlew dependencyGuard     # Verify dependency checksums
-```
-
-### Performance Profiling
-```bash
-scripts/profile.sh                      # List available scenarios and help
-scripts/profile.sh config_cache_hot     # Benchmark configuration cache reuse
-scripts/profile.sh build_with_cache     # Benchmark full build with cache
-scripts/profile.sh test_task            # Benchmark test execution
-scripts/profile.sh --task compileKotlin # Profile compileKotlin with JFR
-scripts/profile.sh --task test          # Profile test with JFR
-scripts/profile.sh --task build         # Profile build with JFR
-```
-
-Available scenarios for benchmarking (defined in `profiler.scenarios`):
-
-**Configuration Time:**
-- **config_no_cache**: Configuration time without cache (10 iterations, 3 warmups)
-- **config_cache_hot**: Configuration time with cache reuse (10 iterations, 3 warmups)
-
-**Full Build Time:**
-- **build_no_cache**: Full build without configuration cache (10 iterations, 3 warmups)
-- **build_with_cache**: Full build with configuration cache (10 iterations, 3 warmups)
-
-**Specific Tasks:**
-- **test_task**: Test execution
-- **detekt_task**: Detekt static analysis
-- **check_task**: Full verification suite
-- **publish_local**: Publish to Maven Local
-- **dokka_task**: Dokka HTML documentation generation
-
-**Two Modes:**
-
-1. **Benchmarking** (scenario-based):
-   - Use predefined scenarios: `scripts/profile.sh <scenario-name>`
-   - 10 iterations, 3 warmups, with cleanup between runs
-   - Produces statistical analysis and CSV results
-   - For comparing performance across changes
-
-2. **Profiling** (task-based):
-   - Use `--task` flag: `scripts/profile.sh --task <task-name>`
-   - Uses JFR (Java Flight Recorder) to generate flame graphs
-   - Detailed execution analysis with warmup runs
-   - For understanding what's slow within a build
-   - Results include flame graphs in `.gradle-profiler/results/`
-
-**Notes:**
-- Gradle version automatically pulled from wrapper
-- Profiling uses JFR (built into JDK, no kernel permissions needed)
-- Profiling uses settings from `gradle.properties` (configuration cache, etc.)
-- Requires [gradle-profiler](https://github.com/gradle/gradle-profiler) to be installed
-- Results saved to `.gradle-profiler/results/`
+`scripts/profile.sh` benchmarks/profiles the build via [gradle-profiler](https://github.com/gradle/gradle-profiler); run it with no args for available scenarios and help.
 
 ## Architecture
 
 ### Module Structure
 
-The project uses a multi-module Gradle setup with composite builds:
-
-- **blueprint-core**: The main library module containing all public APIs and utilities
-- **blueprint-test-runtime**: Testing framework providing `ScenarioTest` base class and `FileTree` DSL for declarative test project setup
-- **blueprint-test-assertk**: AssertK extensions for fluent assertions on Gradle TestKit results
-- **blueprint-test-plugin**: Gradle plugin (`dev.jonpoulton.blueprint.test`) that automatically configures the test infrastructure
-- **build-logic**: A composite build that defines the `blueprint.convention` Gradle plugin used by blueprint-core itself
-
-The `build-logic` module is included via `includeBuild()` in `settings.gradle.kts`, making it a separate build that provides plugins to the main build. This pattern allows the convention plugin to configure its own build while being used by other modules.
+Multi-module Gradle setup with composite builds: `blueprint-core` holds the public library, a set of `blueprint-test-*` modules provide the Gradle TestKit testing framework, and `build-logic` is a composite build supplying the convention plugin that blueprint-core builds itself with.
 
 ### Core Abstractions (blueprint-core/src/main/kotlin/blueprint/core/)
 
-The library provides ten main utility files:
+Ten utility files, each extending existing Gradle types:
 
-1. **Delegates.kt**: Kotlin property delegates for Gradle's `NamedDomainObjectCollection` and `NamedDomainObjectProvider`. Enables syntax like `val myTask: SomeTask by tasks`.
-
-2. **TypedProperties.kt**: Type-safe property accessors via `ProviderFactory`:
-   - Primitive types: `intProperty()`, `floatProperty()`, `boolProperty()`, `doubleProperty()`
-   - Collections: `stringListProperty()` (parses comma-delimited strings)
-   - All return `Provider<T>` for lazy evaluation
-
-3. **VersionCatalogs.kt**: Extensions for accessing version catalogs:
-   - `Project.libs` property for accessing the "libs" catalog
-   - Operator overloading for catalog access: `libs["alias"]`
-   - `VersionCatalog.version()` for version constraints
-
-4. **LocalProperties.kt**: Configuration-cache-compatible `local.properties` access using custom `ValueSource` implementations. Provides both `Project.localProperties()` and `Settings.localProperties()`.
-
-5. **SystemProperties.kt**: JVM system property utilities, including `ProviderFactory.isIntellijSyncing` for detecting IDE sync state.
-
-6. **Git.kt**: Git information providers using command execution:
-   - `gitVersionHash()`: Short commit hash (8 chars)
-   - `gitVersionCode()`: Unix timestamp of commit
-   - `gitVersionDate()`: Formatted date (YYYY.MM.DD)
-
-7. **Plugins.kt**: `PluginContainer.withAnyId()` for applying actions to multiple plugins by ID.
-
-8. **Ksp.kt**: `Project.kspAllConfigs()` for adding dependencies to all KSP configurations.
-
-9. **Multiplatform.kt**: Kotlin Multiplatform DSL helpers for source set dependencies (`commonMainDependencies()`, `jvmMainDependencies()`, etc.).
-
-10. **JavaVersion.kt**: Configuration-cache-compatible `.java-version` file readers using a custom `ValueSource`. Provides `Project.javaVersion()`, `Project.jvmTarget()`, `Project.javaLanguageVersion()`, `Project.javaVersionString()` and equivalent `Settings` extensions.
+- **Dependencies.kt**: `Provider<PluginDependency>.toDependency()` → `Provider<String>` dependency notation
+- **TypedProperties.kt**: Type-safe property accessors (`intProperty()`, `boolProperty()`, `stringListProperty()`, …), all returning `Provider<T>`
+- **VersionCatalogs.kt**: `Project.libs`, `libs["alias"]`, `VersionCatalog.version()`
+- **LocalProperties.kt**: Config-cache-compatible `local.properties` access (`Project`/`Settings` extensions) via `ValueSource`
+- **SystemProperties.kt**: JVM system property utilities, incl. `ProviderFactory.isIntellijSyncing`
+- **Git.kt**: Git info providers shared via a `GitInfoService` BuildService wrapping `ValueSource` command execution (`gitVersionHash()`, `gitVersionCode()`, `gitVersionDate()`)
+- **Plugins.kt**: `PluginContainer.withAnyId()`
+- **Ksp.kt**: `Project.kspAllConfigs()`
+- **Multiplatform.kt**: KMP source-set dependency helpers (`commonMainDependencies()`, etc.)
+- **JavaVersion.kt**: Config-cache-compatible `.java-version` readers (`javaVersion()`, `jvmTarget()`, …) via `ValueSource`
 
 ### Convention Plugin (build-logic/src/main/kotlin/Convention.kt)
 
-The convention plugin demonstrates best practices for Gradle plugin development. It applies and configures:
-
-- **Kotlin JVM** with explicit API mode, SAM conversions, and ABI validation
-- **Testing** with enhanced logging (shows passed/skipped/failed tests, full exception format)
-- **Detekt** with custom config from `/config/detekt.yml`
-- **Dokka** for Javadoc generation
-- **Maven Publish** for artifact publication
-- **Dependency Guard** for tracking compileClasspath and runtimeClasspath
-
-Java version is read from the root `.java-version` file (not `gradle.properties`). The plugin uses modular private functions for each configuration concern and lazy task configuration.
+Applies and configures Kotlin JVM (explicit API mode, SAM-as-class, ABI validation), testing, Detekt (`/config/detekt.yml`), Dokka, Maven Publish, and Dependency Guard. Java version is read from the root `.java-version` file.
 
 ### Testing Infrastructure
 
@@ -206,123 +110,41 @@ Gradle plugin that automates test setup for plugin development:
 
 ### Key Design Patterns
 
-1. **Provider Pattern**: All properties return `Provider<T>` for lazy evaluation and configuration cache support.
-
-2. **ValueSource Pattern**: Custom `ValueSource` implementations (e.g., for Git commands, local properties) ensure configuration cache compatibility.
-
-3. **Extension Functions**: The library extends Gradle APIs (Project, ProviderFactory, VersionCatalog, etc.) with Kotlin extension functions rather than custom DSLs.
-
-4. **Type Safety**: Explicit API mode (`-Xexplicit-api=strict`) enforced for all public APIs.
+- **Provider Pattern**: values return `Provider<T>` for lazy evaluation / config-cache support
+- **ValueSource Pattern**: custom `ValueSource` implementations for config-cache-safe external commands
+- **Extension Functions**: extend Gradle APIs rather than defining custom DSLs
+- **Type Safety**: explicit API mode (`-Xexplicit-api=strict`) on all public APIs
 
 ## Development Guidelines
 
-### Kotlin Compilation
+### Build Configuration
 
-- Target: Java 21 (defined in root `.java-version` file)
-- Explicit API mode is enforced (all public APIs must have explicit visibility and return types)
-- SAM conversions use class generation (`-Xsam-conversions=class`)
-- Kotlin stdlib default dependency is disabled (`kotlin.stdlib.default.dependency=false`)
-
-### Gradle Configuration
-
-The project uses these Gradle feature previews:
-- `STABLE_CONFIGURATION_CACHE`: Configuration cache for faster builds
-- `TYPESAFE_PROJECT_ACCESSORS`: Type-safe project dependency accessors
-
-Configuration from `gradle.properties`:
-- Configuration cache: enabled and parallel
-- Build cache: enabled
-- Parallel execution: disabled (`org.gradle.parallel=false`)
-- JVM args: `-Xmx4096M -Dfile.encoding=UTF-8 -XX:+UseParallelGC`
+- Target Java 21 (root `.java-version`); explicit API mode enforced; SAM-as-class; `kotlin.stdlib.default.dependency=false`
+- Feature previews: `STABLE_CONFIGURATION_CACHE`, `TYPESAFE_PROJECT_ACCESSORS`
+- `gradle.properties`: configuration cache + build cache enabled, `org.gradle.parallel=false`
+- blueprint-core compiles against `gradleApi()` and `kotlin("gradle-plugin")` as `compileOnly`
 
 ### Code Quality Standards
 
-All code must pass:
-- **Detekt**: Static analysis with config at `/config/detekt.yml`
-- **ktlint**: Kotlin linting via scripts
-
-The `check` task runs all verifications including tests, detekt.
+All code must pass Detekt (`/config/detekt.yml`) and ktfmt (Google style, via `scripts/ktfmt.sh`). The `check` task runs all verifications.
 
 ### Publishing Workflow
 
-Version is defined in `gradle.properties` as `VERSION_NAME=2.1.0-SNAPSHOT`. For releases:
-
-1. Update `VERSION_NAME` to release version (e.g., `2.0.0`)
-2. Create a matching git tag (e.g., `v2.0.0`)
-3. The publish workflow verifies tag matches version and publishes to Maven Central
-4. Artifacts are signed with GPG (configured via `RELEASE_SIGNING_ENABLED=true`)
+Version lives in `gradle.properties` as `VERSION_NAME` (currently `2.3.0`). For a release: bump `VERSION_NAME`, push a matching `v*` git tag; the publish workflow verifies the tag matches and publishes signed artifacts to Maven Central.
 
 ### CI/CD
 
-The project uses multiple GitHub Actions workflows for continuous integration and deployment:
-
-#### Pull Request Workflows
-
-**pr.yml** - Main PR validation (runs on `pull_request`):
-- Checks out code with full history and tags
-- Sets up JDK 21 (Zulu distribution) from `.java-version`
-- Configures Gradle with caching (read-only mode for PRs to avoid cache pollution)
-- Runs `./gradlew check` (includes tests and detekt)
-- Publishes test report annotations via `gmazzo/publish-report-annotations`
-- Uploads detekt SARIF results to GitHub Code Scanning
-- Uses concurrency control to cancel outdated PR builds
-
-**gitleaks.yml** - Secret scanning (runs on `pull_request`):
-- Scans git history for leaked secrets using gitleaks/gitleaks-action
-- Requires full git history (`fetch-depth: 0`) to scan all commits
-- Uses config from `./config/gitleaks.toml`
-
-**ktlint.yml** - Kotlin linting (runs on `pull_request` when `**.kt` or `**.kts` files change):
-- Caches ktlint binary (version 1.8.0) to avoid repeated downloads
-- Runs `scripts/ktlintCheck.sh` for Kotlin code style validation
-
-**validate.yml** - Workflow validation (runs on `push` when workflow files change):
-- Validates GitHub Actions workflow syntax using actionlint
-
-#### Publishing Workflows
-
-**publish-snapshot.yml** - Snapshot publishing (runs on push to `main` or `workflow_dispatch`):
-- Only publishes if version contains `-SNAPSHOT` and repository is `jonapoul/blueprint`
-- Extracts version from `gradle.properties` (VERSION_NAME)
-- Runs `./gradlew publishToMavenCentral -x dokkaGeneratePublicationHtml --no-configuration-cache`
-- Uses sequential concurrency (group: `publish`) to prevent parallel publish jobs
-- Requires secrets: SONATYPE_USERNAME, SONATYPE_PASSWORD, GPG_IN_MEMORY_KEY, GPG_KEY_PASSWORD
-
-**publish-release.yml** - Release publishing (runs on git tag push or `workflow_dispatch`):
-- Two jobs: `verify-version` and `publish`
-- `verify-version`: Validates that git tag matches VERSION_NAME in gradle.properties
-- `publish`: Runs `./gradlew publish` and creates GitHub release with auto-generated notes
-- Uses sequential concurrency (group: `publish`) to prevent parallel publish jobs
-
-#### Common Configuration
-
-- **Java Version**: JDK 21 (Zulu distribution) specified in `.java-version`
-- **Gradle Setup**: Uses `gradle/actions/setup-gradle@v5` with:
-  - Build cache encryption via GRADLE_ENCRYPTION_KEY secret
-  - Read-only cache for PR builds (prevents cache pollution)
-  - Write cache for main/release builds
-  - Job summaries on failure
-- **Permissions**: Workflows use minimal required permissions (principle of least privilege)
-- **Caching**: ktlint binary is cached to avoid repeated downloads; Gradle wrapper and dependencies are cached via setup-gradle action
+- **pr.yml**: main PR validation, runs on `pull_request`/`merge_group` as many parallel jobs (ktfmt, detekt, tests, dependency-guard, betterleaks secret scanning, actionlint, shellcheck, gradle-wrapper, check-build-logic, …). Builds are set up via the local composite actions `./.github/actions/setup-java` (Zulu JDK 21) and `./.github/actions/setup-gradle` (wraps `gradle/actions/setup-gradle@v6`, read-only cache off `main`).
+- **publish-snapshot.yml**: publishes `-SNAPSHOT` versions on push to `main`.
+- **publish-release.yml**: verifies the git tag matches `VERSION_NAME`, then publishes and creates a GitHub release.
 
 ### Adding New Utilities
 
-When adding new utility functions to `blueprint-core`:
-
-1. Create or modify a file in `blueprint-core/src/main/kotlin/blueprint/core/`
-2. Use extension functions on existing Gradle types (Project, ProviderFactory, etc.)
-3. Return `Provider<T>` for values that should be lazily evaluated
-4. Use `ValueSource` for operations that need configuration cache support (e.g., executing external commands)
-5. Add explicit visibility modifiers and return types (explicit API mode)
-6. The library compiles against `gradleApi()` and `kotlin("gradle-plugin")` as `compileOnly` dependencies
+Add extension functions in `blueprint-core/src/main/kotlin/blueprint/core/`. Return `Provider<T>` for lazily-evaluated values, use `ValueSource` for external commands (config-cache), and add explicit visibility + return types.
 
 ### Dependency Guard
 
-The project uses dependency-guard to track and validate dependencies. Checksums are maintained for:
-- Root classpath: `dependencyGuard { configuration("classpath") }`
-- blueprint-core: compileClasspath and runtimeClasspath
-
-Run `./gradlew dependencyGuard` after dependency changes to update checksums.
+Baseline files listing the resolved dependency classpaths are tracked for the root classpath and blueprint-core's compile/runtime classpaths. `./gradlew dependencyGuard` verifies the current classpaths match those baselines (and fails CI on drift); after an intentional dependency change, run `./gradlew dependencyGuardBaseline` to regenerate them and commit the result.
 
 ### Writing Tests
 
@@ -362,6 +184,6 @@ internal class MyUtilityScenario : ScenarioTest() {
 
 ### Build Features
 
-- **Gradle Develocity**: Configured but build scans are disabled (`buildScan.publishing.onlyIf { false }`)
-- **Foojay Resolver**: Automatic JDK provisioning via Gradle toolchains
-- **BuildConfig**: The test plugin uses BuildConfig to generate version constants from `VERSION_NAME`
+- **Gradle Develocity**: configured, build scans disabled
+- **Foojay Resolver**: automatic JDK provisioning via toolchains
+- **BuildConfig**: test plugin generates version constants from `VERSION_NAME`
