@@ -198,7 +198,9 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Use a PAT (not GITHUB_TOKEN) so the baseline commit re-triggers the PR
+          # workflow; commits pushed with GITHUB_TOKEN do not trigger new runs.
+          token: ${{ secrets.RENOVATE_BASELINE_TOKEN }}
       - uses: ./.github/actions/setup-java
       - uses: ./.github/actions/setup-gradle
       - run: ./gradlew dependencyGuardBaseline
