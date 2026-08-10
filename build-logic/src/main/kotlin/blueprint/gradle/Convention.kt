@@ -11,7 +11,6 @@ import com.vanniktech.maven.publish.MavenPublishPlugin
 import dev.detekt.gradle.Detekt
 import dev.detekt.gradle.extensions.DetektExtension
 import dev.detekt.gradle.plugin.DetektPlugin
-import dev.detekt.gradle.report.ReportMergeTask
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -131,11 +130,8 @@ class Convention : Plugin<Project> {
         dependsOn(detektTasks)
       }
 
-    pluginManager.withPlugin("base") { tasks.named("check").configure { dependsOn(detektCheck) } }
-
-    rootProject.tasks.named("detektReportMergeSarif", ReportMergeTask::class) {
-      input.from(detektTasks.map { it.reports.sarif.outputLocation })
-      dependsOn(detektTasks)
+    pluginManager.withPlugin("base") {
+      tasks.named("check").configure { dependsOn(detektCheck) }
     }
 
     detektTasks.configureEach {

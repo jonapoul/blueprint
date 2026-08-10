@@ -14,15 +14,15 @@ public val Project.libs: VersionCatalog
 
 public operator fun VersionCatalog.get(alias: String): Provider<MinimalExternalModuleDependency> =
   requireNotNull(findLibrary(alias).getOrNull()) {
-    "Library alias '$alias' not found in version catalog"
+    "Library alias '$alias' not found in version catalog '$name'"
   }
 
 public fun VersionCatalog.plugin(alias: String): Provider<PluginDependency> =
   requireNotNull(findPlugin(alias).getOrNull()) {
-    "Plugin alias '$alias' not found in version catalog"
+    "Plugin alias '$alias' not found in version catalog '$name'"
   }
 
 public fun VersionCatalog.version(alias: String): VersionConstraint =
   requireNotNull(findVersion(alias).getOrNull()) {
-    "Version alias '$alias' not found in version catalog"
+    "Version alias '$alias' not found in version catalog '$name'"
   }

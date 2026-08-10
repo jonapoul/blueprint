@@ -6,5 +6,16 @@
   "extends": [
     "config:best-practices"
   ],
-  "minimumReleaseAge": "3 days"
+  "minimumReleaseAge": "3 days",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github actions",
+      "schedule": [
+        "before 4am on monday"
+      ]
+    }
+  ]
 }

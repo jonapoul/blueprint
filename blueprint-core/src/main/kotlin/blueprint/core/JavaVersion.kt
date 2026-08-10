@@ -1,4 +1,4 @@
-@file:Suppress("ExplicitCollectionElementAccessMethod")
+@file:Suppress("ExplicitCollectionElementAccessMethod", "UnstableApiUsage")
 
 package blueprint.core
 
@@ -31,7 +31,7 @@ public fun Project.javaVersionString(): Provider<String> =
   }
 
 private val Project.javaVersionFile: RegularFile
-  @Suppress("UnstableApiUsage") get() = rootProject.isolated.projectDirectory.file(FILENAME)
+  get() = rootProject.isolated.projectDirectory.file(FILENAME)
 
 public fun Settings.javaVersion(): Provider<JavaVersion> =
   javaVersionString().map(JavaVersion::toVersion)

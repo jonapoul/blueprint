@@ -1,5 +1,3 @@
-import dev.detekt.gradle.report.ReportMergeTask
-
 plugins {
   alias(libs.plugins.buildConfig) apply false
   alias(libs.plugins.detekt) apply false
@@ -7,10 +5,8 @@ plugins {
   alias(libs.plugins.kotlin) apply false
   alias(libs.plugins.publish) apply false
 
-  base
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.dependencyGuard)
-  alias(libs.plugins.publishReport)
 }
 
 dependencyGuard {
@@ -26,10 +22,3 @@ dependencyAnalysis {
     }
   }
 }
-
-val detektReportMergeSarif =
-  tasks.register("detektReportMergeSarif", ReportMergeTask::class) {
-    output = layout.buildDirectory.file("reports/detekt/merge.sarif.json")
-  }
-
-tasks.named("check").configure { dependsOn(detektReportMergeSarif) }

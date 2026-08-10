@@ -27,7 +27,7 @@ private fun Provider<Int>.toVersionDate(): Provider<String> = map { seconds ->
   "%04d.%02d.%02d".format(Locale.getDefault(), date.year, date.monthValue, date.dayOfMonth)
 }
 
-internal abstract class GitInfoService : BuildService<GitInfoService.Parameters> {
+internal interface GitInfoService : BuildService<GitInfoService.Parameters> {
   interface Parameters : BuildServiceParameters {
     val versionHash: Property<String>
     val versionCode: Property<Int>

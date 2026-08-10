@@ -1,4 +1,4 @@
-@file:Suppress("ExplicitCollectionElementAccessMethod")
+@file:Suppress("ExplicitCollectionElementAccessMethod", "UnstableApiUsage")
 
 package blueprint.core
 
@@ -37,7 +37,7 @@ public fun Provider<Map<String, String>>.getOptional(key: String): String? = map
   .orNull
   ?.takeIf { it.isNotEmpty() }
 
-private abstract class LocalPropertiesService : BuildService<LocalPropertiesService.Parameters> {
+private interface LocalPropertiesService : BuildService<LocalPropertiesService.Parameters> {
   interface Parameters : BuildServiceParameters {
     val properties: MapProperty<String, String>
   }
@@ -52,7 +52,6 @@ private abstract class LocalPropertiesService : BuildService<LocalPropertiesServ
           "localPropertiesService-$filename",
           LocalPropertiesService::class.java,
         ) { spec ->
-          @Suppress("UnstableApiUsage")
           val propsFile = project.rootProject.isolated.projectDirectory.file(filename)
           spec.parameters.properties.set(
             project.providers.of(LocalPropertiesValueSource::class.java) { source ->

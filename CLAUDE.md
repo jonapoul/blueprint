@@ -135,8 +135,7 @@ Version lives in `gradle.properties` as `VERSION_NAME` (currently `2.3.0`). For 
 ### CI/CD
 
 - **pr.yml**: main PR validation, runs on `pull_request`/`merge_group` as many parallel jobs (ktfmt, detekt, tests, dependency-guard, betterleaks secret scanning, actionlint, shellcheck, gradle-wrapper, check-build-logic, …). Builds are set up via the local composite actions `./.github/actions/setup-java` (Zulu JDK 21) and `./.github/actions/setup-gradle` (wraps `gradle/actions/setup-gradle@v6`, read-only cache off `main`).
-- **publish-snapshot.yml**: publishes `-SNAPSHOT` versions on push to `main`.
-- **publish-release.yml**: verifies the git tag matches `VERSION_NAME`, then publishes and creates a GitHub release.
+- **publish.yml**: single workflow gating both snapshot and release publishing behind a shared `check-version` job (reads `VERSION_NAME` via a sparse checkout, verifies tags match it and land on `main`). Pushes to `main` with a `-SNAPSHOT` version publish a snapshot; tag pushes with a non-snapshot version publish a release and create a GitHub release. Both jobs share the `publish` concurrency group so they never run in parallel.
 
 ### Adding New Utilities
 

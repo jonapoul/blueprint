@@ -11,7 +11,6 @@ dependencies {
   testCompileOnly(libs.junit.api)
   testImplementation(kotlin("stdlib"))
   testImplementation(kotlin("test"))
-  testImplementation(libs.assertk)
   testRuntimeOnly(libs.junit.launcher)
 }
 
