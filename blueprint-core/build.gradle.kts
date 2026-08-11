@@ -8,15 +8,14 @@ plugins {
 dependencies {
   compileOnly(gradleApi())
   compileOnly(kotlin("gradle-plugin"))
-
-  testCompileOnly(libs.junit.api)
+  testImplementation(project(":blueprint-test-assertk"))
+  testImplementation(project(":blueprint-test-runtime"))
   testImplementation(kotlin("stdlib"))
   testImplementation(kotlin("test"))
   testImplementation(libs.assertk)
-  testImplementation(project(":blueprint-test-assertk"))
-  testImplementation(project(":blueprint-test-runtime"))
-  testPluginClasspath(kotlin("gradle-plugin"))
+  testCompileOnly(libs.junit.api)
   testRuntimeOnly(libs.junit.launcher)
+  testPluginClasspath(kotlin("gradle-plugin"))
 }
 
 gradlePlugin {

@@ -7,6 +7,8 @@ import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPlugin
 import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import com.github.gmazzo.buildconfig.BuildConfigExtension
 import com.github.gmazzo.buildconfig.BuildConfigPlugin
+import com.squareup.sort.SortDependenciesExtension
+import com.squareup.sort.SortDependenciesPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import dev.detekt.gradle.Detekt
 import dev.detekt.gradle.extensions.DetektExtension
@@ -23,7 +25,6 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.buildConfigField
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
@@ -46,12 +47,14 @@ class Convention : Plugin<Project> {
         apply(DependencyAnalysisPlugin::class)
         apply(BuildConfigPlugin::class)
         apply(DependencyGuardPlugin::class)
+        apply(SortDependenciesPlugin::class)
       }
 
       kotlin()
       test()
       detekt()
       dependencyGuard()
+      sortDependencies()
     }
 
   private fun Project.kotlin() {
@@ -145,6 +148,13 @@ class Convention : Plugin<Project> {
     extensions.configure(DependencyGuardPluginExtension::class) {
       configuration("compileClasspath")
       configuration("runtimeClasspath")
+    }
+  }
+
+  private fun Project.sortDependencies() {
+    extensions.configure(SortDependenciesExtension::class) {
+      insertBlankLines.set(false)
+      check(true)
     }
   }
 }
