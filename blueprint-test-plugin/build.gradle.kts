@@ -7,10 +7,9 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-
-  testCompileOnly(libs.junit.api)
   testImplementation(kotlin("stdlib"))
   testImplementation(kotlin("test"))
+  testCompileOnly(libs.junit.api)
   testRuntimeOnly(libs.junit.launcher)
 }
 

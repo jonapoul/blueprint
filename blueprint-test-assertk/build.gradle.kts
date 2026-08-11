@@ -1,12 +1,11 @@
 plugins { id("blueprint.convention") }
 
 dependencies {
-  api(libs.assertk)
   api(project(":blueprint-test-runtime"))
+  api(libs.assertk)
   compileOnly(gradleTestKit())
-
-  testCompileOnly(libs.junit.api)
   testImplementation(kotlin("stdlib"))
   testImplementation(kotlin("test"))
+  testCompileOnly(libs.junit.api)
   testRuntimeOnly(libs.junit.launcher)
 }
