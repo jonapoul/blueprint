@@ -13,7 +13,6 @@ import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -55,9 +54,7 @@ private const val FILENAME = ".java-version"
 private abstract class JavaVersionValueSource :
   ValueSource<String, JavaVersionValueSource.Parameters> {
   interface Parameters : ValueSourceParameters {
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    val javaVersionFile: RegularFileProperty
+    @get:InputFile @get:PathSensitive(RELATIVE) val javaVersionFile: RegularFileProperty
   }
 
   override fun obtain(): String {

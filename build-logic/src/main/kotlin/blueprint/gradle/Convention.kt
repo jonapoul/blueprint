@@ -65,7 +65,10 @@ class Convention : Plugin<Project> {
     compileTasks.configureEach {
       compilerOptions {
         jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
-        freeCompilerArgs.addAll("-Xsam-conversions=class")
+        freeCompilerArgs.addAll(
+          "-Xsam-conversions=class",
+          "-Xcontext-sensitive-resolution",
+        )
       }
     }
 

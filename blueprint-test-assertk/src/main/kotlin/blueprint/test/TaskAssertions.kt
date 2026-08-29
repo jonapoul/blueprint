@@ -6,10 +6,6 @@ import assertk.assertions.support.expected
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.BuildTask
 import org.gradle.testkit.runner.TaskOutcome
-import org.gradle.testkit.runner.TaskOutcome.FAILED
-import org.gradle.testkit.runner.TaskOutcome.SKIPPED
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
-import org.gradle.testkit.runner.TaskOutcome.UP_TO_DATE
 
 public fun Assert<BuildResult>.taskSucceeded(name: String): Assert<BuildResult> =
   taskHadResult(name, SUCCESS)
