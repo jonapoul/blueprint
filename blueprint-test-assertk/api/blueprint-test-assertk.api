@@ -1,15 +1,49 @@
-public final class blueprint/test/AssertionsKt {
-	public static final fun assertThatTask (Lblueprint/test/Scenario;Ljava/lang/String;[Ljava/lang/String;)Lassertk/Assert;
+public final class blueprint/test/FileAssertionsKt {
+	public static final fun childDoesNotExist (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun childExists (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun contains (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun contentContains (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun contentEquals (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun doesNotContain (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun doesNotExist (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun exists (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun isEqualToTrimmed (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+}
+
+public final class blueprint/test/GradleRunnerKt {
+	public static final fun assertThatTask (Lblueprint/test/Scenario;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun assertThatTasks (Lblueprint/test/Scenario;[Ljava/lang/String;)Lassertk/Assert;
 	public static final fun buildsSuccessfully (Lassertk/Assert;)Lassertk/Assert;
 	public static final fun failsBuild (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun withArgument (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun withArguments (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun withConfigurationCache (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun withGradleProperty (Lassertk/Assert;Ljava/lang/String;Ljava/lang/Object;)Lassertk/Assert;
+	public static final fun withoutConfigurationCache (Lassertk/Assert;)Lassertk/Assert;
+}
+
+public final class blueprint/test/OutputAssertionsKt {
 	public static final fun outputContains (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun outputContainsLine (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun outputContainsMatch (Lassertk/Assert;Lkotlin/text/Regex;)Lassertk/Assert;
 	public static final fun outputDoesNotContain (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun trimmedOutputContains (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun trimmedOutputContains (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+}
+
+public final class blueprint/test/TaskAssertionsKt {
+	public static final fun allSuccessful (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun allTasksSuccessful (Lassertk/Assert;)Lassertk/Assert;
+	public static final fun noTasksFailed (Lassertk/Assert;)Lassertk/Assert;
 	public static final fun taskFailed (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun taskHadResult (Lassertk/Assert;Ljava/lang/String;Lorg/gradle/testkit/runner/TaskOutcome;)Lassertk/Assert;
 	public static final fun taskSkipped (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun taskSucceeded (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun taskUpToDate (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksHadResult (Lassertk/Assert;Lorg/gradle/testkit/runner/TaskOutcome;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksWereFailed (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksWereSkipped (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksWereSucceeded (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksWereUpToDate (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
 }
 

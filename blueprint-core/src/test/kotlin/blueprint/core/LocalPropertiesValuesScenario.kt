@@ -1,12 +1,15 @@
 package blueprint.core
 
-import blueprint.test.DEFAULT_REPOSITORIES_KTS
 import blueprint.test.GRADLE_VERSION
 import blueprint.test.Scenario
 import blueprint.test.ScenarioTest
 import blueprint.test.assertThatTask
+import blueprint.test.assertThatTasks
+import blueprint.test.buildGradleKts
 import blueprint.test.buildsSuccessfully
+import blueprint.test.localProperties
 import blueprint.test.outputContainsLine
+import blueprint.test.settingsGradleKts
 import java.io.File
 import kotlin.test.Test
 
@@ -14,9 +17,9 @@ class LocalPropertiesValuesScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    settingsGradleKts()
 
-    "local.properties"(
+    localProperties(
       """
       present.key=present-value
       empty.key=
@@ -26,7 +29,7 @@ class LocalPropertiesValuesScenario : ScenarioTest() {
 
     "custom.properties"("custom.key=custom-value")
 
-    "build.gradle.kts"(
+    buildGradleKts(
       $$"""
       import blueprint.core.*
 
@@ -89,7 +92,7 @@ class LocalPropertiesValuesScenario : ScenarioTest() {
   fun `Missing file yields an empty map`() = runScenario {
     localPropertiesFile().delete()
 
-    assertThatTask(":printMapState", ":printPresent")
+    assertThatTasks(":printMapState", ":printPresent")
       .buildsSuccessfully()
       .outputContainsLine("printMapState = <empty-map>")
       .outputContainsLine("printPresent = <absent>")
@@ -97,7 +100,7 @@ class LocalPropertiesValuesScenario : ScenarioTest() {
 
   @Test
   fun `getOptional returns the value, or null for missing and empty keys`() = runScenario {
-    assertThatTask(":printOptionalPresent", ":printOptionalMissing", ":printOptionalEmpty")
+    assertThatTasks(":printOptionalPresent", ":printOptionalMissing", ":printOptionalEmpty")
       .buildsSuccessfully()
       .outputContainsLine("printOptionalPresent = present-value")
       .outputContainsLine("printOptionalMissing = <absent>")

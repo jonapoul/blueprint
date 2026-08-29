@@ -5,9 +5,12 @@ import assertk.assertions.support.expected
 import blueprint.test.DEFAULT_REPOSITORIES_KTS
 import blueprint.test.GRADLE_VERSION
 import blueprint.test.ScenarioTest
-import blueprint.test.assertThatTask
+import blueprint.test.assertThatTasks
+import blueprint.test.buildGradleKts
 import blueprint.test.buildsSuccessfully
+import blueprint.test.localProperties
 import blueprint.test.outputContainsLine
+import blueprint.test.settingsGradleKts
 import kotlin.test.Test
 import org.gradle.testkit.runner.BuildResult
 
@@ -15,7 +18,7 @@ class LocalPropertiesScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
-    "settings.gradle.kts"(
+    settingsGradleKts(
       DEFAULT_REPOSITORIES_KTS +
         """
         include(":a", ":b")
@@ -23,7 +26,7 @@ class LocalPropertiesScenario : ScenarioTest() {
           .trimIndent()
     )
 
-    "local.properties"(
+    localProperties(
       """
       my.key=my-value
       """
@@ -47,15 +50,15 @@ class LocalPropertiesScenario : ScenarioTest() {
       """
         .trimIndent()
 
-    "a" { "build.gradle.kts"(buildScript) }
-    "b" { "build.gradle.kts"(buildScript) }
+    "a" { buildGradleKts(buildScript) }
+    "b" { buildGradleKts(buildScript) }
   }
 
   @Test
   fun `Shared local properties resolve consistently across projects`() = runScenario {
     // --info surfaces the "Reading local properties from ..." line emitted once per actual file
     // read.
-    assertThatTask(":a:printProperty", ":b:printProperty", "--info")
+    assertThatTasks(":a:printProperty", ":b:printProperty", "--info")
       .buildsSuccessfully()
       .outputContainsLine("printProperty = my-value")
       .readsLocalPropertiesExactly(times = 1)

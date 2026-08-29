@@ -12,6 +12,7 @@ Blueprint is a Gradle library (published to Maven Central as `dev.jonpoulton.blu
 ./gradlew build              # Build and test
 ./gradlew check              # All verification (tests, detekt)
 ./gradlew test               # Tests only
+./gradlew compileAll         # Compile everything, no tests
 ./gradlew detektCheck        # Static analysis
 scripts/ktfmt.sh check       # Check formatting (add --force for all files)
 scripts/ktfmt.sh format      # Format Kotlin files (Google style)
@@ -32,81 +33,19 @@ Multi-module Gradle setup with composite builds: `blueprint-core` holds the publ
 
 ### Core Abstractions (blueprint-core/src/main/kotlin/blueprint/core/)
 
-Ten utility files, each extending existing Gradle types:
+A handful of small utility files, each adding extension functions to existing Gradle types. They cover: dependency notation from plugin catalogs, type-safe Gradle property accessors, version catalog access, `local.properties` and `.java-version` reading, JVM system properties, git info, plugin-container helpers, KSP configuration, and KMP source-set helpers. Values are exposed as `Provider<T>` and external commands go through `ValueSource` so everything stays configuration-cache safe.
 
-- **Dependencies.kt**: `Provider<PluginDependency>.toDependency()` → `Provider<String>` dependency notation
-- **TypedProperties.kt**: Type-safe property accessors (`intProperty()`, `boolProperty()`, `stringListProperty()`, …), all returning `Provider<T>`
-- **VersionCatalogs.kt**: `Project.libs`, `libs["alias"]`, `VersionCatalog.version()`
-- **LocalProperties.kt**: Config-cache-compatible `local.properties` access (`Project`/`Settings` extensions) via `ValueSource`
-- **SystemProperties.kt**: JVM system property utilities, incl. `ProviderFactory.isIntellijSyncing`
-- **Git.kt**: Git info providers shared via a `GitInfoService` BuildService wrapping `ValueSource` command execution (`gitVersionHash()`, `gitVersionCode()`, `gitVersionDate()`)
-- **Plugins.kt**: `PluginContainer.withAnyId()`
-- **Ksp.kt**: `Project.kspAllConfigs()`
-- **Multiplatform.kt**: KMP source-set dependency helpers (`commonMainDependencies()`, etc.)
-- **JavaVersion.kt**: Config-cache-compatible `.java-version` readers (`javaVersion()`, `jvmTarget()`, …) via `ValueSource`
+### Convention Plugin (build-logic/src/main/kotlin/blueprint/gradle/Convention.kt)
 
-### Convention Plugin (build-logic/src/main/kotlin/Convention.kt)
-
-Applies and configures Kotlin JVM (explicit API mode, SAM-as-class, ABI validation), testing, Detekt (`/config/detekt.yml`), Dokka, Maven Publish, and Dependency Guard. Java version is read from the root `.java-version` file.
+Applies and configures the standard setup for every module: Kotlin JVM with explicit API mode, testing, Detekt, Dokka, Maven Publish, and Dependency Guard. Java version comes from the root `.java-version`. Also registers a `compileAll` task.
 
 ### Testing Infrastructure
 
-The project includes a sophisticated testing framework for Gradle plugin development:
+A framework for testing Gradle plugins with TestKit, split across three modules:
 
-#### blueprint-test-runtime
-
-Provides core testing abstractions:
-
-- **ScenarioTest**: Abstract base class for Gradle TestKit tests using JUnit 5
-  - `@TempDir` integration for isolated test directories
-  - `gradleVersion` property to specify Gradle version for tests
-  - `fileTree` property for declarative project setup
-  - `runScenario()` method to execute tests with GradleRunner
-
-- **FileTree DSL**: Declarative DSL for building test project structures
-  ```kotlin
-  fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
-    "build.gradle.kts"("""
-      plugins { id("my.plugin") }
-    """.trimIndent())
-    "src/main/kotlin" {
-      "MyClass.kt"("class MyClass")
-    }
-  }
-  ```
-  - Uses operator overloading: `String.invoke(String)` for files, `String.invoke(Builder.() -> Unit)` for directories
-  - Automatically handles path separators and directory nesting
-
-- **Scenario**: Interface wrapping GradleRunner with helper methods
-  - `runTask(task, *args)`: Executes tasks with `--configuration-cache` by default
-
-#### blueprint-test-assertk
-
-Fluent AssertK extensions for Gradle TestKit assertions:
-
-```kotlin
-assertThatTask(":myTask", "-Pkey=value")
-  .buildsSuccessfully()
-  .taskSucceeded(":myTask")
-  .outputContainsLine("expected output")
-  .outputDoesNotContain("error")
-```
-
-Provides chainable assertions:
-- `buildsSuccessfully()` / `failsBuild()`: Execute and verify build result
-- `taskSucceeded()`, `taskFailed()`, `taskSkipped()`, `taskUpToDate()`: Verify task outcomes
-- `outputContains()`, `outputContainsLine()`, `outputDoesNotContain()`, `outputContainsMatch()`: Verify build output
-
-#### blueprint-test-plugin
-
-Gradle plugin that automates test setup for plugin development:
-
-- Applies to projects using `java-gradle-plugin`
-- Registers `testPluginClasspath` configuration
-- Automatically adds `blueprint:test-runtime` to `testImplementation`
-- Configures `PluginUnderTestMetadata` tasks to include test plugin classpath
-- Uses BuildConfig to inject the correct Blueprint version
+- **blueprint-test-runtime**: the core abstractions. `ScenarioTest` is the JUnit 5 base class (temp dirs, Gradle version, declarative project setup). A `FileTree` DSL builds the test project's files and directories, with shortcut helpers for the common ones (`settings.gradle.kts`, `build.gradle.kts`, `gradle.properties`, etc.). `Scenario` wraps a `GradleRunner`.
+- **blueprint-test-assertk**: fluent AssertK assertions over build results - whether the build passed or failed, individual task outcomes, and build output. Also runner-tweaking helpers (config cache on/off, extra properties/args) applied before execution.
+- **blueprint-test-plugin**: a Gradle plugin that auto-wires the above into any project using `java-gradle-plugin` - test classpath, dependencies, and injecting the right Blueprint version.
 
 ### Key Design Patterns
 
@@ -147,39 +86,7 @@ Baseline files listing the resolved dependency classpaths are tracked for the ro
 
 ### Writing Tests
 
-Tests for blueprint-core utilities follow this pattern:
-
-1. Extend `ScenarioTest` and specify `gradleVersion`
-2. Define a `fileTree` with test project structure (typically includes `settings.gradle.kts`, `build.gradle.kts`, and `gradle.properties`)
-3. Use `runScenario { }` to execute test logic
-4. Use `assertThatTask()` with fluent assertions to verify behavior
-
-Example:
-```kotlin
-internal class MyUtilityScenario : ScenarioTest() {
-  override val gradleVersion = GRADLE_VERSION
-
-  override val fileTree = fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
-    "build.gradle.kts"("""
-      import blueprint.core.*
-      plugins { id("dev.jonpoulton.blueprint") }
-
-      tasks.register("myTask") {
-        doLast { println("Hello") }
-      }
-    """.trimIndent())
-  }
-
-  @Test
-  fun `My test`() = runScenario {
-    assertThatTask(":myTask")
-      .buildsSuccessfully()
-      .taskSucceeded(":myTask")
-      .outputContainsLine("Hello")
-  }
-}
-```
+Tests for blueprint-core utilities extend `ScenarioTest`, declare a `fileTree` for the test project structure, run the build with `runScenario { }`, and verify behavior with `assertThatTask()` and its fluent assertions. See the existing `*Scenario` tests in `blueprint-core/src/test` for the pattern.
 
 ### Build Features
 
