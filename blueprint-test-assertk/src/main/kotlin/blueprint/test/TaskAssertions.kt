@@ -17,10 +17,10 @@ public fun Assert<BuildResult>.taskSucceeded(name: String): Assert<BuildResult> 
 public fun Assert<BuildResult>.taskFailed(name: String): Assert<BuildResult> =
   taskHadResult(name, FAILED)
 
-public fun Assert<BuildResult>.taskSkipped(name: String): Assert<BuildResult> =
+public fun Assert<BuildResult>.taskWasSkipped(name: String): Assert<BuildResult> =
   taskHadResult(name, SKIPPED)
 
-public fun Assert<BuildResult>.taskUpToDate(name: String): Assert<BuildResult> =
+public fun Assert<BuildResult>.taskWasUpToDate(name: String): Assert<BuildResult> =
   taskHadResult(name, UP_TO_DATE)
 
 @Suppress("NullableToStringCall")
@@ -38,10 +38,10 @@ public fun Assert<BuildResult>.taskHadResult(
   }
 }
 
-public fun Assert<BuildResult>.tasksWereSucceeded(vararg names: String): Assert<BuildResult> =
+public fun Assert<BuildResult>.tasksSucceeded(vararg names: String): Assert<BuildResult> =
   tasksHadResult(SUCCESS, *names)
 
-public fun Assert<BuildResult>.tasksWereFailed(vararg names: String): Assert<BuildResult> =
+public fun Assert<BuildResult>.tasksFailed(vararg names: String): Assert<BuildResult> =
   tasksHadResult(FAILED, *names)
 
 public fun Assert<BuildResult>.tasksWereSkipped(vararg names: String): Assert<BuildResult> =
