@@ -41,10 +41,10 @@ public fun Assert<BuildResult>.tasksFailed(vararg names: String): Assert<BuildRe
   tasksHadResult(FAILED, *names)
 
 public fun Assert<BuildResult>.tasksWereSkipped(vararg names: String): Assert<BuildResult> =
-  tasksHadResult(UP_TO_DATE, *names)
+  tasksHadResult(SKIPPED, *names)
 
 public fun Assert<BuildResult>.tasksWereUpToDate(vararg names: String): Assert<BuildResult> =
-  tasksHadResult(SUCCESS, *names)
+  tasksHadResult(UP_TO_DATE, *names)
 
 public fun Assert<BuildResult>.tasksHadResult(
   expected: TaskOutcome?,
