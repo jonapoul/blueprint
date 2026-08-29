@@ -1,6 +1,7 @@
 package blueprint.test
 
 import java.io.File
+import org.intellij.lang.annotations.Language
 
 public class FileTree private constructor(private val mutableFiles: MutableMap<String, String>) {
   public val files: Map<String, String> = mutableFiles
@@ -50,3 +51,19 @@ public const val DEFAULT_REPOSITORIES_KTS: String =
     }
   }
 """
+
+public fun FileTree.Builder.settingsGradleKts(
+  @Language("kotlin") contents: String = DEFAULT_REPOSITORIES_KTS
+): Unit = "settings.gradle.kts"(contents)
+
+public fun FileTree.Builder.buildGradleKts(@Language("kotlin") contents: String): Unit =
+  "build.gradle.kts"(contents)
+
+public fun FileTree.Builder.libsVersionsToml(@Language("toml") contents: String): Unit =
+  ("gradle" / "libs.versions.toml")(contents)
+
+public fun FileTree.Builder.gradleProperties(@Language("properties") contents: String): Unit =
+  "gradle.properties"(contents)
+
+public fun FileTree.Builder.localProperties(@Language("properties") contents: String): Unit =
+  "local.properties"(contents)

@@ -1,21 +1,24 @@
 package blueprint.core
 
-import blueprint.test.DEFAULT_REPOSITORIES_KTS
 import blueprint.test.GRADLE_VERSION
 import blueprint.test.ScenarioTest
 import blueprint.test.assertThatTask
+import blueprint.test.buildGradleKts
 import blueprint.test.buildsSuccessfully
 import blueprint.test.failsBuild
+import blueprint.test.gradleProperties
 import blueprint.test.outputContainsLine
+import blueprint.test.settingsGradleKts
+import blueprint.test.withGradleProperty
 import kotlin.test.Test
 
 class TypedPropertiesScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    settingsGradleKts()
 
-    "build.gradle.kts"(
+    buildGradleKts(
       """
       import blueprint.core.*
 
@@ -37,7 +40,7 @@ class TypedPropertiesScenario : ScenarioTest() {
         .trimIndent()
     )
 
-    "gradle.properties"(
+    gradleProperties(
       """
       bool=true
       boolBinary=0
@@ -60,25 +63,34 @@ class TypedPropertiesScenario : ScenarioTest() {
         ":printBool" to "false",
       )
       .forEach { (task, expected) ->
-        assertThatTask(task, "-Pkey=int").buildsSuccessfully().outputContainsLine(expected)
+        assertThatTask(task)
+          .withGradleProperty(name = "key", value = "int")
+          .buildsSuccessfully()
+          .outputContainsLine(expected)
       }
   }
 
   @Test
   fun `Print bool`() = runScenario {
     mapOf(":printBool" to "true", ":printString" to "true").forEach { (task, expected) ->
-      assertThatTask(task, "-Pkey=bool").buildsSuccessfully().outputContainsLine(expected)
+      assertThatTask(task)
+        .withGradleProperty(name = "key", value = "bool")
+        .buildsSuccessfully()
+        .outputContainsLine(expected)
     }
 
     listOf(":printDouble", ":printFloat", ":printInt").forEach { task ->
-      assertThatTask(task, "-Pkey=bool").failsBuild()
+      assertThatTask(task).withGradleProperty(name = "key", value = "bool").failsBuild()
     }
   }
 
   @Test
   fun `Print bool binary`() = runScenario {
     mapOf(":printBool" to "false").forEach { (task, expected) ->
-      assertThatTask(task, "-Pkey=boolBinary").buildsSuccessfully().outputContainsLine(expected)
+      assertThatTask(task)
+        .withGradleProperty(name = "key", value = "boolBinary")
+        .buildsSuccessfully()
+        .outputContainsLine(expected)
     }
   }
 }

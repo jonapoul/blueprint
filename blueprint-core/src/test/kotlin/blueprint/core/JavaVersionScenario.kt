@@ -3,15 +3,17 @@ package blueprint.core
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.support.expected
-import blueprint.test.DEFAULT_REPOSITORIES_KTS
 import blueprint.test.GRADLE_VERSION
 import blueprint.test.Scenario
 import blueprint.test.ScenarioTest
 import blueprint.test.assertThatTask
+import blueprint.test.assertThatTasks
+import blueprint.test.buildGradleKts
 import blueprint.test.buildsSuccessfully
 import blueprint.test.failsBuild
 import blueprint.test.outputContainsLine
 import blueprint.test.outputContainsMatch
+import blueprint.test.settingsGradleKts
 import java.io.File
 import kotlin.test.Test
 import org.gradle.testkit.runner.GradleRunner
@@ -20,9 +22,9 @@ class JavaVersionScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    settingsGradleKts()
 
-    "build.gradle.kts"(
+    buildGradleKts(
       $$"""
       import blueprint.core.*
 
@@ -103,7 +105,7 @@ class JavaVersionScenario : ScenarioTest() {
   private fun Scenario.javaVersionFile(): File = rootDir.resolve(".java-version")
 
   private fun Scenario.assertThatAllTasks(): Assert<GradleRunner> =
-    assertThatTask(
+    assertThatTasks(
       ":printJavaLanguageVersion",
       ":printJavaVersion",
       ":printJavaVersionString",

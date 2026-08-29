@@ -28,7 +28,6 @@ jobs:
       shell: ${{ steps.filter.outputs.shell }}
       kotlin: ${{ steps.filter.outputs.kotlin }}
       workflows: ${{ steps.filter.outputs.workflows }}
-      sortDependencies: ${{ steps.filter.outputs.sortDependencies }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
@@ -54,9 +53,6 @@ jobs:
             workflows:
               - '.github/workflows/**'
               - '.github/actions/**'
-            sortDependencies:
-              - '**/*.kts'
-              - 'build-logic/**'
 
   renovate:
     needs: changed-files
@@ -176,17 +172,6 @@ jobs:
       - uses: gmazzo/publish-report-annotations@d9c7375f4c587879eeedba56c6e35f1235219f9f # v1
         if: ${{ !cancelled() }}
 
-  sort-dependencies:
-    needs: [ changed-files, validation ]
-    if: ${{ !cancelled() && needs.validation.result == 'success' && needs.changed-files.outputs.sortDependencies == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: ./.github/actions/setup-java
-      - uses: ./.github/actions/setup-gradle
-      - run: ./gradlew checkSortDependencies
-
   dependency-guard:
     needs: validation
     if: ${{ !cancelled() && needs.validation.result == 'success' && !startsWith(github.head_ref, 'renovate/') }}
@@ -234,7 +219,6 @@ jobs:
       - check-build-logic
       - detekt
       - tests
-      - sort-dependencies
       - dependency-guard
       - dependency-guard-baseline
     runs-on: ubuntu-latest

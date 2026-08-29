@@ -15,7 +15,6 @@ import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 
 public fun Project.localProperties(
   filename: String = "local.properties"
@@ -68,9 +67,7 @@ private abstract class LocalPropertiesValueSource :
   private val logger = Logging.getLogger(LocalPropertiesValueSource::class.java)
 
   interface Parameters : ValueSourceParameters {
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    val propertiesFile: RegularFileProperty
+    @get:InputFile @get:PathSensitive(RELATIVE) val propertiesFile: RegularFileProperty
   }
 
   override fun obtain(): Map<String, String> {

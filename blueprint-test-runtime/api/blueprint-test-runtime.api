@@ -14,15 +14,17 @@ public final class blueprint/test/FileTree$Builder {
 
 public final class blueprint/test/FileTreeKt {
 	public static final field DEFAULT_REPOSITORIES_KTS Ljava/lang/String;
+	public static final fun buildGradleKts (Lblueprint/test/FileTree$Builder;Ljava/lang/String;)V
+	public static final fun gradleProperties (Lblueprint/test/FileTree$Builder;Ljava/lang/String;)V
+	public static final fun libsVersionsToml (Lblueprint/test/FileTree$Builder;Ljava/lang/String;)V
+	public static final fun localProperties (Lblueprint/test/FileTree$Builder;Ljava/lang/String;)V
+	public static final fun settingsGradleKts (Lblueprint/test/FileTree$Builder;Ljava/lang/String;)V
+	public static synthetic fun settingsGradleKts$default (Lblueprint/test/FileTree$Builder;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
 public abstract interface class blueprint/test/Scenario {
 	public abstract fun getRootDir ()Ljava/io/File;
 	public abstract fun getRunner ()Lorg/gradle/testkit/runner/GradleRunner;
-}
-
-public final class blueprint/test/ScenarioKt {
-	public static final fun runTask (Lblueprint/test/Scenario;Ljava/lang/String;[Ljava/lang/String;)Lorg/gradle/testkit/runner/GradleRunner;
 }
 
 public abstract class blueprint/test/ScenarioTest {

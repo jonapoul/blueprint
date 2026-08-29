@@ -4,7 +4,6 @@ plugins {
   alias(libs.plugins.dokka) apply false
   alias(libs.plugins.kotlin) apply false
   alias(libs.plugins.publish) apply false
-  alias(libs.plugins.sortDependencies) apply false
 
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.dependencyGuard)

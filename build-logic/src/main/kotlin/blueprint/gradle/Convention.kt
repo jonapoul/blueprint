@@ -7,8 +7,6 @@ import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPlugin
 import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import com.github.gmazzo.buildconfig.BuildConfigExtension
 import com.github.gmazzo.buildconfig.BuildConfigPlugin
-import com.squareup.sort.SortDependenciesExtension
-import com.squareup.sort.SortDependenciesPlugin
 import com.vanniktech.maven.publish.MavenPublishPlugin
 import dev.detekt.gradle.Detekt
 import dev.detekt.gradle.extensions.DetektExtension
@@ -47,14 +45,12 @@ class Convention : Plugin<Project> {
         apply(DependencyAnalysisPlugin::class)
         apply(BuildConfigPlugin::class)
         apply(DependencyGuardPlugin::class)
-        apply(SortDependenciesPlugin::class)
       }
 
       kotlin()
       test()
       detekt()
       dependencyGuard()
-      sortDependencies()
     }
 
   private fun Project.kotlin() {
@@ -64,12 +60,19 @@ class Convention : Plugin<Project> {
         .asText
         .map { it.trim() }
 
-    tasks.withType(KotlinCompile::class).configureEach {
+    val compileTasks = tasks.withType(KotlinCompile::class)
+
+    compileTasks.configureEach {
       compilerOptions {
         jvmTarget.set(javaVersion.map(JvmTarget::fromTarget))
-        freeCompilerArgs.addAll("-Xsam-conversions=class")
+        freeCompilerArgs.addAll(
+          "-Xsam-conversions=class",
+          "-Xcontext-sensitive-resolution",
+        )
       }
     }
+
+    tasks.register("compileAll") { dependsOn(compileTasks) }
 
     extensions.configure(KotlinJvmProjectExtension::class) {
       explicitApi()
@@ -148,13 +151,6 @@ class Convention : Plugin<Project> {
     extensions.configure(DependencyGuardPluginExtension::class) {
       configuration("compileClasspath")
       configuration("runtimeClasspath")
-    }
-  }
-
-  private fun Project.sortDependencies() {
-    extensions.configure(SortDependenciesExtension::class) {
-      insertBlankLines.set(false)
-      check(true)
     }
   }
 }

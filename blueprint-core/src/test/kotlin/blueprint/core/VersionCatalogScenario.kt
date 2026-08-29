@@ -1,20 +1,22 @@
 package blueprint.core
 
-import blueprint.test.DEFAULT_REPOSITORIES_KTS
 import blueprint.test.GRADLE_VERSION
 import blueprint.test.ScenarioTest
 import blueprint.test.assertThatTask
+import blueprint.test.buildGradleKts
 import blueprint.test.buildsSuccessfully
+import blueprint.test.libsVersionsToml
 import blueprint.test.outputContainsLine
+import blueprint.test.settingsGradleKts
 import kotlin.test.Test
 
 class VersionCatalogScenario : ScenarioTest() {
   override val gradleVersion = GRADLE_VERSION
 
   override val fileTree = fileTree {
-    "settings.gradle.kts"(DEFAULT_REPOSITORIES_KTS)
+    settingsGradleKts()
 
-    "build.gradle.kts"(
+    buildGradleKts(
       """
       import blueprint.core.get
       import blueprint.core.plugin
@@ -48,22 +50,20 @@ class VersionCatalogScenario : ScenarioTest() {
         .trimIndent()
     )
 
-    "gradle" {
-      "libs.versions.toml"(
-        """
-        [versions]
-        junit = "6.0.2"
+    libsVersionsToml(
+      """
+      [versions]
+      junit = "6.0.2"
 
-        [libraries]
-        assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
-        junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+      [libraries]
+      assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
+      junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 
-        [plugins]
-        kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
-        """
-          .trimIndent()
-      )
-    }
+      [plugins]
+      kotlin = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
+      """
+        .trimIndent()
+    )
   }
 
   @Test
