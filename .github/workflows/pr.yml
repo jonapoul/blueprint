@@ -219,7 +219,6 @@ jobs:
       - check-build-logic
       - detekt
       - tests
-      - sort-dependencies
       - dependency-guard
       - dependency-guard-baseline
     runs-on: ubuntu-latest
