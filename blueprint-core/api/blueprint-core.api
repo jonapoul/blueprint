@@ -48,7 +48,7 @@ public final class blueprint/core/MultiplatformKt {
 }
 
 public final class blueprint/core/PluginsKt {
-	public static final fun withAnyId (Lorg/gradle/api/plugins/PluginContainer;[Ljava/lang/String;Lorg/gradle/api/Action;)V
+	public static final fun withAnyId (Lorg/gradle/api/plugins/PluginManager;[Ljava/lang/String;Lorg/gradle/api/Action;)V
 }
 
 public final class blueprint/core/SystemPropertiesKt {
