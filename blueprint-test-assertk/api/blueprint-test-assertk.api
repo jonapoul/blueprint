@@ -37,13 +37,13 @@ public final class blueprint/test/TaskAssertionsKt {
 	public static final fun noTasksFailed (Lassertk/Assert;)Lassertk/Assert;
 	public static final fun taskFailed (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun taskHadResult (Lassertk/Assert;Ljava/lang/String;Lorg/gradle/testkit/runner/TaskOutcome;)Lassertk/Assert;
-	public static final fun taskSkipped (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
 	public static final fun taskSucceeded (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
-	public static final fun taskUpToDate (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskWasSkipped (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun taskWasUpToDate (Lassertk/Assert;Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksFailed (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
 	public static final fun tasksHadResult (Lassertk/Assert;Lorg/gradle/testkit/runner/TaskOutcome;[Ljava/lang/String;)Lassertk/Assert;
-	public static final fun tasksWereFailed (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
+	public static final fun tasksSucceeded (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
 	public static final fun tasksWereSkipped (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
-	public static final fun tasksWereSucceeded (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
 	public static final fun tasksWereUpToDate (Lassertk/Assert;[Ljava/lang/String;)Lassertk/Assert;
 }
 
