@@ -74,6 +74,6 @@ internal class PreferRegisterOverCreate(config: Config) :
 
   private companion object {
     val NamedDomainObjectContainer = FqName("org.gradle.api.NamedDomainObjectContainer")
-    val CREATE_METHODS = setOf("create", "maybeCreate", "creating")
+    val CREATE_METHODS = setOf("add", "addAll", "create", "creating", "maybeCreate")
   }
 }

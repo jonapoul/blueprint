@@ -4,6 +4,7 @@ import assertk.assertThat
 import blueprint.detekt.test.hasNoFindings
 import blueprint.detekt.test.hasNumFindings
 import blueprint.detekt.test.hasOneFinding
+import blueprint.detekt.test.hasTwoFindings
 import blueprint.detekt.test.lintedAsKts
 import blueprint.detekt.test.messageContains
 import blueprint.detekt.test.onFirstFinding
@@ -84,6 +85,20 @@ internal class LazyCollectionOperatorsTest(private val env: KotlinEnvironmentCon
   }
 
   @Test
+  fun `Report whenTaskAdded`() {
+    val code =
+      """
+      tasks.whenTaskAdded { }
+      """
+        .trimIndent()
+
+    assertThat(rule)
+      .lintedAsKts(env, code)
+      .hasOneFinding()
+      .messageContains("Prefer configureEach over whenTaskAdded")
+  }
+
+  @Test
   fun `Don't report forEach on non-Gradle collection`() {
     val code =
       """
@@ -156,13 +171,15 @@ internal class LazyCollectionOperatorsTest(private val env: KotlinEnvironmentCon
     val code =
       """
       tasks.toList()
+      tasks.toSet()
       """
         .trimIndent()
 
     assertThat(rule)
       .lintedAsKts(env, code)
-      .hasOneFinding()
-      .messageContains("Avoid calling toList on Gradle collections")
+      .hasTwoFindings()
+      .onFirstFinding { messageContains("Avoid calling toList on Gradle collections") }
+      .onSecondFinding { messageContains("Avoid calling toSet on Gradle collections") }
   }
 
   @Test
@@ -179,5 +196,19 @@ internal class LazyCollectionOperatorsTest(private val env: KotlinEnvironmentCon
       .hasNumFindings(expected = 2)
       .onFirstFinding { messageContains("configureEach") }
       .onSecondFinding { messageContains("configureEach") }
+  }
+
+  @Test
+  fun `tasks withType doesn't report`() {
+    val code =
+      """
+      abstract class MyTask : org.gradle.api.Task
+
+      val tasks1 = tasks.withType(MyTask::class.java)
+      val tasks2 = tasks.withType<MyTask>()
+      """
+        .trimIndent()
+
+    assertThat(rule).lintedAsKts(env, code).hasNoFindings()
   }
 }
