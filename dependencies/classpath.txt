@@ -1,7 +1,7 @@
-com.autonomousapps.dependency-analysis:com.autonomousapps.dependency-analysis.gradle.plugin:3.19.1
+com.autonomousapps.dependency-analysis:com.autonomousapps.dependency-analysis.gradle.plugin:3.19.2
 com.autonomousapps:antlr:4.13.2.2
-com.autonomousapps:asm-relocated:9.9.0
-com.autonomousapps:dependency-analysis-gradle-plugin:3.19.1
+com.autonomousapps:asm-relocated:9.10.1.0
+com.autonomousapps:dependency-analysis-gradle-plugin:3.19.2
 com.autonomousapps:graph-support:0.12.0
 com.autonomousapps:kotlin-editor-relocated:0.25.0
 com.autonomousapps:variant-artifacts:0.7.0
@@ -18,9 +18,9 @@ com.github.ben-manes.caffeine:caffeine:3.2.4
 com.github.gmazzo.buildconfig:com.github.gmazzo.buildconfig.gradle.plugin:6.1.0
 com.github.gmazzo.buildconfig:plugin:6.1.0
 com.google.code.gson:gson:2.11.0
-com.google.errorprone:error_prone_annotations:2.49.0
+com.google.errorprone:error_prone_annotations:2.50.0
 com.google.guava:failureaccess:1.0.3
-com.google.guava:guava:33.5.0-jre
+com.google.guava:guava:33.7.1-jre
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 com.google.j2objc:j2objc-annotations:3.1
 com.squareup.moshi:moshi-adapters:1.15.2
@@ -42,8 +42,8 @@ com.vanniktech:central-portal:0.37.0
 com.vanniktech:gradle-maven-publish-plugin:0.37.0
 dev.detekt:detekt-gradle-plugin:2.0.0-alpha.6
 dev.detekt:dev.detekt.gradle.plugin:2.0.0-alpha.6
-dev.zacsweers.moshix:moshi-sealed-reflect:0.30.0
-dev.zacsweers.moshix:moshi-sealed-runtime:0.30.0
+dev.zacsweers.moshix:moshi-sealed-reflect:0.37.0
+dev.zacsweers.moshix:moshi-sealed-runtime:0.37.0
 io.github.detekt.sarif4k:sarif4k-jvm:0.6.0
 io.github.detekt.sarif4k:sarif4k:0.6.0
 org.codehaus.woodstox:stax2-api:4.2.1
@@ -83,5 +83,5 @@ org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0
 org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.0
 org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0
 org.jetbrains:annotations:13.0
-org.jspecify:jspecify:1.0.0
+org.jspecify:jspecify:1.0.1
 org.slf4j:slf4j-api:2.0.18
