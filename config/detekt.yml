@@ -12,7 +12,7 @@ naming:
   BooleanPropertyNaming:
     allowedPattern: "^(is|has|are|can|allow)"
   FunctionNameMaxLength:
-    excludes: [ '**/test/**', '**/*Test/**' ]
+    excludes: [ '**/test/**' ]
 
 potential-bugs:
   UnnamedParameterUse:
