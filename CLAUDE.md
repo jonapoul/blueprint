@@ -16,7 +16,6 @@ Blueprint is a Gradle library (published to Maven Central as `dev.jonpoulton.blu
 ./gradlew detektCheck        # Static analysis
 scripts/ktfmt.sh check       # Check formatting (add --force for all files)
 scripts/ktfmt.sh format      # Format Kotlin files (Google style)
-scripts/dependencyUpdates.sh # Check for dependency updates
 ./gradlew dependencyGuard    # Verify dependency classpath files
 ./gradlew dependencyGuardBaseline            # Update dependency classpath files
 ./gradlew publishToMavenLocal                # Publish locally for testing
