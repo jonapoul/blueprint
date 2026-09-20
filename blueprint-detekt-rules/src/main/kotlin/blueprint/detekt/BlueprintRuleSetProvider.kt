@@ -2,6 +2,7 @@ package blueprint.detekt
 
 import blueprint.detekt.rules.AvoidAfterEvaluate
 import blueprint.detekt.rules.AvoidCrossProjectConfiguration
+import blueprint.detekt.rules.AvoidEagerWithType
 import blueprint.detekt.rules.AvoidExtraProperties
 import blueprint.detekt.rules.AvoidProjectEquality
 import blueprint.detekt.rules.AvoidRootProjectAccess
@@ -24,6 +25,7 @@ public class BlueprintRuleSetProvider : RuleSetProvider {
       rules =
         listOf(
           ::AvoidAfterEvaluate,
+          ::AvoidEagerWithType,
           ::AvoidExtraProperties,
           ::AvoidCrossProjectConfiguration,
           ::AvoidProjectEquality,
