@@ -11,7 +11,7 @@ junit-launcher = { module = "org.junit.platform:junit-platform-launcher", versio
 ktfmt = { module = "com.facebook:ktfmt", version = "0.64" } # only used in ktfmt.sh
 
 [plugins]
-buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.1.0" }
+buildConfig = { id = "com.github.gmazzo.buildconfig", version = "6.1.1" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version = "3.19.2" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version = "0.5.0" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
