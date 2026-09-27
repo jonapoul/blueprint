@@ -32,7 +32,7 @@ jobs:
           echo "::error::workflow_dispatch must be run from main (got ${{ github.ref }})"
           exit 1
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           sparse-checkout: gradle.properties
@@ -93,7 +93,7 @@ jobs:
       github.ref == 'refs/heads/main' &&
       needs.check-version.outputs.is-snapshot == 'true'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: ./.github/actions/setup-java
       - uses: ./.github/actions/setup-gradle
@@ -117,7 +117,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: ./.github/actions/setup-java
       - uses: ./.github/actions/setup-gradle
@@ -131,7 +131,7 @@ jobs:
         run: ./gradlew publishToMavenCentral
 
       - name: Create release
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           generateReleaseNotes: true
           name: v${{ needs.check-version.outputs.version }}
